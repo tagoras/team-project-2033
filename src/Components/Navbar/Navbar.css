@@ -1,0 +1,22 @@
+.NavbarUnorderedList{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    background-color: rgb(39, 39, 39);
+}
+
+.NavbarUnorderedList li {
+    margin-right: 2rem;
+}
+
+.NavbarUnorderedList li a{
+    height: 100%;
+    display: inline-block;
+    padding: 1.5rem;
+    color: white;
+}
+
+.NavbarUnorderedList li a:hover{
+    color: rgb(0, 0, 0);
+    background-color: white;
+}
