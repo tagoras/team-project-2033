@@ -1,8 +1,13 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 .NavbarUnorderedList{
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    background-color: rgb(39, 39, 39);
+    background-color: rgb(15, 15, 15);
+    height: 7vh;
 }
 
 .NavbarUnorderedList li {
@@ -12,8 +17,11 @@
 .NavbarUnorderedList li a{
     height: 100%;
     display: inline-block;
-    padding: 1.5rem;
+    padding: 0rem 1rem;
     color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .NavbarUnorderedList li a:hover{
