@@ -1,5 +1,5 @@
 import react, {Component} from "react";
-import '../Showcase/Showcase.css';
+
 
 export class Showcase extends Component{
     render(){
