@@ -23,4 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 venv
-__pycache__.idea
+__pycache__
+.idea/
