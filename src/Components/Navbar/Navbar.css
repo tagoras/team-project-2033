@@ -1,30 +1,30 @@
-*{
-    font-family: Arial, Helvetica, sans-serif;
+* {
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-.NavbarUnorderedList{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    background-color: rgb(0, 0, 0);
-    height: 7vh;
+.NavbarUnorderedList {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  background-color: rgb(0, 0, 0);
+  height: 7vh;
 }
 
 .NavbarUnorderedList li {
-    margin-right: 2rem;
+  margin-right: 2rem;
 }
 
-.NavbarUnorderedList li a{
-    height: 100%;
-    display: inline-block;
-    padding: 0rem 1rem;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.NavbarUnorderedList li a {
+  height: 100%;
+  display: inline-block;
+  padding: 0rem 1rem;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.NavbarUnorderedList li a:hover{
-    color: rgb(0, 0, 0);
-    background-color: white;
+.NavbarUnorderedList li a:hover {
+  color: rgb(0, 0, 0);
+  background-color: white;
 }
