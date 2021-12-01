@@ -88,13 +88,10 @@ node_modules
 package-lock.json
 
 # OS X
-.DS_Store
 
 # Test generated files
 /ReactAndroid/src/androidTest/assets/AndroidTestBundle.js
 *.js.meta
-
-/coverage
 /third-party
 
 # Root dir shouldn't have Xcode project
