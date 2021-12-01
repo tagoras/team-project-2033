@@ -1,4 +1,7 @@
+import loginForm from "../Components/Form/LoginForm.js";
 function loginPage (){
-    <div>Login Page</div>
+    return <section>
+    {loginForm()}
+</section>;
 }
 export default loginPage; 
