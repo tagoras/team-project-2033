@@ -1,5 +1,5 @@
 import react, {Component} from "react";
-import photo from '../Photos/photo7.jpg';
+//import 'src/Photos/photo7.jpg';
 import '../Showcase/Showcase.css';
 
 export class Showcase extends Component{

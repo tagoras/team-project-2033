@@ -1,9 +1,8 @@
-import registerForm from "../Components/Form/registerForm";
+import registerForm from "../Components/Form/registerForm.js";
 
 function registerPage(){
     return <section>
-        <h1>Registration From</h1>
-        <registerForm />
+        {registerForm()}
     </section>;
 }
 export default registerPage;

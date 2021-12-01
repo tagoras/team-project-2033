@@ -1,10 +1,10 @@
 import Block from "../UI/Block.js";
 import "./FormModules.css";
 
-function registerForm(){
+function loginForm(){
     return <Block>
         <form className={"form"}>
-            <div className={"legend"}>Registration Form</div>
+            <div className={"legend"}>Login</div>
             <div className={"control"}>
                 <label htmlFor="username">Username</label>
                 <input type='text' required id='username'/>
@@ -13,19 +13,11 @@ function registerForm(){
                 <label htmlFor="password">Password</label>
                 <input type='text' required id='password'/>
             </div>
-            <div className={"control"}>
-                <label htmlFor="email">Email</label>
-                <input type='text' required id='email'/>
-            </div>
-            <div className={"control"}>
-                <label htmlFor="postcode">Postcode</label>
-                <input type='text' required id='postcode'/>
-            </div>
             <div className={"actions"}>
-                <button>Submit</button>
+                <button>Log in</button>
             </div>
         </form>
     </Block>
 }
 
-export default registerForm;
+export default loginForm;

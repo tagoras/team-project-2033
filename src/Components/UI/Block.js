@@ -1,7 +1,7 @@
-import classes from './Card.module.css';
+import classes from './Blockmodules.css';
 
 function Block(props) {
-  return <div className={classes.block}>{props.children}</div>;
+  return <div className={"block"}>{props.children}</div>;
 }
 
 export default Block;

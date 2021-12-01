@@ -8,6 +8,7 @@ export class Navbar extends Component{
         return(
             <navbar>
                 <ul className="NavbarUnorderedList">
+                    <li><Link to='/home'>Home</Link></li>
                     <li><a href="#">About Us</a></li>
                     <li><Link to='/register'>Register</Link></li>
                     <li><Link to='/login'>Login</Link></li>
@@ -17,4 +18,3 @@ export class Navbar extends Component{
         )
     }
 }
-// <Link to='/register-page-path'>Register</Link>
