@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from flask_login import LoginManager, current_user
 from pymongo import MongoClient
-from bson.objectid import ObjectId  # TODO: This is for json pbjects and etc
+from bson.objectid import ObjectId  # will be useful in the future
 from flask_cors import CORS
 import socket
 
