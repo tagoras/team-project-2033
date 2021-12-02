@@ -31,6 +31,14 @@ def register(user_info):
     return user_info
     # TODO: Save this to db in the users table and check if username is taken and return true or false to front end
 
+@app.route('/login')
+def login(user_info):
+    user_dictionary = json.loads(user_info)
+    password = user_dictionary["password"]
+    user_dictionary["password"] = decrypt_password(password)
+    user_info = json.dumps(user_dictionary)
+    return user_info
+    # TODO: Understand what any of this actually means or does, just trying to be helpful guys xx
 
 if __name__ == "__main__":
     my_host = "localhost"
