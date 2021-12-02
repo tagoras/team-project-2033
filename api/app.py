@@ -3,15 +3,14 @@ from flask_login import LoginManager, current_user
 from pymongo import MongoClient
 from bson.objectid import ObjectId  # TODO: This is for json pbjects and etc
 from flask_cors import CORS
-import yaml
 import socket
 
 
 app = Flask(__name__)
-config = yaml.load(open('database.yaml'))   # TODO: won't work past this point, database necesssary
-client = MongoClient(config['uri'])
-# db = client.lin_flask
-db = client['knf-dev']
+
+# won't work past this point if not run on uni machines
+client = MongoClient('mongodb://cs-db.ncl.ac.uk:3306/csc2033_team32')
+db = client['csc2033_team32']
 CORS(app)
 
 
@@ -35,14 +34,14 @@ if __name__ == "__main__":
 
     import mysql.connector as database
 
-    USERNAME = "USERNAME"       # TODO: replace with real one
-    PASSWORD = "PASSWORD"       # TODO: replace with real one
+    USERNAME = input("Database username: ")
+    PASSWORD = input("Database password: ")
 
     connection = database.connect(
         user=USERNAME,
         password=PASSWORD,
-        host=my_host,
-        database="DATABASE")    # TODO: replace with real one
+        host='cs-db.ncl.ac.uk',
+        database="csc2033_team32")
 
     cursor = connection.cursor()
 
