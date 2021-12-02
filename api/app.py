@@ -4,19 +4,32 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId  # will be useful in the future
 from flask_cors import CORS
 import socket
-
+import json
+from werkzeug.security import generate_password_hash
 
 app = Flask(__name__)
 
 # won't work past this point if not run on uni machines
-client = MongoClient('mongodb://cs-db.ncl.ac.uk:3306/csc2033_team32')
-db = client['csc2033_team32']
+# client = MongoClient('mongodb://cs-db.ncl.ac.uk:3306/csc2033_team32')
+# db = client['csc2033_team32']
 CORS(app)
 
 
 @app.route('/')
 def hello_world():
     return "<p>Hello, World!</p>"
+
+
+@app.route('/register')
+def register(user_info):
+    user_dictionary = json.loads(user_info)
+    password = user_dictionary["password"]
+    postcode = user_dictionary["postcode"]
+    user_dictionary["password"] = generate_password_hash(password)
+    user_dictionary["postcode"] = generate_password_hash(postcode)
+    user_info = json.dumps(user_dictionary)
+    return user_info
+    # TODO: Save this to db in the users table and check if username is taken and return true or false to front end
 
 
 if __name__ == "__main__":
@@ -32,6 +45,7 @@ if __name__ == "__main__":
     login_manager.login_view = 'users.login'
     login_manager.init_app(app)
 
+    ''' Commented to avoid errors
     import mysql.connector as database
 
     USERNAME = input("Database username: ")
@@ -60,5 +74,4 @@ if __name__ == "__main__":
 
     app.run(host=my_host, port=free_port, debug=True, ssl_context='adhoc')
     # TODO : add connection.close() at the end of program for the database
-
-
+    '''
