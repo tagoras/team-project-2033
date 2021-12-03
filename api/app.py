@@ -17,16 +17,9 @@ CORS(app)
 
 
 def empty_values(dictionary):
-    for key, value in dictionary:
-        if value == '':
-            return -1
-    return 0
-
-
-def character_checking(value, characters):
-    chars = set(characters)
-    if any((letter in chars) for letter in value):
-        return -1
+    for key in dictionary:
+        if dictionary[key] == '':
+            return 'Empty'
     return 0
 
 
@@ -46,19 +39,19 @@ def register(reg_info):
 
     # Password Validating
     password_size = len(reg_dictionary['password'])
-    p = re.compile(r'(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[*?!^+%&()=}{$#@<>])')
-    if p.match(reg_dictionary['password']):
-        return -1
+    password_checker = re.compile(r'(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[*?!^+%&()=}{$#@<>])')
+    if password_checker.match(reg_dictionary['password']):
+        return 'Failed Password validation'
     elif 6 > password_size and 12 > password_size:
-        return -1
+        return 'Failed Password validation'
 
     # Email Validating
-    regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+    regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
     if not re.search(regex, reg_dictionary['email']):
-        return -1
+        return 'Failed Email Validation'
 
     # Postcode Validation
-    regex = '^[a-z]{1,2}\d[a-z\d]?\s*\d[a-z]{2}$'
+    regex = r'[A-Z]{1,2}[0-9R][0-9A-Z]? [0-9][A-Z]{2}'
     if not re.search(regex, reg_dictionary['postcode']):
         return -1
 
