@@ -6,6 +6,7 @@ from flask_cors import CORS
 import socket
 import json
 from werkzeug.security import generate_password_hash
+import re
 
 app = Flask(__name__)
 
@@ -15,21 +16,63 @@ app = Flask(__name__)
 CORS(app)
 
 
+def empty_values(dictionary):
+    for key, value in dictionary:
+        if value == '':
+            return -1
+    return 0
+
+
+def character_checking(value, characters):
+    chars = set(characters)
+    if any((letter in chars) for letter in value):
+        return -1
+    return 0
+
+
 @app.route('/')
 def hello_world():
     return "<p>Hello, World!</p>"
 
 
 @app.route('/register')
-def register(user_info):
-    user_dictionary = json.loads(user_info)
-    password = user_dictionary["password"]
-    postcode = user_dictionary["postcode"]
-    user_dictionary["password"] = generate_password_hash(password)
-    user_dictionary["postcode"] = generate_password_hash(postcode)
-    user_info = json.dumps(user_dictionary)
+def register(reg_info):
+    # Converts JSON object into dictionary
+    reg_dictionary = json.loads(reg_info)
+
+    # Any empty values
+    if empty_values(reg_dictionary) == -1:
+        return -1
+
+    # Password Validating
+    password_size = len(reg_dictionary['password'])
+    p = re.compile(r'(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[*?!^+%&()=}{$#@<>])')
+    if p.match(reg_dictionary['password']):
+        return -1
+    elif 6 > password_size and 12 > password_size:
+        return -1
+
+    # Email Validating
+    regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+    if not re.search(regex, reg_dictionary['email']):
+        return -1
+
+    # Postcode Validation
+    regex = '^[a-z]{1,2}\d[a-z\d]?\s*\d[a-z]{2}$'
+    if not re.search(regex, reg_dictionary['postcode']):
+        return -1
+
+    # One way encrypt
+    reg_dictionary["password"] = generate_password_hash(reg_dictionary["password"])
+    reg_dictionary["postcode"] = generate_password_hash(reg_dictionary["postcode"])
+
+    # Converts back into JSON object
+    user_info = json.dumps(reg_dictionary)
+
+    # Returns user_info
     return user_info
     # TODO: Save this to db in the users table and check if username is taken and return true or false to front end
+
 
 @app.route('/login')
 def login(user_info):
@@ -39,6 +82,7 @@ def login(user_info):
     user_info = json.dumps(user_dictionary)
     return user_info
     # TODO: Understand what any of this actually means or does, just trying to be helpful guys xx
+
 
 if __name__ == "__main__":
     my_host = "localhost"
