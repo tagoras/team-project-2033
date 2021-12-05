@@ -3,8 +3,8 @@ import './App.css';
 import {Navbar} from './Components/Navbar/Navbar';
 import {Showcase} from './Components/Showcase/Showcase';
 import {Route, Routes} from 'react-router-dom';
-import loginPage from './Pages/login';
-import registerPage from './Pages/register';
+import LoginPage from './Pages/login';
+import RegisterPage from './Pages/register';
 
 
 
@@ -13,10 +13,9 @@ function App() {
     <div className="AppContainer">
       <Navbar/>
       <Routes>
-        <Route path='/home' element={<Showcase/>}>
-        </Route>
-        <Route path='/register' element ={registerPage()}/>
-        <Route path='/login' element={loginPage()}/>
+        <Route path='/home' element={<Showcase/>}/>
+        <Route path='/register' element ={<RegisterPage/>}/>
+        <Route path='/login' element={<LoginPage/>}/>
       </Routes>
     </div>
   );
