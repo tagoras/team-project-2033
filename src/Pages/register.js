@@ -3,10 +3,11 @@ import "../Pages/Register.css"
 function RegisterPage(){
     function addRegisterHandler(registerData){
         //FIXME: connect to the database
-        fetch('mongodb://cs-db.ncl.ac.uk:3306/csc2033_team32',{
+        console.log(JSON.stringify(registerData))
+        fetch('/register2',{
             method:'POST',
             body: JSON.stringify(registerData)
-        })
+        }).then((value) => console.log(value), () => console.log("ERROR"));
     }
     return <section>
         <div className={"register"}>
