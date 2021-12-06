@@ -6,12 +6,10 @@ function loginForm(){
         <form className={"form"}>
             <div className={"legend"}>Login</div>
             <div className={"control"}>
-                <label htmlFor="username">Username</label>
-                <input type='text' required id='username'/>
+                <input type='text' required id='username' placeholder='Username'/>
             </div>
             <div className={"control"}>
-                <label htmlFor="password">Password</label>
-                <input type='text' required id='password'/>
+                <input type='text' required id='password' placeholder='********'/>
             </div>
             <div className={"actions"}>
                 <button>Log in</button>

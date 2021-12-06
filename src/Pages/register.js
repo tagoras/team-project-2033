@@ -1,8 +1,18 @@
-import registerForm from "../Components/Form/registerForm.js";
-
-function registerPage(){
+import RegisterForm from "../Components/Form/registerForm.js";
+import "../Pages/Register.css"
+function RegisterPage(){
+    function addRegisterHandler(registerData){
+        //FIXME: connect to the database
+        fetch('mongodb://cs-db.ncl.ac.uk:3306/csc2033_team32',{
+            method:'POST',
+            body: JSON.stringify(registerData)
+        })
+    }
     return <section>
-        {registerForm()}
+        <div className={"register"}>
+        <RegisterForm addRegisterForm={addRegisterHandler}/>
+        </div>
+        
     </section>;
 }
-export default registerPage;
+export default RegisterPage;
