@@ -1,3 +1,10 @@
+.form * {
+  font-family: "Arial", sans-serif;
+  color: #050505;
+  letter-spacing: 0.5px;
+  outline: none;
+  border: none;
+}
 .form {
   padding: 1rem;
 }
