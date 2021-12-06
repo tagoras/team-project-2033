@@ -28,10 +28,14 @@ def hello_world():
     return "<p>Hello, World!</p>"
 
 
-@app.route('/register')
+@app.route('/register2', methods=['GET', 'POST'])
 def register():
-    return 'register'
-
+    # POST a data to database
+    if request.method == 'POST':
+        body = request.form.get
+        print(json.loads(body))
+        
+    return "empty"
 
 def Hello(reg_info):
     # Converts JSON object into dictionary
