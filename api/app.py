@@ -62,8 +62,12 @@ def register(reg_info):
     # Converts back into JSON object
     user_info = json.dumps(reg_dictionary)
 
+    f = open("tempDB.txt", 'a')
+    f.write(user_info)
+    f.close()
+
     # Returns user_info
-    return user_info
+    return 0
     # TODO: Save this to db in the users table and check if username is taken and return true or false to front end
 
 
