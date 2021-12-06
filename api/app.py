@@ -29,7 +29,11 @@ def hello_world():
 
 
 @app.route('/register')
-def register(reg_info):
+def register():
+    return 'register'
+
+
+def Hello(reg_info):
     # Converts JSON object into dictionary
     reg_dictionary = json.loads(reg_info)
 
