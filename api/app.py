@@ -4,9 +4,7 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId  # will be useful in the future
 from flask_cors import CORS
 import socket
-import json
-from werkzeug.security import generate_password_hash
-import re
+import logging_system
 
 app = Flask(__name__)
 
@@ -14,13 +12,6 @@ app = Flask(__name__)
 # client = MongoClient('mongodb://cs-db.ncl.ac.uk:3306/csc2033_team32')
 # db = client['csc2033_team32']
 CORS(app)
-
-
-def empty_values(dictionary):
-    for key in dictionary:
-        if dictionary[key] == '':
-            return 'Empty'
-    return 0
 
 
 @app.route('/')
@@ -32,51 +23,9 @@ def hello_world():
 def register():
     # POST a data to database
     if request.method == 'POST':
-        body = request.form.get
-        print(json.loads(body))
-        
-    return "empty"
+        user_input = request.data
 
-def Hello(reg_info):
-    # Converts JSON object into dictionary
-    reg_dictionary = json.loads(reg_info)
-
-    # Any empty values
-    if empty_values(reg_dictionary) == -1:
-        return -1
-
-    # Password Validating
-    password_size = len(reg_dictionary['password'])
-    password_checker = re.compile(r'(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[*?!^+%&()=}{$#@<>])')
-    if password_checker.match(reg_dictionary['password']):
-        return 'Failed Password validation'
-    elif 6 > password_size and 12 > password_size:
-        return 'Failed Password validation'
-
-    # Email Validating
-    regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
-    if not re.search(regex, reg_dictionary['email']):
-        return 'Failed Email Validation'
-
-    # Postcode Validation
-    regex = r'[A-Z]{1,2}[0-9R][0-9A-Z]? [0-9][A-Z]{2}'
-    if not re.search(regex, reg_dictionary['postcode']):
-        return -1
-
-    # One way encrypt
-    reg_dictionary["password"] = generate_password_hash(reg_dictionary["password"])
-    reg_dictionary["postcode"] = generate_password_hash(reg_dictionary["postcode"])
-
-    # Converts back into JSON object
-    user_info = json.dumps(reg_dictionary)
-
-    f = open("tempDB.txt", 'a')
-    f.write(user_info)
-    f.close()
-
-    # Returns user_info
-    return 0
-    # TODO: Save this to db in the users table and check if username is taken and return true or false to front end
+    return logging_system.registration(user_input)
 
 
 @app.route('/login')
