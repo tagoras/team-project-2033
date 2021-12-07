@@ -21,10 +21,11 @@ def hello_world():
 
 @app.route('/register2', methods=['GET', 'POST'])
 def register():
-    # POST a data to database
+    # Receive data from register form
     if request.method == 'POST':
         user_input = request.data
 
+    # TODO: Return Something for front-end to know what's happened to user input
     return logging_system.registration(user_input)
 
 
