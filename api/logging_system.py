@@ -20,8 +20,8 @@ def registration(reg_info):
 
     # Password Validating
     password_size = len(reg_dictionary['password'])
-    password_checker = re.compile(r'(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[*?!^+%&()=}{$#@<>])')
-    if password_checker.match(reg_dictionary['password']):
+    password_checker = re.compile(r'([A-Z])+([a-z])+(.\d)+([*?!^+%&()=}{$#@<>])')
+    if not(password_checker.match(reg_dictionary['password'])):
         return 'Failed Password validation'
     elif not(6 < password_size < 12):
         return 'Failed Password validation'
@@ -43,10 +43,11 @@ def registration(reg_info):
     # Converts back into JSON object
     user_info = json.dumps(reg_dictionary)
 
+    # Save to database, temporarily saved to text document
     f = open("tempDB.txt", 'a')
     f.write(user_info)
     f.close()
 
     # Returns user_info
-    return 0
-    # TODO: Save user_info to db and change returns for front-end and check for bugs
+    return 'User Registered Successfully'
+    # TODO: Save user_info to db
