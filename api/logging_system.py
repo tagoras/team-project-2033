@@ -23,7 +23,7 @@ def registration(reg_info):
     password_checker = re.compile(r'(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[*?!^+%&()=}{$#@<>])')
     if password_checker.match(reg_dictionary['password']):
         return 'Failed Password validation'
-    elif 6 > password_size and 12 > password_size:
+    elif not(6 < password_size < 12):
         return 'Failed Password validation'
 
     # Email Validating
@@ -34,7 +34,7 @@ def registration(reg_info):
     # Postcode Validation
     regex = r'[A-Z]{1,2}[0-9R][0-9A-Z]? [0-9][A-Z]{2}'
     if not re.search(regex, reg_dictionary['postcode']):
-        return -1
+        return 'Failed Postcode Validation'
 
     # One way encrypt
     reg_dictionary["password"] = generate_password_hash(reg_dictionary["password"])
@@ -49,4 +49,4 @@ def registration(reg_info):
 
     # Returns user_info
     return 0
-    # TODO: Save user_info to db and change returns for front-end
+    # TODO: Save user_info to db and change returns for front-end and check for bugs
