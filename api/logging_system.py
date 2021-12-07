@@ -51,3 +51,27 @@ def registration(reg_info):
     # Returns user_info
     return 'User Registered Successfully'
     # TODO: Save user_info to db
+
+def login(login_info):
+    # Converts JSON object into dictionary
+    login_dictionary = json.loads(login_info)
+
+    # Any empty values
+    if empty_values(login_dictionary) == -1:
+        return 'Empty Fields'
+
+    f = open("tempDB.txt", 'r')
+    # TODO: f = READ FILE !!!!
+
+
+
+    # Converts back into JSON object
+    user_info = json.dumps(login_dictionary)
+
+    # Save to database, temporarily saved to text document
+    f = open("tempDB.txt", 'a')
+    f.write(user_info)
+    f.close()
+
+    # Returns user_info
+    return 'User Logged In Successfully'

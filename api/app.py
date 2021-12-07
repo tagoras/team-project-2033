@@ -29,14 +29,14 @@ def register():
     return logging_system.registration(user_input)
 
 
-@app.route('/login')
-def login(user_info):
-    user_dictionary = json.loads(user_info)
-    password = user_dictionary["password"]
-    user_dictionary["password"] = decrypt_password(password)
-    user_info = json.dumps(user_dictionary)
-    return user_info
-    # TODO: Understand what any of this actually means or does, just trying to be helpful guys xx
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    # Receive data from login form
+    if request.method == 'POST':
+        user_input = request.data
+
+    # TODO: Return Something for front-end to know what's happened to user input
+    return logging_system.login(user_input)
 
 
 if __name__ == "__main__":
