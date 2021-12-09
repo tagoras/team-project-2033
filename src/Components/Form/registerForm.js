@@ -24,7 +24,7 @@ function RegisterForm(props){
        props.addRegisterForm(registerData);
     }
 
-    return <Block>
+    return (<Block>
         <form className={"form"} onSubmit={submitHandler}>
             <div className={"legend"}>Register</div>
             <div className={"control"}>
@@ -47,7 +47,7 @@ function RegisterForm(props){
                 <button>Submit</button>
             </div>
         </form>
-    </Block>
+    </Block>);
 }
 
 export default RegisterForm;
