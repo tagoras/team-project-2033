@@ -9,7 +9,7 @@ function RegisterPage(){
         })
     }
     return <section>
-        <div className={"register"}>
+        <div className="register">
         <RegisterForm addRegisterForm={addRegisterHandler}/>
         </div>
         
