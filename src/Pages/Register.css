@@ -1,11 +1,17 @@
+/*
+The following have been removed from .register at least temporarily:
+
+background-image: url(/src/Photos/volunteers.jpg);
+background-blend-mode: soft-light;
+background-color: rgb(207, 205, 214);
+background-repeat: no-repeat;
+
+*/
+
 .register {
   display: flex;
   flex-direction: row;
   justify-content: center;
   position: relative;
   height: 93vh;
-  background-image: url(/src/Photos/volunteers.jpg);
-  background-blend-mode: soft-light;
-  background-color: rgb(207, 205, 214);
-  background-repeat: no-repeat;
 }

@@ -10,7 +10,7 @@ function RegisterPage(){
         }).then((value) => console.log(value), () => console.log("ERROR"));
     }
     return <section>
-        <div className={"register"}>
+        <div className="register">
         <RegisterForm addRegisterForm={addRegisterHandler}/>
         </div>
         
