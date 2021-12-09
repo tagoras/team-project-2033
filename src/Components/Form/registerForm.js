@@ -9,7 +9,7 @@ function RegisterForm(props){
     const emailInputRef = useRef();
     const postcodeInputRef = useRef();
 
-    function submitHandler(event) {
+    function registerSubmitHandler(event) {
         event.preventDefault();
         const enteredUsername = usernameInputRef.current.value;
         const enteredPassword = passwordInputRef.current.value; 
@@ -30,7 +30,7 @@ function RegisterForm(props){
         <img src={backgroundImage} className="backgroundImage"></img>
         <div className="filter"></div>
         <div className="formContainer">
-            <form className="form" onSubmit={submitHandler}>
+            <form className="form" onSubmit={registerSubmitHandler}>
             <div className="legend">Register</div> 
             <div className="control">
                 <label htmlFor="username">Username</label> <br/>
