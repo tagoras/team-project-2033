@@ -1,4 +1,4 @@
-import RegisterForm from "../Components/Form/registerForm.js";
+import RegisterForm from "../Components/Form/RegisterForm.js";
 import "../Pages/Register.css"
 function RegisterPage(){
     function addRegisterHandler(registerData){
