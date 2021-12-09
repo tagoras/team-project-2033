@@ -1,4 +1,4 @@
-import LoginForm from "../Components/Form/LoginForm.js";
+import LoginForm from "../Components/LoginForm/LoginForm.js";
 function LoginPage (){
     return <section>
          <div>{<LoginForm/>}</div>
