@@ -2,6 +2,7 @@ import csv
 import json
 import re
 from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash
 
 
 def empty_values(dictionary):
@@ -69,8 +70,14 @@ def login(login_info):
     if empty_values(login_dictionary) == -1:
         return 'Empty Fields'
 
-    f = open("tempDB.txt", 'r')
-    # TODO: f = READ FILE !!!!
+    # Checks Username and Password, Temporarily reading from csv document
+    with open('tempDB.csv', 'r') as f:
+        reader = csv.reader(f)
+        for row in reader:
+            if not (row[0] == login_dictionary['username']) and not(check_password_hash(row[1], login_dictionary['password'])):
+                return 'Username/Password Incorrect'
+            else:
+                break
 
     # Converts back into JSON object
     user_info = json.dumps(login_dictionary)
