@@ -1,3 +1,4 @@
+import csv
 import json
 import re
 from werkzeug.security import generate_password_hash
@@ -18,12 +19,21 @@ def registration(reg_info):
     if empty_values(reg_dictionary) == -1:
         return 'Empty Fields'
 
+    # Username Exists?, Temporarily using csv document
+    with open('tempDB.csv', 'r') as f:
+        reader = csv.reader(f)
+        for row in reader:
+            if row[0] == reg_dictionary['username']:
+                f.close()
+                return 'Username Exists Already'
+        f.close()
+
     # Password Validating
     password_size = len(reg_dictionary['password'])
     password_checker = re.compile(r'([A-Z])+([a-z])+(.\d)+([*?!^+%&()=}{$#@<>])')
-    if not(password_checker.match(reg_dictionary['password'])):
+    if not (password_checker.match(reg_dictionary['password'])):
         return 'Failed Password validation'
-    elif not(6 < password_size < 12):
+    elif not (6 < password_size < 12):
         return 'Failed Password validation'
 
     # Email Validating
@@ -40,17 +50,19 @@ def registration(reg_info):
     reg_dictionary["password"] = generate_password_hash(reg_dictionary["password"])
     reg_dictionary["postcode"] = generate_password_hash(reg_dictionary["postcode"])
 
+    # Save to database, temporarily saved to csv document
+    with open('tempDB.csv', 'a') as f:
+        writer = csv.DictWriter(f, reg_dictionary.keys())
+        writer.writerow(reg_dictionary)
+        f.close()
+
     # Converts back into JSON object
     user_info = json.dumps(reg_dictionary)
-
-    # Save to database, temporarily saved to text document
-    f = open("tempDB.txt", 'a')
-    f.write(user_info)
-    f.close()
 
     # Returns user_info
     return 'User Registered Successfully'
     # TODO: Save user_info to db
+
 
 def login(login_info):
     # Converts JSON object into dictionary
@@ -62,8 +74,6 @@ def login(login_info):
 
     f = open("tempDB.txt", 'r')
     # TODO: f = READ FILE !!!!
-
-
 
     # Converts back into JSON object
     user_info = json.dumps(login_dictionary)
