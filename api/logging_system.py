@@ -24,9 +24,7 @@ def registration(reg_info):
         reader = csv.reader(f)
         for row in reader:
             if row[0] == reg_dictionary['username']:
-                f.close()
                 return 'Username Exists Already'
-        f.close()
 
     # Password Validating
     password_size = len(reg_dictionary['password'])
@@ -51,10 +49,9 @@ def registration(reg_info):
     reg_dictionary["postcode"] = generate_password_hash(reg_dictionary["postcode"])
 
     # Save to database, temporarily saved to csv document
-    with open('tempDB.csv', 'a') as f:
-        writer = csv.DictWriter(f, reg_dictionary.keys())
-        writer.writerow(reg_dictionary)
-        f.close()
+    with open('tempDB.csv', 'a', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(reg_dictionary.values())
 
     # Converts back into JSON object
     user_info = json.dumps(reg_dictionary)
@@ -77,11 +74,6 @@ def login(login_info):
 
     # Converts back into JSON object
     user_info = json.dumps(login_dictionary)
-
-    # Save to database, temporarily saved to text document
-    f = open("tempDB.txt", 'a')
-    f.write(user_info)
-    f.close()
 
     # Returns user_info
     return 'User Logged In Successfully'
