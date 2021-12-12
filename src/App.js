@@ -5,6 +5,7 @@ import {Showcase} from './Components/Showcase/Showcase';
 import {Route, Routes,Navigate} from 'react-router-dom';
 import LoginPage from './Pages/login';
 import RegisterPage from './Pages/register';
+import AboutUs from './Components/AboutUsSection/AboutUs';
 
 
 
@@ -18,6 +19,7 @@ function App() {
         <Route path='/register' element ={<RegisterPage/>}/>
         <Route path='/login' element={<LoginPage/>}/>
       </Routes>
+      <AboutUs/>
     </div>
   );
 }
