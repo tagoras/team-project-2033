@@ -11,7 +11,6 @@ export class Navbar extends Component{
                     <li><Link to='/home'>Home</Link></li>
                     <li><a href="#">About Us</a></li>
                     <li><Link to='/register'>Register</Link></li>
-                    <li><Link to='/login'>Login</Link></li>
                     <li><a href="#">Get In Touch</a></li>
                 </ul>
             </navbar>
