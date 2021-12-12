@@ -25,6 +25,7 @@
 }
 
 .NavbarUnorderedList li a:hover {
+  transition: 1.1s;
   color: rgb(0, 0, 0);
   background-color: white;
 }
