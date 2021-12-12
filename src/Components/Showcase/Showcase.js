@@ -7,7 +7,7 @@ export class Showcase extends Component{
         return(
             <div className="ShowcaseContainer">
                 <div className="Filter"/>
-                <h1>Let's build <br/> Infrastructure <br/> Together</h1>
+                <h1>Building <br/> Infrastructure <br/> With <br/> People</h1>
             </div>
         )
     }
