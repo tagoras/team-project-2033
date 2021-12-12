@@ -91,18 +91,13 @@ def login(user_info):
 
 if __name__ == "__main__":
     my_host = "localhost"
-    # TODO: the free socket thing should be replaced with a unique socket if deployed in uni's VMs
-    free_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    free_socket.bind((my_host, 0))
-    free_socket.listen(5)
-    free_port = free_socket.getsockname()[1]
-    free_socket.close()
+    my_port = 5000
 
+    '''Commented to avoid errors
     login_manager = LoginManager()
     login_manager.login_view = 'users.login'
     login_manager.init_app(app)
 
-    ''' Commented to avoid errors
     import mysql.connector as database
 
     USERNAME = input("Database username: ")
@@ -129,6 +124,6 @@ if __name__ == "__main__":
             return -1
 
 
-    app.run(host=my_host, port=free_port, debug=True, ssl_context='adhoc')
-    # TODO : add connection.close() at the end of program for the database
     '''
+    app.run(host=my_host, port=my_port, debug=True, ssl_context='adhoc')
+    # TODO : add connection.close() at the end of program for the database
