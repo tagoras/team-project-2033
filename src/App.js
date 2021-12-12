@@ -6,6 +6,7 @@ import {Route, Routes,Navigate} from 'react-router-dom';
 import LoginPage from './Pages/login';
 import RegisterPage from './Pages/register';
 import AboutUs from './Components/AboutUsSection/AboutUs';
+import Footer from './Components/Footer/Footer.component';
 
 
 
@@ -20,6 +21,7 @@ function App() {
         <Route path='/login' element={<LoginPage/>}/>
       </Routes>
       <AboutUs/>
+      <Footer/>
     </div>
   );
 }
