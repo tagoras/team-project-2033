@@ -1,0 +1,87 @@
+.containerContainer{
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+.backgroundImage{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  object-fit: cover;
+}
+
+
+.filter{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+  background-color: black;
+  top: 0;
+  left: 0;
+  opacity: 0.4;
+}
+
+.formContainer{
+  height: auto;
+  padding: 2rem;
+  background-color: rgb(219, 219, 219);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 15vw;
+  z-index: 1;
+
+  border: 3px solid black;
+}
+
+.form{
+  width: 100%;
+  height: 100%;
+}
+
+.legend{
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.control{
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.control input{
+  width: 100%;
+  padding: 0.2rem;
+}
+
+.submitButton{
+  transition: 1s;
+  text-decoration: none;
+  border: none;
+  width: 100%;
+  padding: 1rem;
+  background-color: black;
+  color: white;
+}
+
+.submitButton:hover{
+  transition: 1s;
+  background-color: rgb(156, 156, 156);
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+}
