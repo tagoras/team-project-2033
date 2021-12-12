@@ -4,7 +4,7 @@ import './Footer.style.css';
 export const Footer = () => {
     return(
         <div className='footerContainer'>
-            <a className='governmentPhotoLink'>Will Finish This Later</a>
+            <a className='governmentPhotoLink'></a>
         </div>
     );
 }
