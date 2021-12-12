@@ -1,5 +1,5 @@
 import Block from "../UI/Block.js";
-import "./FormModules.css";
+import "./Register.style.css";
 import {useRef} from 'react';
 import backgroundImage from '../Photos/x.jpg';
 
