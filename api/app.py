@@ -30,7 +30,7 @@ def hello_world() -> json:
             'content': "Hello World"}
 
 
-@app.route('/register2', methods=['GET', 'POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     # POST a data to database
     if request.method == 'POST':
