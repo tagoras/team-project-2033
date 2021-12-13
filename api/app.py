@@ -169,8 +169,8 @@ if __name__ == "__main__":
     try:
         import mysql.connector as database
 
-        #USERNAME = input("Database username: ")
-        #PASSWORD = input("Database password: ")
+        # USERNAME = input("Database username: ")
+        # PASSWORD = input("Database password: ")
         print('\033[33m' + "\nConnecting to database..." + '\033[0m')
         connection = database.connect(
             user=input("Database username: "),
@@ -195,4 +195,9 @@ if __name__ == "__main__":
             return -1
     '''
     app.run(host=my_host, port=my_port, debug=True, ssl_context='adhoc')
-    # TODO : add connection.close() at the end of program for the database
+    # this closes connection to the database when finished
+    try:
+        print("Closing connection to databbase")
+        connection.close()
+    except:
+        print('\033[31m' + "Closing connection to database failed!")
