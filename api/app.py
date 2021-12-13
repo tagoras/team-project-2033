@@ -171,7 +171,7 @@ if __name__ == "__main__":
 
         #USERNAME = input("Database username: ")
         #PASSWORD = input("Database password: ")
-
+        print('\033[33m' + "\nConnecting to database..." + '\033[0m')
         connection = database.connect(
             user=input("Database username: "),
             password=input("Database password: "),
@@ -179,8 +179,9 @@ if __name__ == "__main__":
             database="csc2033_team32")
 
         cursor = connection.cursor()
+        print('\033[32m' + "Connection successful !" + '\033[0m')
     except database.Error:
-        print("Error connecting to database!")
+        print('\033[31m' + "Error connecting to database!" + "\nRunning with no database anyway..\n" + '\033[0m')
     '''
     @login_manager.user_loader
     def load_user(username):
