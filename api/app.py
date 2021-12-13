@@ -31,14 +31,79 @@ def hello_world() -> json:
 
 
 @app.route('/register', methods=['GET', 'POST'])
-def register():
-    # POST a data to database
-    if request.method == 'POST':
-        body = request.form.get
-        print(json.loads(body))
-        
-    return "empty"
+def register() -> json:
+    # POST a data to database and GET a returned statuscode message
+    username = request.json['username']
+    password = request.json['password']
+    email = request.json['email']
+    postcode = request.json['username']
+    #   this bit is redundant, so
+    reg_dictionary = {
+        'username': username,
+        'password': password,
+        'email': email,
+        'postcode': postcode,
+    }
 
+    # Any empty values
+    if empty_values(reg_dictionary) == -1:
+        return {
+            'status': -1,
+            'message': "Registration failed: Fill all fields"
+        }
+
+    # Password Validating
+    password_size = len(password)
+    password_checker = re.compile(r'(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[*?!^+%&()=}{$#@<>])')
+    if password_checker.match(password):
+        return {
+            'status': -1,
+            'message': "Registration failed: Please check password"
+        }
+    elif 6 > password_size and 12 > password_size:
+        return {
+            'status': -1,
+            'message': "Registration failed: Please check password"
+        }
+
+    # Email Validating
+    regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+    if not re.search(regex, email):
+        return {
+            'status': -1,
+            'message': "Registration failed: Please check your email"
+        }
+
+    # Postcode Validation
+    regex = r'[A-Z]{1,2}[0-9R][0-9A-Z]? [0-9][A-Z]{2}'
+    if not re.search(regex, postcode):
+        return {
+            'status': -1,
+            'message': "Registration failed: Please check postcode"
+        }
+
+    # One way encrypt
+    password = generate_password_hash(password)
+    postcode = generate_password_hash(postcode)
+
+    # TODO: Save this to db in the users table and check if username is taken
+    try:
+        statement = "INSERT INTO users (username, password, email, postcode) VALUES (%s, %s, %s, %s)"
+        data = (username, password, email, postcode)
+        cursor.execute(statement, data)
+        connection.commit()
+        return {
+            'status': 0,
+            'message': "Account successfully registered"
+        }
+    except database.Error as e:
+        return {
+            'status': -1,
+            'message': "Registration failed"
+        }
+
+
+'''
 def Hello(reg_info):
     # Converts JSON object into dictionary
     reg_dictionary = json.loads(reg_info)
@@ -78,7 +143,7 @@ def Hello(reg_info):
 
     # Returns user_info
     return 0
-    # TODO: Save this to db in the users table and check if username is taken and return true or false to front end
+'''
 
 
 @app.route('/login')
