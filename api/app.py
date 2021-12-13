@@ -99,7 +99,7 @@ def register() -> json:
     except database.Error as e:
         return {
             'status': -1,
-            'message': "Registration failed"
+            'message': "Registration failed: Internal error"
         }
 
 
