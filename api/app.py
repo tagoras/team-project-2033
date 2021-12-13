@@ -23,11 +23,9 @@ def empty_values(dictionary):
     return 0
 
 
-@app.route('/hello_world')
-def hello_world() -> json:
-    # just for testing : return an hello world json object, for debbugging api calls
-    return {'title': "Hello!",
-            'content': "Hello World"}
+@app.route('/')
+def hello_world():
+    return "<p>Hello, World!</p>"
 
 
 @app.route('/register2', methods=['GET', 'POST'])
