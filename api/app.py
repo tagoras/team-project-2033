@@ -179,7 +179,7 @@ if __name__ == "__main__":
 
         cursor = connection.cursor()
     except database.Error:
-        print("Error connecting to database!")
+        print("/!\: Error connecting to database!\n" + "/!\:Every operation related to database will break")
     '''
     @login_manager.user_loader
     def load_user(username):
