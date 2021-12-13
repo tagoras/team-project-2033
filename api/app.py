@@ -97,6 +97,7 @@ def register() -> json:
             'message': "Account successfully registered"
         }
     except database.Error as e:
+        print(e)
         return {
             'status': -1,
             'message': "Registration failed: Internal error"
