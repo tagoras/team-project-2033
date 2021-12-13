@@ -99,23 +99,21 @@ if __name__ == "__main__":
     login_manager = LoginManager()
     login_manager.login_view = 'users.login'
     login_manager.init_app(app)
-    '''
-    try:
-        import mysql.connector as database
 
-        #USERNAME = input("Database username: ")
-        #PASSWORD = input("Database password: ")
+    import mysql.connector as database
 
-        connection = database.connect(
-            user=input("Database username: "),
-            password=input("Database password: "),
-            host='cs-db.ncl.ac.uk',
-            database="csc2033_team32")
+    USERNAME = input("Database username: ")
+    PASSWORD = input("Database password: ")
 
-        cursor = connection.cursor()
-    except database.Error:
-        print("/!\: Error connecting to database!\n" + "/!\:Every operation related to database will break")
-    '''
+    connection = database.connect(
+        user=USERNAME,
+        password=PASSWORD,
+        host='cs-db.ncl.ac.uk',
+        database="csc2033_team32")
+
+    cursor = connection.cursor()
+
+
     @login_manager.user_loader
     def load_user(username):
         try:
@@ -126,6 +124,8 @@ if __name__ == "__main__":
         except db.Error as e:
             print("load_user failed\n" + e)
             return -1
+
+
     '''
     app.run(host=my_host, port=my_port, debug=True, ssl_context='adhoc')
     # TODO : add connection.close() at the end of program for the database
