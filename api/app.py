@@ -8,9 +8,6 @@ import os
 
 app = Flask(__name__)
 
-# won't work past this point if not run on uni machines
-# client = MongoClient('mongodb://cs-db.ncl.ac.uk:3306/csc2033_team32')
-# db = client['csc2033_team32']
 CORS(app)
 
 
