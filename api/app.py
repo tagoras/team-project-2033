@@ -29,8 +29,7 @@ def hello_world() -> json:
 def register() -> json:
     # POST a data to database and GET a returned statuscode message
     if request.is_json:
-        registration_form = request.get_json
-
+        registration_form = request.json
         # Any empty values
         if empty_values(registration_form) == -1:
             return {
@@ -72,6 +71,8 @@ def register() -> json:
         registration_form['password'] = generate_password_hash(registration_form['password'])
         registration_form['postcode'] = generate_password_hash(registration_form['postcode'])
 
+        # This is really weird, connection is established but breaks for no reason
+        # TODO: Investigate
         try:
             statement = "select count(username) from Users where email=?", (registration_form['email'],)
             cursor.execute(statement)
