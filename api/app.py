@@ -206,8 +206,8 @@ if __name__ == "__main__":
     app.run(host=my_host, port=my_port, debug=True)
     # this closes connection to the database when finished
     try:
-        print("Closing connection to database")
+        print('\033[33m' + "Closing connection to database" + '\033[0m')
         connection.close()
-        print("Closing connection to database successfully")
+        print('\033[32m' + "Closing connection to database successfully" + '\033[0m')
     except:
-        print('\033[31m' + "Closing connection to database failed!")
+        print('\033[31m' + "Closing connection to database failed!" + '\033[0m')
