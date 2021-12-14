@@ -171,13 +171,17 @@ if __name__ == "__main__":
         connection = database.connect(
             user=os.getenv('DBUSERNAME'),
             password=os.getenv('DBPASSWORD'),
-            host='cs-db.ncl.ac.uk',
+            # Check ssh tunneling !!
+            host='127.0.0.1',
+            port=3307,
             database="csc2033_team32")
 
         cursor = connection.cursor()
         print('\033[32m' + "Connection successful !" + '\033[0m')
-    except database.Error:
+    except database.Error as e:
+        print(e)
         print('\033[31m' + "Error connecting to database!" + "\nRunning with no database anyway..\n" + '\033[0m')
+
     '''
     @login_manager.user_loader
     def load_user(username):
@@ -193,7 +197,8 @@ if __name__ == "__main__":
     app.run(host=my_host, port=my_port, debug=True, ssl_context='adhoc')
     # this closes connection to the database when finished
     try:
-        print("Closing connection to databbase")
+        print("Closing connection to database")
         connection.close()
+        print("Closing connection to database successfully")
     except:
         print('\033[31m' + "Closing connection to database failed!")
