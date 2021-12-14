@@ -109,7 +109,7 @@ def register() -> json:
     else:
         return {
             'status': -1,
-            'message': "Registratiaon failed: This is no json!!"
+            'message': "Registration failed: This is no json!!"
         }
 '''
 def Hello(reg_info):
