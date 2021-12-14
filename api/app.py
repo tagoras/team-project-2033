@@ -202,7 +202,7 @@ if __name__ == "__main__":
             print("load_user failed\n" + e)
             return -1
     '''
-    app.run(host=my_host, port=my_port, debug=True, ssl_context='adhoc')
+    app.run(host=my_host, port=my_port, debug=True)
     # this closes connection to the database when finished
     try:
         print("Closing connection to database")
