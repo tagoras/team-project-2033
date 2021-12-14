@@ -72,7 +72,21 @@ def register() -> json:
         registration_form['password'] = generate_password_hash(registration_form['password'])
         registration_form['postcode'] = generate_password_hash(registration_form['postcode'])
 
-        # TODO: Save this to db in the users table and check if username is taken
+        try:
+            statement = "select count(username) from Users where email=?", (registration_form['email'],)
+            cursor.execute(statement)
+            connection.commit()
+            if connection.cursor > 0:
+                return {
+                    'status': -1,
+                    'message': "Registration failed: Email already taken!"
+                }
+        except database.Error as e:
+            print(e)
+            return {
+                'status': -1,
+                'message': "Registration failed: Email might already be taken, try again later"
+            }
         try:
             statement = "INSERT INTO users (username, password, email, postcode) VALUES (%s, %s, %s, %s)"
             data = (registration_form['username'],
