@@ -33,77 +33,74 @@ def hello_world() -> json:
 @app.route('/register', methods=['GET', 'POST'])
 def register() -> json:
     # POST a data to database and GET a returned statuscode message
-    username = request.json['username']
-    password = request.json['password']
-    email = request.json['email']
-    postcode = request.json['username']
-    #   this bit is redundant, so
-    reg_dictionary = {
-        'username': username,
-        'password': password,
-        'email': email,
-        'postcode': postcode,
-    }
+    if request.is_json:
+        registration_form = request.get_json
 
-    # Any empty values
-    if empty_values(reg_dictionary) == -1:
+        # Any empty values
+        if empty_values(registration_form) == -1:
+            return {
+                'status': -1,
+                'message': "Registration failed: Fill all fields"
+            }
+
+        # Password Validating
+        password_size = len(registration_form['password'])
+        password_checker = re.compile(r'(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[*?!^+%&()=}{$#@<>])')
+        if password_checker.match(registration_form['password']):
+            return {
+                'status': -1,
+                'message': "Registration failed: Please check password"
+            }
+        elif 6 > password_size and 12 > password_size:
+            return {
+                'status': -1,
+                'message': "Registration failed: Please check password"
+            }
+
+        # Email Validating
+        regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+        if not re.search(regex, registration_form['email']):
+            return {
+                'status': -1,
+                'message': "Registration failed: Please check your email"
+            }
+
+        # Postcode Validation
+        regex = r'[A-Z]{1,2}[0-9R][0-9A-Z]? [0-9][A-Z]{2}'
+        if not re.search(regex, registration_form['postcode']):
+            return {
+                'status': -1,
+                'message': "Registration failed: Please check postcode"
+            }
+
+        # One way encrypt
+        registration_form['password'] = generate_password_hash(registration_form['password'])
+        registration_form['postcode'] = generate_password_hash(registration_form['postcode'])
+
+        # TODO: Save this to db in the users table and check if username is taken
+        try:
+            statement = "INSERT INTO users (username, password, email, postcode) VALUES (%s, %s, %s, %s)"
+            data = (registration_form['username'],
+                    registration_form['password'],
+                    registration_form['email'],
+                    registration_form['postcode'])
+            cursor.execute(statement, data)
+            connection.commit()
+            return {
+                'status': 0,
+                'message': "Account successfully registered"
+            }
+        except database.Error as e:
+            print(e)
+            return {
+                'status': -1,
+                'message': "Registration failed: Internal error"
+            }
+    else:
         return {
             'status': -1,
-            'message': "Registration failed: Fill all fields"
+            'message': "Registratiaon failed: This is no json!!"
         }
-
-    # Password Validating
-    password_size = len(password)
-    password_checker = re.compile(r'(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[*?!^+%&()=}{$#@<>])')
-    if password_checker.match(password):
-        return {
-            'status': -1,
-            'message': "Registration failed: Please check password"
-        }
-    elif 6 > password_size and 12 > password_size:
-        return {
-            'status': -1,
-            'message': "Registration failed: Please check password"
-        }
-
-    # Email Validating
-    regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
-    if not re.search(regex, email):
-        return {
-            'status': -1,
-            'message': "Registration failed: Please check your email"
-        }
-
-    # Postcode Validation
-    regex = r'[A-Z]{1,2}[0-9R][0-9A-Z]? [0-9][A-Z]{2}'
-    if not re.search(regex, postcode):
-        return {
-            'status': -1,
-            'message': "Registration failed: Please check postcode"
-        }
-
-    # One way encrypt
-    password = generate_password_hash(password)
-    postcode = generate_password_hash(postcode)
-
-    # TODO: Save this to db in the users table and check if username is taken
-    try:
-        statement = "INSERT INTO users (username, password, email, postcode) VALUES (%s, %s, %s, %s)"
-        data = (username, password, email, postcode)
-        cursor.execute(statement, data)
-        connection.commit()
-        return {
-            'status': 0,
-            'message': "Account successfully registered"
-        }
-    except database.Error as e:
-        print(e)
-        return {
-            'status': -1,
-            'message': "Registration failed: Internal error"
-        }
-
-
 '''
 def Hello(reg_info):
     # Converts JSON object into dictionary
