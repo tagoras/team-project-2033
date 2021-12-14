@@ -46,7 +46,7 @@ def register() -> json:
                 'status': -1,
                 'message': "Registration failed: Please check password"
             }
-        elif 6 > password_size and 12 > password_size:
+        elif 6 > password_size > 12:
             return {
                 'status': -1,
                 'message': "Registration failed: Please check password"
