@@ -7,6 +7,7 @@ import socket
 import json
 from werkzeug.security import generate_password_hash
 import re
+import os
 
 app = Flask(__name__)
 
@@ -166,12 +167,10 @@ if __name__ == "__main__":
     try:
         import mysql.connector as database
 
-        # USERNAME = input("Database username: ")
-        # PASSWORD = input("Database password: ")
         print('\033[33m' + "\nConnecting to database..." + '\033[0m')
         connection = database.connect(
-            user=input("Database username: "),
-            password=input("Database password: "),
+            user=os.getenv('DBUSERNAME'),
+            password=os.getenv('DBPASSWORD'),
             host='cs-db.ncl.ac.uk',
             database="csc2033_team32")
 
