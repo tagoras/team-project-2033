@@ -88,7 +88,7 @@ def register() -> json:
                 'message': "Registration failed: Email might already be taken, try again later"
             }
         try:
-            statement = "INSERT INTO users (username, password, email, postcode) VALUES (%s, %s, %s, %s)"
+            statement = "INSERT INTO Users (username, password, email, postcode) VALUES (%s, %s, %s, %s)"
             data = (registration_form['username'],
                     registration_form['password'],
                     registration_form['email'],
