@@ -1,3 +1,4 @@
+import os
 from app import db
 
 
@@ -18,6 +19,13 @@ class User(db.Model):
 
 
 def init_db():
+    try:
+        print("running init_db...")
+        os.system("mkdir data")
+    except OSError as e:
+        print("data/ already exists: ")
+        print(e)
+
     db.drop_all()
     db.create_all()
     test_user = User(username='Joe', email='test1@test.com', password='Njdka3rq39h!', postcode="NE6 9RU")

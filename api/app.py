@@ -5,7 +5,6 @@ from flask_cors import CORS
 import json
 from werkzeug.security import generate_password_hash
 import re
-import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/api.db'
@@ -169,6 +168,7 @@ def login(user_info):
 
 
 if __name__ == "__main__":
+    from models import User
     my_host = "localhost"
     my_port = 5000
 
