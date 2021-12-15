@@ -79,33 +79,30 @@ def register() -> json:
         # This is really weird, connection is established but breaks for no reason
         # TODO: Investigate
         try:
-            statement = "select count(username) from Users where email=?", (registration_form['email'],)
-            cursor.execute(statement)
-            connection.commit()
-            if connection.cursor > 0:
+            user = User.query.filter_by(email=registration_form['email']).first()
+            if user:
                 return {
                     'status': -1,
-                    'message': "Registration failed: Email already taken!"
+                    'message': "Registration failed: Email is already taken!"
                 }
-        except database.Error as e:
+        except Exception as e:
             print(e)
             return {
                 'status': -1,
                 'message': "Registration failed: Email might already be taken, try again later"
             }
         try:
-            statement = "INSERT INTO Users (username, password, email, postcode) VALUES (%s, %s, %s, %s)"
-            data = (registration_form['username'],
-                    registration_form['password'],
-                    registration_form['email'],
-                    registration_form['postcode'])
-            cursor.execute(statement, data)
-            connection.commit()
+            new_user = User(username=registration_form['username'],
+                            email=registration_form['email'],
+                            postcode=registration_form['postcode'],
+                            password=registration_form['password'])
+            db.session.add(new_user)
+            db.session.commit()
             return {
                 'status': 0,
                 'message': "Account successfully registered"
             }
-        except database.Error as e:
+        except Exception as e:
             print(e)
             return {
                 'status': -1,
