@@ -34,19 +34,19 @@ function RegisterForm(props){
             <div className="legend">Register</div> 
             <div className="control">
                 <label htmlFor="username">Username</label> <br/>
-                <input type='text' required id='username' ref={usernameInputRef}/>
+                <input type='text' required id='username' ref={usernameInputRef} value="Username2"/>
             </div>
             <div className="control">
                 <label htmlFor="password">Password</label> <br/>
-                <input type='text' required id='password' placeholder='********' ref={passwordInputRef}/>
+                <input type='text' required id='password' placeholder='********' ref={passwordInputRef} value="Password2#"/>
             </div>
             <div className="control">
                 <label htmlFor="email">Email</label> <br/>
-                <input type='text' required id='email' placeholder='name@email.com' ref={emailInputRef}/>
+                <input type='text' required id='email' placeholder='name@email.com' ref={emailInputRef} value="person@gmail.com"/>
             </div>
             <div className="control"> 
                 <label htmlFor="postcode">Postcode</label> <br/>
-                <input type='text' required id='postcode' placeholder='e.g. NE4 5TG' ref={postcodeInputRef}/>
+                <input type='text' required id='postcode' placeholder='e.g. NE4 5TG' ref={postcodeInputRef} value="NE1 5DZ"/>
             </div>
             <div className="actions">
                 <button className="submitButton">Submit</button>
