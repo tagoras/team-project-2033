@@ -38,7 +38,7 @@ function RegisterForm(props){
             </div>
             <div className="control">
                 <label htmlFor="password">Password</label> <br/>
-                <input type='text' required id='password' placeholder='********' ref={passwordInputRef} value="Password2#"/>
+                <input type='password' required id='password' placeholder='********' ref={passwordInputRef} value="Password2#"/>
             </div>
             <div className="control">
                 <label htmlFor="email">Email</label> <br/>
