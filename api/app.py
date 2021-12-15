@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user
 from flask_cors import CORS
 import json
@@ -7,7 +8,10 @@ import re
 import os
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/api.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+db = SQLAlchemy(app)
 CORS(app)
 
 
@@ -25,6 +29,7 @@ def hello_world() -> json:
             'content': "Hello World"}
 
 
+#   TODO: Rewrite all of this to reflect the database change
 @app.route('/register', methods=['GET', 'POST'])
 def register() -> json:
     # POST a data to database and GET a returned statuscode message
@@ -111,6 +116,8 @@ def register() -> json:
             'status': -1,
             'message': "Registration failed: This is no json!!"
         }
+
+
 '''
 def Hello(reg_info):
     # Converts JSON object into dictionary
@@ -172,26 +179,7 @@ if __name__ == "__main__":
     login_manager = LoginManager()
     login_manager.login_view = 'users.login'
     login_manager.init_app(app)
-    '''
-    try:
-        import mysql.connector as database
-
-        print('\033[33m' + "\nConnecting to database..." + '\033[0m')
-        connection = database.connect(
-            user=os.getenv('DBUSERNAME'),
-            password=os.getenv('DBPASSWORD'),
-            # Check ssh tunneling !!
-            host='127.0.0.1',
-            port=3307,
-            database="csc2033_team32")
-
-        cursor = connection.cursor()
-        print('\033[32m' + "Connection successful !" + '\033[0m')
-    except database.Error as e:
-        print(e)
-        print('\033[31m' + "Error connecting to database!" + "\nRunning with no database anyway..\n" + '\033[0m')
-
-    '''
+    
     @login_manager.user_loader
     def load_user(username):
         try:
@@ -204,10 +192,3 @@ if __name__ == "__main__":
             return -1
     '''
     app.run(host=my_host, port=my_port, debug=True)
-    # this closes connection to the database when finished
-    try:
-        print('\033[33m' + "Closing connection to database" + '\033[0m')
-        connection.close()
-        print('\033[32m' + "Closing connection to database successfully" + '\033[0m')
-    except:
-        print('\033[31m' + "Closing connection to database failed!" + '\033[0m')

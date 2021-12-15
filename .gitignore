@@ -129,3 +129,8 @@ RNTester/Pods/*
 
 # Android memory profiler files
 *.hprof
+
+# Database, will be generated each time
+# To avoid conflicts (merging, fast-forwarding, etc..) we do this:
+api/data
+api/data/
