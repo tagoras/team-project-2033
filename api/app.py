@@ -1,18 +1,16 @@
-from flask import Flask, render_template, request, jsonify
-from flask_login import LoginManager, current_user
-from pymongo import MongoClient
-from bson.objectid import ObjectId  # will be useful in the future
+from flask import Flask, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, login_user, current_user
 from flask_cors import CORS
-import socket
 import json
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 import re
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/api.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# won't work past this point if not run on uni machines
-# client = MongoClient('mongodb://cs-db.ncl.ac.uk:3306/csc2033_team32')
-# db = client['csc2033_team32']
+db = SQLAlchemy(app)
 CORS(app)
 
 
@@ -23,112 +21,155 @@ def empty_values(dictionary):
     return 0
 
 
-@app.route('/')
-def hello_world():
-    return "<p>Hello, World!</p>"
+@app.route('/hello_world')
+def hello_world() -> json:
+    # just for testing : return an hello world json object, for debbugging api calls
+    return {'title': "Hello!",
+            'content': "Hello World"}
 
 
-@app.route('/register2', methods=['GET', 'POST'])
-def register():
-    # POST a data to database
-    if request.method == 'POST':
-        body = request.form.get
-        print(json.loads(body))
-        
-    return "empty"
+@app.route('/register', methods=['GET', 'POST'])
+def register() -> json:
+    # POST a data to database and GET a returned statuscode message
+    if request.is_json:
+        registration_form = request.json
+        # Any empty values
+        if empty_values(registration_form) == -1:
+            return {
+                'status': -1,
+                'message': "Registration failed: Fill all fields"
+            }
 
-def Hello(reg_info):
-    # Converts JSON object into dictionary
-    reg_dictionary = json.loads(reg_info)
+        # Password Validating
+        password_size = len(registration_form['password'])
+        password_checker = re.compile(r'(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[*?!^+%&()=}{$#@<>])')
+        if password_checker.match(registration_form['password']):
+            return {
+                'status': -1,
+                'message': "Registration failed: Please check password"
+            }
+        elif 6 > password_size > 12:
+            return {
+                'status': -1,
+                'message': "Registration failed: Please check password"
+            }
 
-    # Any empty values
-    if empty_values(reg_dictionary) == -1:
-        return -1
+        # Email Validating
+        regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+        if not re.search(regex, registration_form['email']):
+            return {
+                'status': -1,
+                'message': "Registration failed: Please check your email"
+            }
 
-    # Password Validating
-    password_size = len(reg_dictionary['password'])
-    password_checker = re.compile(r'(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[*?!^+%&()=}{$#@<>])')
-    if password_checker.match(reg_dictionary['password']):
-        return 'Failed Password validation'
-    elif 6 > password_size and 12 > password_size:
-        return 'Failed Password validation'
+        # Postcode Validation
+        regex = r'[A-Z]{1,2}[0-9R][0-9A-Z]? [0-9][A-Z]{2}'
+        if not re.search(regex, registration_form['postcode']):
+            return {
+                'status': -1,
+                'message': "Registration failed: Please check postcode"
+            }
 
-    # Email Validating
-    regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
-    if not re.search(regex, reg_dictionary['email']):
-        return 'Failed Email Validation'
+        # One way encrypt
+        registration_form['password'] = generate_password_hash(registration_form['password'])
+        registration_form['postcode'] = generate_password_hash(registration_form['postcode'])
 
-    # Postcode Validation
-    regex = r'[A-Z]{1,2}[0-9R][0-9A-Z]? [0-9][A-Z]{2}'
-    if not re.search(regex, reg_dictionary['postcode']):
-        return -1
+        # This is really weird, connection is established but breaks for no reason
+        # TODO: Investigate
+        try:
+            user = User.query.filter_by(email=registration_form['email']).first()
+            if user:
+                return {
+                    'status': -1,
+                    'message': "Registration failed: Email is already taken!"
+                }
+        except Exception as e:
+            print(e)
+            return {
+                'status': -1,
+                'message': "Registration failed: Email might already be taken, try again later"
+            }
+        try:
+            new_user = User(username=registration_form['username'],
+                            email=registration_form['email'],
+                            postcode=registration_form['postcode'],
+                            password=registration_form['password'])
+            db.session.add(new_user)
+            db.session.commit()
+            return {
+                'status': 0,
+                'message': "Account successfully registered"
+            }
+        except Exception as e:
+            print(e)
+            return {
+                'status': -1,
+                'message': "Registration failed: Internal error"
+            }
+    else:
+        return {
+            'status': -1,
+            'message': "Registration failed: This is no json!!"
+        }
 
-    # One way encrypt
-    reg_dictionary["password"] = generate_password_hash(reg_dictionary["password"])
-    reg_dictionary["postcode"] = generate_password_hash(reg_dictionary["postcode"])
 
-    # Converts back into JSON object
-    user_info = json.dumps(reg_dictionary)
+@app.route('/login', methods=['GET', 'POST'])
+def login() -> json:
+    if request.is_json:
+        login_form = request.json
 
-    f = open("tempDB.txt", 'a')
-    f.write(user_info)
-    f.close()
+        if empty_values(login_form) == -1:
+            return {
+                'status': -1,
+                'message': "Login failed: Fill all fields"
+            }
 
-    # Returns user_info
-    return 0
-    # TODO: Save this to db in the users table and check if username is taken and return true or false to front end
+        user = User.query.filter_by(username=login_form['username']).first()
 
-
-@app.route('/login')
-def login(user_info):
-    user_dictionary = json.loads(user_info)
-    password = user_dictionary["password"]
-    user_dictionary["password"] = decrypt_password(password)
-    user_info = json.dumps(user_dictionary)
-    return user_info
-    # TODO: Understand what any of this actually means or does, just trying to be helpful guys xx
+        if not user or not check_password_hash(user.password, login_form['password']):
+            return {
+                'status': -1,
+                'message': "Login failed: Username or password is incorrect!"
+            }
+        try:
+            login_user(user)
+            return {
+                'status': 0,
+                'message': "User successfully logged in"
+            }
+        except Exception as e:
+            print(e)
+            return {
+                'status': -1,
+                'message': "Login failed: Username or password might be incorrect. Please try again later"
+            }
+    else:
+        return {
+            'status': -1,
+            'message': "Registration failed: This is no json!!"
+        }
 
 
 if __name__ == "__main__":
+
     my_host = "localhost"
-    # TODO: the free socket thing should be replaced with a unique socket if deployed in uni's VMs
-    free_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    free_socket.bind((my_host, 0))
-    free_socket.listen(5)
-    free_port = free_socket.getsockname()[1]
-    free_socket.close()
+    my_port = 5000
 
     login_manager = LoginManager()
     login_manager.login_view = 'users.login'
     login_manager.init_app(app)
 
-    ''' Commented to avoid errors
-    import mysql.connector as database
-
-    USERNAME = input("Database username: ")
-    PASSWORD = input("Database password: ")
-
-    connection = database.connect(
-        user=USERNAME,
-        password=PASSWORD,
-        host='cs-db.ncl.ac.uk',
-        database="csc2033_team32")
-
-    cursor = connection.cursor()
+    from models import User
 
 
     @login_manager.user_loader
-    def load_user(username):
+    def load_user(username) -> User:
         try:
-            statement = "SELECT username FROM Users WHERE username=%s"
-            user = (username,)
-            cursor.execute(statement, user)
-            return user
-        except db.Error as e:
-            print("load_user failed\n" + e)
+            return User.query.get(username)
+        except Exception as e:
+            print("load_user failed\n")
+            print(e)
             return -1
 
 
-    app.run(host=my_host, port=free_port, debug=True, ssl_context='adhoc')
-    # TODO : add connection.close() at the end of program for the database
-    '''
+    app.run(host=my_host, port=my_port, debug=True)
