@@ -1,5 +1,5 @@
 import os
-from app import db
+from api.app import db
 
 
 class User(db.Model):
@@ -19,15 +19,15 @@ class User(db.Model):
 
 
 def init_db():
-    try:
-        print("running init_db...")
-        os.system("mkdir data")
-    except OSError as e:
-        print("data/ already exists: ")
-        print(e)
+    print("running init_db...")
+    # Deletes the folder and creates it again
+    os.system("rm -rf api/data && mkdir api/data")
 
     db.drop_all()
     db.create_all()
+
     test_user = User(username='Joe', email='test1@test.com', password='Njdka3rq39h!', postcode="NE6 9RU")
+
     db.session.add(test_user)
     db.session.commit()
+    print("init_db successful")
