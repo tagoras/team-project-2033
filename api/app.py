@@ -1,9 +1,9 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, current_user
+from flask_login import LoginManager, login_user, current_user
 from flask_cors import CORS
 import json
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 import re
 
 app = Flask(__name__)
@@ -28,7 +28,6 @@ def hello_world() -> json:
             'content': "Hello World"}
 
 
-#   TODO: Rewrite all of this to reflect the database change
 @app.route('/register', methods=['GET', 'POST'])
 def register() -> json:
     # POST a data to database and GET a returned statuscode message
@@ -114,35 +113,58 @@ def register() -> json:
         }
 
 
-@app.route('/login')
-def login(user_info):
-    user_dictionary = json.loads(user_info)
-    password = user_dictionary["password"]
-    user_dictionary["password"] = decrypt_password(password)
-    user_info = json.dumps(user_dictionary)
-    return user_info
-    # TODO: Understand what any of this actually means or does, just trying to be helpful guys xx
+@app.route('/login', methods=['GET', 'POST'])
+def login() -> json:
+    if request.is_json:
+        login_form = request.json
+
+        if empty_values(login_form) == -1:
+            return {
+                'status': -1,
+                'message': "Login failed: Fill all fields"
+            }
+
+        user = User.query.filter_by(username=login_form['username']).first()
+
+        if not user or not check_password_hash(user.password, login_form['password']):
+            return {
+                'status': -1,
+                'message': "Login failed: Username or password is incorrect!"
+            }
+        try:
+            login_user(user)
+            return {
+                'status': 0,
+                'message': "User successfully logged in"
+            }
+        except Exception as e:
+            print(e)
+            return {
+                'status': -1,
+                'message': "Login failed: Username or password might be incorrect. Please try again later"
+            }
 
 
 if __name__ == "__main__":
-    from models import User
+
     my_host = "localhost"
     my_port = 5000
 
-    '''Commented to avoid errors
     login_manager = LoginManager()
     login_manager.login_view = 'users.login'
     login_manager.init_app(app)
-    
+
+    from models import User
+
+
     @login_manager.user_loader
-    def load_user(username):
+    def load_user(username) -> User:
         try:
-            statement = "SELECT username FROM Users WHERE username=%s"
-            user = (username,)
-            cursor.execute(statement, user)
-            return user
-        except db.Error as e:
-            print("load_user failed\n" + e)
+            return User.query.get(username)
+        except Exception as e:
+            print("load_user failed\n")
+            print(e)
             return -1
-    '''
+
+
     app.run(host=my_host, port=my_port, debug=True)
