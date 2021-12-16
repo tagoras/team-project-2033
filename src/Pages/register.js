@@ -1,25 +1,44 @@
 import RegisterForm from "../Components/Form/registerForm.js";
 import "../Pages/Register.css";
 import { useNavigate } from "react-router-dom";
+import React from "react";
+import { Component } from "react/cjs/react.production.min";
 
-function RegisterPage() {
-  const navigate = useNavigate();
-  function addRegisterHandler(registerData) {
-    console.log(JSON.stringify(registerData));
-    fetch("/register", {
-      method: "POST",
-      body: JSON.stringify(registerData),
-    }).then(
-      (value) => console.log(value.ok),
-      () => console.log("ERROR")
+class RegisterPage extends Component{
+  
+  constructor(props){
+    super(props);
+    let registrationStatus = -1;
+
+    this.state = {
+      errorOccured: false,
+    }
+    this.addRegisterHandler = this.addRegisterHandler.bind(this);
+  }
+ 
+  
+
+  render(){
+    return (
+      <section>
+        <div className="register">
+          <RegisterForm addRegisterForm={this.addRegisterHandler} />
+        </div>
+      </section>
     );
   }
-  return (
-    <section>
-      <div className="register">
-        <RegisterForm addRegisterForm={addRegisterHandler} />
-      </div>
-    </section>
-  );
+
+  async addRegisterHandler(registerData) {
+    console.log(JSON.stringify(registerData));
+    let fetchPromise = await fetch("/register", {
+      method: "POST",
+      body: JSON.stringify(registerData),
+    })
+
+    this.setState({errorOccured: fetchPromise.ok});
+
+  }
+
 }
+
 export default RegisterPage;
