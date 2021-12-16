@@ -146,7 +146,7 @@ def login() -> json:
     else:
         return {
             'status': -1,
-            'message': "Registration failed: This is no json!!"
+            'message': "Login failed: This is no json!!"
         }
 
 
