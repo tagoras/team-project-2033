@@ -143,6 +143,11 @@ def login() -> json:
                 'status': -1,
                 'message': "Login failed: Username or password might be incorrect. Please try again later"
             }
+    else:
+        return {
+            'status': -1,
+            'message': "Registration failed: This is no json!!"
+        }
 
 
 if __name__ == "__main__":
