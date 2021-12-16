@@ -15,7 +15,7 @@ function App() {
     <div className="AppContainer">
       <Navbar/>
       <Routes>
-        <Route exact path="/" element={<Showcase/>}/>
+        <Route path="/" element={<Showcase/>}/>
         <Route path='/home' element={<Showcase/>}/>
         <Route path='/register' element ={<RegisterPage/>}/>
         <Route path='/login' element={<LoginPage/>}/>
