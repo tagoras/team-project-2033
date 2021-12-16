@@ -6,14 +6,11 @@ function RegisterPage() {
   const navigate = useNavigate();
   function addRegisterHandler(registerData) {
     console.log(JSON.stringify(registerData));
-    fetch("/register2", {
+    fetch("/register", {
       method: "POST",
       body: JSON.stringify(registerData),
     }).then(
-      (value) => {
-        console.log(value);
-        navigate("/login");
-      },
+      (value) => console.log(value.ok),
       () => console.log("ERROR")
     );
   }
