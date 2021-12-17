@@ -1,6 +1,6 @@
-from api.app import app
+from app import app
 from flask import request, Blueprint
-from api.app import logging_system
+from app import logging_system
 import json
 
 routes = Blueprint('routes', __name__)
