@@ -48,10 +48,11 @@ function RegisterForm(props){
                 <label htmlFor="postcode">Postcode</label> <br/>
                 <input type='text' required id='postcode' placeholder='e.g. NE4 5TG' ref={postcodeInputRef} />
             </div>
+            <ErrorBox errorOccured={props.errorOccured}/>
             <div className="actions">
                 <button className="submitButton">Submit</button>
             </div>
-            <ErrorBox errorOccured={props.errorOccured}/>
+            
         </form>
     </div>
     </div>
