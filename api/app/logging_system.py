@@ -3,8 +3,8 @@ import re
 from flask_login import login_user
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
-from app.models import User
-from app import db
+from models import User
+from api.app import db
 
 
 def empty_values(dictionary):

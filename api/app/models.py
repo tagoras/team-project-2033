@@ -1,5 +1,5 @@
 import os
-from app import db
+from api.app import db
 from flask_login import UserMixin
 
 
