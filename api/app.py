@@ -1,19 +1,4 @@
-from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, login_user, current_user
-from flask_cors import CORS
-import json
-from werkzeug.security import generate_password_hash, check_password_hash
-import re
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/api.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db = SQLAlchemy(app)
-CORS(app)
-
-
+"""
 def empty_values(dictionary):
     for key in dictionary:
         if dictionary[key] == '':
@@ -159,7 +144,7 @@ if __name__ == "__main__":
     login_manager.login_view = 'users.login'
     login_manager.init_app(app)
 
-    from models import User
+    from api.app.models import User
 
 
     @login_manager.user_loader
@@ -173,3 +158,4 @@ if __name__ == "__main__":
 
 
     app.run(host=my_host, port=my_port, debug=True)
+"""
