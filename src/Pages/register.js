@@ -22,7 +22,7 @@ class RegisterPage extends Component{
     return (
       <section>
         <div className="register">
-          <RegisterForm addRegisterForm={this.addRegisterHandler} />
+          <RegisterForm addRegisterForm={this.addRegisterHandler} errorOccured = {true}/>
         </div>
       </section>
     );
@@ -34,7 +34,7 @@ class RegisterPage extends Component{
       method: "POST",
       body: JSON.stringify(registerData),
     })
-
+    console.log(fetchPromise.statusText);
     this.setState({errorOccured: fetchPromise.ok});
 
   }
