@@ -3,8 +3,8 @@ import re
 from flask_login import login_user
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
-from api.app.models import User
-from api.app import db
+from app.models import User
+from app import db
 
 
 def empty_values(dictionary):
@@ -106,11 +106,12 @@ def login(login_info):
 
     user = User.query.filter_by(username=login_dictionary['username']).first()
 
-    if not user or not check_password_hash(user.password, login_dictionary['password']):
+    if type(user) is None and not check_password_hash(user.password, login_dictionary['password']):
         return {
             'status': -1,
             'message': "Login failed: Username or password is incorrect!"
         }
+    # TODO: Repair login_user function
     try:
         login_user(user)
         return {
