@@ -9,7 +9,7 @@ import re
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/api.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+app.config['SECRET_KEY'] = 'This is supposed to be a secret key, thank you for your understanding.'
 db = SQLAlchemy(app)
 CORS(app)
 
