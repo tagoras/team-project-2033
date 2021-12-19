@@ -3,8 +3,8 @@ import './App.css';
 import {Navbar} from './Components/Navbar/Navbar';
 import {Showcase} from './Components/Showcase/Showcase';
 import {Route, Routes,Navigate} from 'react-router-dom';
-import LoginPage from './Pages/login';
-import RegisterPage from './Pages/register';
+import LoginPage from './Pages/Login';
+import RegisterPage from './Pages/Register';
 import AboutUs from './Components/AboutUsSection/AboutUs';
 import Footer from './Components/Footer/Footer.component';
 
@@ -20,7 +20,6 @@ function App() {
         <Route path='/register' element ={<RegisterPage/>}/>
         <Route path='/login' element={<LoginPage/>}/>
       </Routes>
-      <Footer/>
     </div>
   );
 }

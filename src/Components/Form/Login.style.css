@@ -1,0 +1,87 @@
+.mainContainer{
+    width: 100%;
+    height: 93vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.filter2{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 0;
+    background-color: black;
+    top: 0;
+    left: 0;
+    opacity: 0.6;
+}
+
+img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    object-fit: cover;
+}
+
+.loginFormContainer{
+    width: 16vw;
+    height: 50%;
+    padding: 1rem;
+    margin: 1rem;
+    background-color: rgb(219, 219, 219);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid black;
+    z-index: 1;
+}
+
+.form{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.title{
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+input{
+    margin-bottom: 1.5rem;
+    padding: 0.25rem;
+    font-size: 0.85rem;
+    display: inline-block;
+    width: 100%;
+    max-width: 94%;
+}
+
+.loginSubmit{
+    margin-bottom: 1rem;
+}
+
+button{
+    width: 100%;
+    border: none;
+    background-color: black;
+    padding: 0.5rem;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover{
+  transition: 1s;
+  background-color: rgb(156, 156, 156);
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+}
+

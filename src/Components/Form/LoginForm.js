@@ -1,5 +1,6 @@
 import "./Login.style.css";
 import {useRef} from 'react';
+import backgroundImage from "../Photos/x.jpg";
 
 function LoginForm(props){
     const usernameInputRef = useRef();
@@ -16,19 +17,25 @@ function LoginForm(props){
 
     }
     return (
-    <div className="registrationContainer">
+    <div className="mainContainer">
+        <img src={backgroundImage}></img>
+        <div className="filter2"></div>
+        <div className="loginFormContainer">
+        
         <form className="form" onSubmit={loginSubmitHandler}>
-            <div className="legend">Login</div>
-            <div className="control">
+            <div className="title">Login</div>
+            <div className="loginInput">
                 <input type='text' required id='username' placeholder='Username' ref={usernameInputRef}/>
             </div>
-            <div className="control">
+            <div className="loginInput">
                 <input type='text' required id='password' placeholder='********' ref={passwordInputRef}/>
             </div>
-            <div className="actions">
+            <div className="loginSubmit">
                 <button>Log in</button>
             </div>
         </form>
+      
+        </div>
     </div>
     );
 }
