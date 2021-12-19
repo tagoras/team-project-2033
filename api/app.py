@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, login_user, current_user
+from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 from flask_cors import CORS
 import json
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -148,8 +148,25 @@ def login() -> json:
         }
 
 
-if __name__ == "__main__":
+@app.route("/logout")
+@login_required
+def logout():
+    try:
+        logout_user()
 
+        return {
+            'status': 0,
+            'message': "Logout successful."
+        }
+    except Exception as e:
+        print(e)
+        return {
+            'status': -1,
+            'message': "Logout failed: check console."
+        }
+
+
+if __name__ == "__main__":
     my_host = "localhost"
     my_port = 5000
 
