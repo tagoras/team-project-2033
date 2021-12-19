@@ -2,6 +2,7 @@ import Block from "../UI/Block.js";
 import "./Register.style.css";
 import { useRef } from "react";
 import backgroundImage from "../Photos/x.jpg";
+import ErrorBox from "../ErrorBox/ErrorBox.jsx";
 
 function RegisterForm(props) {
   const usernameInputRef = useRef();
@@ -65,6 +66,7 @@ function RegisterForm(props) {
               ref={postcodeInputRef}
             />
           </div>
+          <ErrorBox errorOccurred={props.errorOccurred} text={props.errorText}/>
           <div className="actions">
             <button className="submitButton">Submit</button>
           </div>
