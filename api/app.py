@@ -9,7 +9,7 @@ import re
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/api.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+app.config['SECRET_KEY'] = 'This is supposed to be a secret key, thank you for your understanding.'
 db = SQLAlchemy(app)
 CORS(app)
 
@@ -23,7 +23,7 @@ def empty_values(dictionary):
 
 @app.route('/hello_world')
 def hello_world() -> json:
-    # just for testing : return an hello world json object, for debbugging api calls
+    # just for testing : return a hello world json object, for debugging api calls
     return {'title': "Hello!",
             'content': "Hello World"}
 
@@ -146,7 +146,7 @@ def login() -> json:
     else:
         return {
             'status': -1,
-            'message': "Registration failed: This is no json!!"
+            'message': "Login failed: This is no json!!"
         }
 
 
