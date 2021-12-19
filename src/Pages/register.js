@@ -1,17 +1,19 @@
-import RegisterForm from "../Components/Form/registerForm.js";
+import RegisterForm from "../Components/Form/RegisterForm.js";
 import "../Pages/Register.css";
 import { useNavigate } from "react-router-dom";
 
 function RegisterPage() {
+
   const navigate = useNavigate();
+
   function addRegisterHandler(registerData) {
     console.log(JSON.stringify(registerData));
     fetch("/register", {
       method: "POST",
       body: JSON.stringify(registerData),
     }).then(
-      (value) => console.log(value.ok),
-      () => console.log("ERROR")
+      (response) => navigate("/login"),
+      (error) => console.log("ERROR")
     );
   }
   return (
