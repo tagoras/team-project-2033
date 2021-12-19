@@ -3,8 +3,8 @@ import './App.css';
 import {Navbar} from './Components/Navbar/Navbar';
 import {Showcase} from './Components/Showcase/Showcase';
 import {Route, Routes,Navigate} from 'react-router-dom';
-import LoginPage from './Pages/Login';
-import RegisterPage from './Pages/Register';
+import LoginPage from './Pages/login';
+import RegisterPage from './Pages/register';
 import AboutUs from './Components/AboutUsSection/AboutUs';
 import Footer from './Components/Footer/Footer.component';
 

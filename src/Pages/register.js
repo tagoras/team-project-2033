@@ -1,4 +1,4 @@
-import RegisterForm from "../Components/Form/RegisterForm.js";
+import RegisterForm from "../Components/Form/registerForm.js";
 import "../Pages/Register.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";

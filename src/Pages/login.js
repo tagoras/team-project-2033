@@ -1,4 +1,4 @@
-import LoginForm from "../Components/Form/LoginForm.js";
+import LoginForm from "../Components/Form/loginForm.js";
 import { useNavigate } from "react-router-dom";
 function LoginPage() {
   const navigate = useNavigate();
