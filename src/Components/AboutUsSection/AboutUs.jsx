@@ -1,5 +1,6 @@
 import { React } from "react";
 import "./AboutUs.style.css";
+import { Link } from "react-router-dom";
 
 export const AboutUs = () => {
   return (
@@ -14,7 +15,8 @@ export const AboutUs = () => {
         <p>
           Here you can submit infrastructure complaints that you would like to be addressed at a local level.
         </p>
-        <a className="Button-1" href="/home">Get Started</a>
+        <Link to="/register"><a className="Button-1" href="/home">Get Started</a></Link>
+        
       </div>
     </div>
   );
