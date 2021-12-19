@@ -162,12 +162,7 @@ if __name__ == "__main__":
 
     @login_manager.user_loader
     def load_user(username) -> User:
-        try:
-            return User.query.get(username)
-        except Exception as e:
-            print("load_user failed\n")
-            print(e)
-            return -1
+        return User.query.get(username)
 
 
     app.run(host=my_host, port=my_port, debug=True)
