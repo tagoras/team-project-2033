@@ -31,7 +31,7 @@ def hello_world() -> json:
 @app.route('/register', methods=['GET', 'POST'])
 def register() -> json:
     # POST a data to database and GET a returned statuscode message
-    if request.is_json:
+    if request.is_json and ("username" and "password" and "email" and "postcode" in request.json):
         registration_form = request.json
         # Any empty values
         if empty_values(registration_form) == -1:
