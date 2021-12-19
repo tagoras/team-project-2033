@@ -74,8 +74,6 @@ def register() -> json:
         registration_form['password'] = generate_password_hash(registration_form['password'])
         registration_form['postcode'] = generate_password_hash(registration_form['postcode'])
 
-        # This is really weird, connection is established but breaks for no reason
-        # TODO: Investigate
         try:
             user = User.query.filter_by(email=registration_form['email']).first()
             if user:
