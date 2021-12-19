@@ -19,7 +19,7 @@ function LoginForm(props){
     return (
     <div className="mainContainer">
         <img src={backgroundImage}></img>
-        <div className="filter2"></div>
+        <div className="filter"></div>
         <div className="loginFormContainer">
         
         <form className="form" onSubmit={loginSubmitHandler}>
