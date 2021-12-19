@@ -1,9 +1,8 @@
 import json
 import re
-from flask_login import login_user
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
-from app.models import User
+from models import User
 from app import db
 
 
@@ -72,25 +71,25 @@ def registration(reg_info):
     # One way encrypt
     reg_dictionary["password"] = generate_password_hash(reg_dictionary["password"])
     reg_dictionary["postcode"] = generate_password_hash(reg_dictionary["postcode"])
-    print(len(reg_dictionary['password']))
 
-    try:
-        new_user = User(username=reg_dictionary['username'],
-                        email=reg_dictionary['email'],
-                        postcode=reg_dictionary['postcode'],
-                        password=reg_dictionary['password'])
-        db.session.add(new_user)
-        db.session.commit()
-        return {
-            'status': 200,
-            'message': "Account successfully registered"
-        }
-    except Exception as e:
-        print(e)
-        return {
-            'status': -1,
-            'message': "Registration failed: Internal error"
-        }
+    new_user = User(
+        username=reg_dictionary['username'],
+        password=reg_dictionary['password'],
+        email=reg_dictionary['email'],
+        postcode=reg_dictionary['postcode']
+        )
+
+    db.session.add(new_user)
+    db.session.commit()
+
+    # Converts back into JSON object
+    user_info = json.dumps(reg_dictionary)
+
+    # Returns Successful Registration
+    return {
+        'status': 200,
+        'message': "Registration successful"
+    }
 
 
 def login(login_info):
@@ -99,27 +98,19 @@ def login(login_info):
 
     # Any empty values
     if empty_values(login_dictionary) == -1:
-        return {
-            'status': -1,
-            'message': "Login failed: Fill all fields"
-        }
+        return 'Empty Fields'
 
-    user = User.query.filter_by(username=login_dictionary['username']).first()
+    # Checks Username and Password, Temporarily reading from csv document
+    with open('tempDB.csv', 'r') as f:
+        reader = csv.reader(f)
+        for row in reader:
+            if not (row[0] == login_dictionary['username']) and not(check_password_hash(row[1], login_dictionary['password'])):
+                return 'Username/Password Incorrect'
+            else:
+                break
 
-    if not user or not check_password_hash(user.password, login_dictionary['password']):
-        return {
-            'status': -1,
-            'message': "Login failed: Username or password is incorrect!"
-        }
-    try:
-        login_user(user)
-        return {
-            'status': 200,
-            'message': "User successfully logged in"
-        }
-    except Exception as e:
-        print(e)
-        return {
-            'status': -1,
-            'message': "Login failed: Username or password might be incorrect. Please try again later"
-        }
+    # Converts back into JSON object
+    user_info = json.dumps(login_dictionary)
+
+    # Returns user_info
+    return 'User Logged In Successfully'
