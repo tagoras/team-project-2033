@@ -150,7 +150,7 @@ def login() -> json:
 
 @app.route("/logout")
 @login_required
-def logout():
+def logout() -> json:
     try:
         logout_user()
 
