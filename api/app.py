@@ -113,7 +113,7 @@ def register() -> json:
 
 @app.route('/login', methods=['GET', 'POST'])
 def login() -> json:
-    if request.is_json:
+    if request.is_json and ("username" and "password" in request.json):
         login_form = request.json
 
         if empty_values(login_form) == -1:
