@@ -165,7 +165,7 @@ def login() -> json:
 @login_required
 def logout() -> json:
     try:
-        logout_user()
+        # logout_user()
 
         return {
             'status': 0,
