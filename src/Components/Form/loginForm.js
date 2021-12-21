@@ -1,8 +1,15 @@
 import "./Login.style.css";
-import {useRef} from 'react';
+import {useRef,useState} from 'react';
 import backgroundImage from "../Photos/x.jpg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+const eye = <FontAwesomeIcon icon={faEye} />;
 
 function LoginForm(props){
+    const [passwordShown, setPasswordShown] = useState(false);
+    const togglePasswordVisibility = () =>{
+        setPasswordShown(passwordShown ? false:true);
+    }
     const usernameInputRef = useRef();
     const passwordInputRef = useRef();
     function loginSubmitHandler(event){
@@ -28,7 +35,13 @@ function LoginForm(props){
                 <input type='text' required id='username' placeholder='Username' ref={usernameInputRef}/>
             </div>
             <div className="loginInput">
-                <input type='text' required id='password' placeholder='********' ref={passwordInputRef}/>
+                <input
+                  type={passwordShown ? "text" : "password"}
+                  required id='password'
+                  placeholder='********' 
+                  ref={passwordInputRef}
+                  />
+                <i onClick={togglePasswordVisibility}>{eye}</i>{" "}
             </div>
             <div className="loginSubmit">
                 <button>Log in</button>

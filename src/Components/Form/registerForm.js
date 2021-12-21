@@ -1,10 +1,17 @@
 import Block from "../UI/Block.js";
 import "./Register.style.css";
-import { useRef } from "react";
+import { useRef,useState } from "react";
 import backgroundImage from "../Photos/x.jpg";
 import ErrorBox from "../ErrorBox/ErrorBox.jsx";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+const eye = <FontAwesomeIcon icon={faEye} />;
 
 function RegisterForm(props) {
+  const [passwordShown, setPasswordShown] = useState(false);
+  const togglePasswordVisibility = () =>{
+      setPasswordShown(passwordShown ? false:true);
+  }
   const usernameInputRef = useRef();
   const passwordInputRef = useRef();
   const emailInputRef = useRef();
@@ -39,12 +46,13 @@ function RegisterForm(props) {
           <div className="control">
             <label htmlFor="password">Password</label> <br />
             <input
-              type="password"
+              type={passwordShown ? "text" : "password"}
               required
               id="password"
               placeholder="********"
               ref={passwordInputRef}
             />
+            <i onClick={togglePasswordVisibility}>{eye}</i>{" "}
           </div>
           <div className="control">
             <label htmlFor="email">Email</label> <br />
