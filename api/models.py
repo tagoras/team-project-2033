@@ -1,6 +1,7 @@
 import os
 from app import db
 from flask_login import UserMixin
+from werkzeug.security import generate_password_hash
 
 
 class User(db.Model, UserMixin):
@@ -27,7 +28,10 @@ def init_db():
     db.drop_all()
     db.create_all()
 
-    test_user = User(username='Joe', email='test1@test.com', password='Njdka3rq39h!', postcode="NE6 9RU")
+    test_user = User(username='Joe',
+                     email='test1@test.com',
+                     password=generate_password_hash('Njdka3rq39h!'),
+                     postcode=generate_password_hash("NE6 9RU"))
 
     db.session.add(test_user)
     db.session.commit()
