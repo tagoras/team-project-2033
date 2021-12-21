@@ -1,5 +1,13 @@
-import os
-from app import db
+try:
+    from app import db
+except ModuleNotFoundError:
+    import os
+
+    print("\033[1;31m\nYou're running python inside the wrong directory...")
+    print("Please make sure console is running inside \033[1;93mapi\033[1;31m and not \033[1;93m" +
+          os.path.basename(os.getcwd()))
+    print("\033[1;31m\nAborting so no permanent damage is done...")
+    exit(-1)
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash
 
@@ -21,6 +29,7 @@ class User(db.Model, UserMixin):
 
 
 def init_db():
+    import os
     print("running init_db...")
     # Deletes the folder and creates it again
     os.system("rm -rf api/data && mkdir api/data")
