@@ -7,6 +7,7 @@ import LoginPage from './Pages/login';
 import RegisterPage from './Pages/register';
 import AboutUs from './Components/AboutUsSection/AboutUs';
 import Footer from './Components/Footer/Footer.component';
+import GetInTouch from './Pages/GetInTouch';
 
 
 
@@ -19,6 +20,7 @@ function App() {
         <Route path='/home' element={<Showcase/>}/>
         <Route path='/register' element ={<RegisterPage/>}/>
         <Route path='/login' element={<LoginPage/>}/>
+        <Route path='/get-in-touch' element={<GetInTouch/>}/>
       </Routes>
     </div>
   );
