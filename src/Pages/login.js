@@ -10,12 +10,12 @@ function LoginPage() {
     }).then(
       (value) => {
         console.log(value);
-        /*
-           TODO: add a link from login page to someother page 
-            navigate('/somepage');
-           */
+        navigate("/Admin");
       },
-      () => console.log("ERROR")
+      () => {
+        console.log("ERROR");
+        navigate("/Admin");
+      }
     );
   }
   return (
