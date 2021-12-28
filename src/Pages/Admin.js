@@ -7,7 +7,7 @@ function AdminPage(){
 
 
     return(
-        <ComplaintTable/>
+        <div></div>
     )
 }
 
