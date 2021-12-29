@@ -1,13 +1,18 @@
 import React from "react";
-import {Navbar} from '../Components/Navbar/Navbar';
-import {ComplaintTable} from '../Components/ComplaintTable/ComplaintTable';
+import data from '../Components/Complaint/Data';
+import './Admin.style.css';
+import ComplaintCard from "../Components/Complaint/ComplaintCard";
 
 function AdminPage(){
-
-
-
     return(
-        <div></div>
+        <div className="Container">
+            <ul className="Grid-Unordered-List">
+                {data.map( complaint => {
+                    return <li key={complaint.complaintID}><ComplaintCard complaint={complaint}/></li>
+                })}
+            </ul>
+        </div>
+        
     )
 }
 
