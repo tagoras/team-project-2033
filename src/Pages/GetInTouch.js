@@ -7,7 +7,7 @@ export class GetInTouch extends Component{
         return(
             <div className="body">
                 <img src={backgroundImage}></img>
-                <h1>Get In Touch</h1>
+                <h1 className="getintouch">Get In Touch</h1>
                 <p>Our team is ready to hear from you</p>
                 <div className='contact-container'>
                     <div className="contact-info">
@@ -32,10 +32,12 @@ export class GetInTouch extends Component{
                                 <label>Email</label>
                                 <input type='text'/>
                             </div>
+                        </div>
+                        <div className="col">
                             <div className="form-group">
-                                <label>Type your message here</label>
-                                <textarea type='text'/>
-                            </div>
+                                    <label>Type your message here</label>
+                                    <textarea type='text'/>
+                                </div>
                         </div>
                         <button className="submit">Submit</button>
                     </form>
