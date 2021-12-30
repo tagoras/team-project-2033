@@ -9,6 +9,10 @@ import AboutUs from './Components/AboutUsSection/AboutUs';
 import Footer from './Components/Footer/Footer.component';
 
 
+import AdminPage from './Pages/Admin';
+import GetInTouch from './Pages/GetInTouch';
+
+
 
 function App() {
   return (
@@ -19,8 +23,9 @@ function App() {
         <Route path='/home' element={<Showcase/>}/>
         <Route path='/register' element ={<RegisterPage/>}/>
         <Route path='/login' element={<LoginPage/>}/>
+        <Route path='/Admin' element={<AdminPage/>}></Route>
+        <Route path='/get-in-touch' element={<GetInTouch/>}/>
       </Routes>
-      <Footer/>
     </div>
   );
 }

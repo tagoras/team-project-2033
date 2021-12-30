@@ -87,6 +87,7 @@ def register() -> json:
                 'status': -1,
                 'message': "Registration failed: Email might already be taken, try again later"
             })
+
         try:
             user = User.query.filter_by(username=registration_form['username']).first()
             if user:
@@ -100,6 +101,7 @@ def register() -> json:
                 'status': -1,
                 'message': "Registration failed: Username might already be taken, try again later"
             })
+
         try:
             new_user = User(username=registration_form['username'],
                             email=registration_form['email'],
