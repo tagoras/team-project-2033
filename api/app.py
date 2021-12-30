@@ -1,3 +1,4 @@
+from functools import wraps
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
@@ -23,6 +24,22 @@ def empty_values(dictionary):
         if dictionary[key] == '':
             return 'Empty'
     return 0
+
+
+def requires_roles(*roles):
+    def wrapper(f):
+        @wraps(f)
+        def wrapped(*args, **kwargs):
+            if current_user.role not in roles:
+                return jsonify({
+                    'status': 403,
+                    'message': "User doesn't have permission to this page"
+                })
+            return f(*args, **kwargs)
+
+        return wrapped
+
+    return wrapper
 
 
 @app.route('/hello_world')
@@ -196,6 +213,16 @@ def logout() -> json:
                    'status': -1,
                    'message': "Logout failed: check console."
                }, 500
+
+
+@app.route("/admin")
+@login_required
+@requires_roles('admin')
+def admin() -> json:
+    return jsonify({
+        'status': 200,
+        'message': "Work in progress"
+    })
 
 
 if __name__ == "__main__":
