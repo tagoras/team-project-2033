@@ -32,7 +32,7 @@ def init_db():
     import os
     print("running init_db...")
     # Deletes the folder and creates it again
-    os.system("rm -rf api/data && mkdir api/data")
+    os.system("rm -rf data && mkdir data")
 
     db.drop_all()
     db.create_all()
