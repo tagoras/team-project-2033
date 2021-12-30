@@ -1,10 +1,11 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 from flask_cors import CORS
 import json
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
+
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/api.db'
@@ -12,6 +13,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'This is supposed to be a secret key, thank you for your understanding.'
 db = SQLAlchemy(app)
 CORS(app)
+
+app.config["JWT_SECRET_KEY"] = "Yet again another super secret key, thank you for your understanding."
+jwt = JWTManager(app)
 
 
 def empty_values(dictionary):
@@ -25,7 +29,18 @@ def empty_values(dictionary):
 def hello_world() -> json:
     # just for testing : return a hello world json object, for debugging api calls
     return jsonify({'title': "Hello!",
-                    'content': "Hello World"}), 200
+                    'content': "Hello World"},
+                   request.json), 200
+
+
+@app.route('/hello_world/jwt')
+@jwt_required()
+def hello_world_jwt() -> json:
+    current_user = get_jwt_identity()
+    # just for testing : return a hello world json object, for debugging api calls
+    return jsonify({'title': "Hello!",
+                    'content': "Hello World, I am logged in, amazing!"},
+                   request.json, current_user), 200
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -145,11 +160,11 @@ def login() -> json:
                 'message': "Login failed: Username or password is incorrect!"
             }), 406
         try:
-            login_user(user)
+            access_token = create_access_token(identity=user)
             return jsonify({
                 'status': 0,
-                'message': "User successfully logged in"
-            }), 202
+                'message': "User successfully logged in"},
+                access_token=access_token), 202
         except Exception as e:
             print(e)
             return jsonify({
@@ -164,10 +179,11 @@ def login() -> json:
 
 
 @app.route("/logout")
-@login_required
+@jwt_required()
 def logout() -> json:
     try:
-        logout_user()
+        # This should be handled in the front-end !!!
+        # This is just a placeholder
 
         return {
                    'status': 0,
@@ -185,16 +201,6 @@ if __name__ == "__main__":
     my_host = "localhost"
     my_port = 5000
 
-    login_manager = LoginManager()
-    login_manager.login_view = 'users.login'
-    login_manager.init_app(app)
-
     from models import User
-
-
-    @login_manager.user_loader
-    def load_user(username) -> User:
-        return User.query.get(username)
-
 
     app.run(host=my_host, port=my_port, debug=True)
