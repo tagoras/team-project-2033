@@ -20,12 +20,14 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     postcode = db.Column(db.String(100), nullable=False)
+    role = db.Column(db.String(10), nullable=False)
 
-    def __init__(self, username, email, password, postcode):
+    def __init__(self, username, email, password, postcode, role):
         self.username = username
         self.email = email
         self.password = password
         self.postcode = postcode
+        self.role = role
 
 
 def init_db():
@@ -40,7 +42,8 @@ def init_db():
     test_user = User(username='Joe',
                      email='test1@test.com',
                      password=generate_password_hash('Njdka3rq39h!'),
-                     postcode=generate_password_hash("NE6 9RU"))
+                     postcode=generate_password_hash("NE6 9RU"),
+                     role='admin')
 
     db.session.add(test_user)
     db.session.commit()
