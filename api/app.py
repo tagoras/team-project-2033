@@ -106,7 +106,8 @@ def register() -> json:
             new_user = User(username=registration_form['username'],
                             email=registration_form['email'],
                             postcode=registration_form['postcode'],
-                            password=registration_form['password'])
+                            password=registration_form['password'],
+                            role='user')
             db.session.add(new_user)
             db.session.commit()
             return jsonify({
