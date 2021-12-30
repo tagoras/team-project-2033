@@ -25,7 +25,7 @@ def empty_values(dictionary):
 def hello_world() -> json:
     # just for testing : return a hello world json object, for debugging api calls
     return jsonify({'title': "Hello!",
-                    'content': "Hello World"})
+                    'content': "Hello World"}), 200
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -38,7 +38,7 @@ def register() -> json:
             return jsonify({
                 'status': -1,
                 'message': "Registration failed: Fill all fields"
-            })
+            }), 406
 
         # Password Validating
         password_size = len(registration_form['password'])
@@ -47,12 +47,12 @@ def register() -> json:
             return jsonify({
                 'status': -1,
                 'message': "Registration failed: Please check password"
-            })
+            }), 406
         elif 6 > password_size > 12:
             return jsonify({
                 'status': -1,
                 'message': "Registration failed: Please check password"
-            })
+            }), 406
 
         # Email Validating
         regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
@@ -60,7 +60,7 @@ def register() -> json:
             return jsonify({
                 'status': -1,
                 'message': "Registration failed: Please check your email"
-            })
+            }), 406
 
         # Postcode Validation
         regex = r'[A-Z]{1,2}[0-9R][0-9A-Z]? [0-9][A-Z]{2}'
@@ -68,7 +68,7 @@ def register() -> json:
             return jsonify({
                 'status': -1,
                 'message': "Registration failed: Please check postcode"
-            })
+            }), 406
 
         # One way encrypt
         registration_form['password'] = generate_password_hash(registration_form['password'])
@@ -80,13 +80,13 @@ def register() -> json:
                 return jsonify({
                     'status': -1,
                     'message': "Registration failed: Email is already taken!"
-                })
+                }), 406
         except Exception as e:
             print(e)
             return jsonify({
                 'status': -1,
                 'message': "Registration failed: Email might already be taken, try again later"
-            })
+            }), 500
 
         try:
             user = User.query.filter_by(username=registration_form['username']).first()
@@ -94,13 +94,13 @@ def register() -> json:
                 return jsonify({
                     'status': -1,
                     'message': "Registration failed: Username is already taken!"
-                })
+                }), 406
         except Exception as e:
             print(e)
             return jsonify({
                 'status': -1,
                 'message': "Registration failed: Username might already be taken, try again later"
-            })
+            }), 500
 
         try:
             new_user = User(username=registration_form['username'],
@@ -112,18 +112,18 @@ def register() -> json:
             return jsonify({
                 'status': 0,
                 'message': "Account successfully registered"
-            })
+            }), 201
         except Exception as e:
             print(e)
             return jsonify({
                 'status': -1,
                 'message': "Registration failed: Internal error"
-            })
+            }), 500
     else:
         return jsonify({
             'status': -1,
             'message': "Registration failed: This is no json!!"
-        })
+        }), 406
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -135,7 +135,7 @@ def login() -> json:
             return jsonify({
                 'status': -1,
                 'message': "Login failed: Fill all fields"
-            })
+            }), 406
 
         user = User.query.filter_by(username=login_form['username']).first()
 
@@ -143,24 +143,24 @@ def login() -> json:
             return jsonify({
                 'status': -1,
                 'message': "Login failed: Username or password is incorrect!"
-            })
+            }), 406
         try:
             login_user(user)
             return jsonify({
                 'status': 0,
                 'message': "User successfully logged in"
-            })
+            }), 202
         except Exception as e:
             print(e)
             return jsonify({
                 'status': -1,
                 'message': "Login failed: Username or password might be incorrect. Please try again later"
-            })
+            }), 500
     else:
         return jsonify({
             'status': -1,
             'message': "Login failed: This is no json!!"
-        })
+        }), 406
 
 
 @app.route("/logout")
@@ -170,15 +170,15 @@ def logout() -> json:
         logout_user()
 
         return {
-            'status': 0,
-            'message': "Logout successful."
-        }
+                   'status': 0,
+                   'message': "Logout successful."
+               }, 200
     except Exception as e:
         print(e)
         return {
-            'status': -1,
-            'message': "Logout failed: check console."
-        }
+                   'status': -1,
+                   'message': "Logout failed: check console."
+               }, 500
 
 
 if __name__ == "__main__":
