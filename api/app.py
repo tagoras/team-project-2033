@@ -1,11 +1,9 @@
-from functools import wraps
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import json
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
-
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 
 app = Flask(__name__)
@@ -26,20 +24,12 @@ def empty_values(dictionary):
     return 0
 
 
-def requires_roles(*roles):
-    def wrapper(f):
-        @wraps(f)
-        def wrapped(*args, **kwargs):
-            if current_user.role not in roles:
-                return jsonify({
-                    'status': 403,
-                    'message': "User doesn't have permission to this page"
-                })
-            return f(*args, **kwargs)
-
-        return wrapped
-
-    return wrapper
+def requires_roles(current_user, roles):
+    if current_user.role not in roles:
+        return jsonify({
+            'status': 403,
+            'message': "User doesn't have permission to this page"
+        })
 
 
 @app.route('/hello_world')
@@ -216,9 +206,10 @@ def logout() -> json:
 
 
 @app.route("/admin")
-@login_required
-@requires_roles('admin')
+@jwt_required()
 def admin() -> json:
+    current_user = get_jwt_identity()
+    requires_roles(current_user, 'admin')
     return jsonify({
         'status': 200,
         'message': "Work in progress"
