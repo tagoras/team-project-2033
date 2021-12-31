@@ -41,13 +41,15 @@ class Complaint(db.Model):
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(200), nullable=False)
     postcode = db.Column(db.String(100), nullable=False)
+    date = db.Column(db.String(100), nullable=False)
     photo_path = db.Column(db.String(300), nullable=False)
 
-    def __init__(self, user_id, title, description, postcode, photo_path):
+    def __init__(self, user_id, title, description, postcode, date, photo_path):
         self.user_id = user_id
         self.title = title
         self.description = description
         self.postcode = postcode
+        self.date = date
         self.photo_path = photo_path
 
 
