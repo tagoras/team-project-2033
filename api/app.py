@@ -1,4 +1,5 @@
 # IMPORTS
+from functools import wraps
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
@@ -28,12 +29,20 @@ def empty_values(dictionary):
 
 
 # Checks if the user is allowed to be on the current page
-def requires_roles(current_user, roles):
-    if current_user.role not in roles:
-        return jsonify({
-            'status': -1,
-            'message': "User doesn't have permission to this page"
-        }), 403
+def requires_roles(*roles):
+    current_user = get_jwt_identity()
+
+    def wrapper(f):
+        @wraps(f)
+        def wrapped(*args, **kwargs):
+            if current_user.role not in roles:
+                return jsonify({'status': -1,
+                                'message': "Unauthorised access attempt"}), 403
+            return f(*args, **kwargs)
+
+        return wrapped
+
+    return wrapper
 
 
 # just for testing : return a hello world json object, for debugging api calls
@@ -223,6 +232,7 @@ def logout() -> json:
 # The admin page used to manage complaints
 @app.route("/admin")
 @jwt_required()
+@requires_roles("admin")
 def admin() -> json:
 
     # Checks if the user is an admin
