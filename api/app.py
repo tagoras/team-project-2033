@@ -1,12 +1,14 @@
 # IMPORTS
-from functools import wraps
-from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from flask_cors import CORS
+import datetime
 import json
-from werkzeug.security import generate_password_hash, check_password_hash
 import re
+from functools import wraps
+
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # CONFIG
 app = Flask(__name__)
@@ -209,6 +211,57 @@ def login() -> json:
         }), 406
 
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in {'png', '.webp', 'jpg', '.jfif',
+                                                  '.pjpeg', '.pjp', 'jpeg', 'gif', '.apng'}
+
+
+@app.route('/submission', methods=['POST'])
+@jwt_required()
+@requires_roles("user")
+def submission():
+    current_user = get_jwt_identity()
+    submission_json = request.get_json()
+    if "title" and "description" and "postcode" and "date" in submission_json:
+        try:
+            datetime.datetime.strptime(submission_json["date"], "%m/%d/%y")
+        except ValueError as e:
+            print(e)
+            return jsonify({
+                'status': -1,
+                'message': "Submission failed: Date is in the wrong format ! "
+                           "Should be %m/%d/%y"}), 406
+
+        if 'photo' not in request.files or request.files['photo'].filename == '':
+            return jsonify({
+                'status': -1,
+                'message': "Submission failed: Image is missing! "}), 406
+
+        photo = request.files['photo']
+        import uuid
+        import pathlib
+        import os
+        if photo and allowed_file(photo.filename):
+            photo_filename = str(uuid.uuid4()) + pathlib.Path(photo.filename).suffix
+            file_path = 'data/' + str(current_user.id) + "/" + str(photo_filename)
+            os.system("mkdir" + 'data/' + str(current_user.id))
+            photo.save(file_path)
+
+            complaint = Complaint(title=submission_json["title"],
+                                  description=submission_json["description"],
+                                  postcode=submission_json["postcode"],
+                                  date=submission_json["date"],
+                                  user_id=current_user.id,
+                                  photo_path=file_path)
+
+            db.session.add(complaint)
+            db.session.commit()
+            return jsonify({
+                'status': 0,
+                'message': "Submission successful"}), 201
+
+
 # Logs the user out of the website
 @app.route("/logout")
 @jwt_required()
@@ -234,7 +287,6 @@ def logout() -> json:
 @jwt_required()
 @requires_roles("admin")
 def admin() -> json:
-
     # Checks if the user is an admin
     current_user = get_jwt_identity()
     requires_roles(current_user, 'admin')
@@ -250,6 +302,6 @@ if __name__ == "__main__":
     my_host = "localhost"
     my_port = 5000
 
-    from models import User
+    from models import User, Complaint
 
     app.run(host=my_host, port=my_port, debug=True)
