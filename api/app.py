@@ -233,27 +233,27 @@ def submission():
                 'message': "Submission failed: Date is in the wrong format ! "
                            "Should be %m/%d/%y"}), 406
 
-        if 'photo' not in request.files or request.files['photo'].filename == '':
+        if 'image' not in request.files or request.files['image'].filename == '':
             return jsonify({
                 'status': -1,
                 'message': "Submission failed: Image is missing! "}), 406
 
-        photo = request.files['photo']
+        image = request.files['image']
         import uuid
         import pathlib
         import os
-        if photo and allowed_file(photo.filename):
-            photo_filename = str(uuid.uuid4()) + pathlib.Path(photo.filename).suffix
-            file_path = 'data/' + str(current_user.id) + "/" + str(photo_filename)
+        if image and allowed_file(image.filename):
+            image_name = str(uuid.uuid4()) + pathlib.Path(image.filename).suffix
+            file_path = 'data/' + str(current_user.id) + "/" + str(image_name)
             os.system("mkdir" + 'data/' + str(current_user.id))
-            photo.save(file_path)
+            image.save(file_path)
 
             complaint = Complaint(title=submission_json["title"],
                                   description=submission_json["description"],
                                   postcode=submission_json["postcode"],
                                   date=submission_json["date"],
                                   user_id=current_user.id,
-                                  photo_path=file_path)
+                                  img_path=file_path)
 
             db.session.add(complaint)
             db.session.commit()
