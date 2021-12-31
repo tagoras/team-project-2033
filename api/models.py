@@ -1,3 +1,4 @@
+# IMPORTS
 try:
     from app import db
 except ModuleNotFoundError:
@@ -12,6 +13,7 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash
 
 
+# User Table
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
@@ -22,6 +24,7 @@ class User(db.Model, UserMixin):
     postcode = db.Column(db.String(100), nullable=False)
     role = db.Column(db.String(10), nullable=False)
 
+    # Initialise User Object
     def __init__(self, username, email, password, postcode, role):
         self.username = username
         self.email = email
@@ -30,6 +33,7 @@ class User(db.Model, UserMixin):
         self.role = role
 
 
+# Initialising the database
 def init_db():
     import os
     print("running init_db...")
