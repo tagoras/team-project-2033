@@ -27,9 +27,9 @@ def empty_values(dictionary):
 def requires_roles(current_user, roles):
     if current_user.role not in roles:
         return jsonify({
-            'status': 403,
+            'status': -1,
             'message': "User doesn't have permission to this page"
-        })
+        }), 403
 
 
 @app.route('/hello_world')
