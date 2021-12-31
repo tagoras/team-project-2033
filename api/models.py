@@ -33,6 +33,24 @@ class User(db.Model, UserMixin):
         self.role = role
 
 
+class Complaint(db.Model):
+    __tablename__ = 'complaints'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(200), nullable=False)
+    postcode = db.Column(db.String(100), nullable=False)
+    photo_path = db.Column(db.String(300), nullable=False)
+
+    def __init__(self, user_id, title, description, postcode, photo_path):
+        self.user_id = user_id
+        self.title = title
+        self.description = description
+        self.postcode = postcode
+        self.photo_path = photo_path
+
+
 # Initialising the database
 def init_db():
     import os
