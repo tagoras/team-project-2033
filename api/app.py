@@ -1,3 +1,4 @@
+# IMPORTS
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
@@ -6,6 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import re
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 
+# CONFIG
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/api.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -17,6 +19,7 @@ app.config["JWT_SECRET_KEY"] = "Yet again another super secret key, thank you fo
 jwt = JWTManager(app)
 
 
+# Searches through a dictionary to see if any key has an empty value
 def empty_values(dictionary):
     for key in dictionary:
         if dictionary[key] == '':
@@ -24,6 +27,7 @@ def empty_values(dictionary):
     return 0
 
 
+# Checks if the user is allowed to be on the current page
 def requires_roles(current_user, roles):
     if current_user.role not in roles:
         return jsonify({
@@ -32,37 +36,38 @@ def requires_roles(current_user, roles):
         }), 403
 
 
+# just for testing : return a hello world json object, for debugging api calls
 @app.route('/hello_world')
 def hello_world() -> json:
-    # just for testing : return a hello world json object, for debugging api calls
     return jsonify({'title': "Hello!",
                     'content': "Hello World"},
                    request.json), 200
 
 
+# just for testing : return a hello world json object, for debugging api calls
 @app.route('/hello_world/jwt')
 @jwt_required()
 def hello_world_jwt() -> json:
     current_user = get_jwt_identity()
-    # just for testing : return a hello world json object, for debugging api calls
     return jsonify({'title': "Hello!",
                     'content': "Hello World, I am logged in, amazing!"},
                    request.json, current_user), 200
 
 
+# Registers the user if they don't have an account
 @app.route('/register', methods=['GET', 'POST'])
 def register() -> json:
-    # POST a data to database and GET a returned statuscode message
+    # Grabs info from front-end and checks if it json
     if request.is_json and ("username" and "password" and "email" and "postcode" in request.json):
+        # Converts json object into dictionary and checks if there are empty
         registration_form = request.json
-        # Any empty values
         if empty_values(registration_form) == -1:
             return jsonify({
                 'status': -1,
                 'message': "Registration failed: Fill all fields"
             }), 406
 
-        # Password Validating
+        # Password Validating, 1 Uppercase, 1 Lowercase, 1 Digit and 1 Special Character, length between 6 and 12
         password_size = len(registration_form['password'])
         password_checker = re.compile(r'(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[*?!^+%&()=}{$#@<>])')
         if password_checker.match(registration_form['password']):
@@ -76,7 +81,7 @@ def register() -> json:
                 'message': "Registration failed: Please check password"
             }), 406
 
-        # Email Validating
+        # Email Validating, Looks similar to an email
         regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
         if not re.search(regex, registration_form['email']):
             return jsonify({
@@ -84,7 +89,7 @@ def register() -> json:
                 'message': "Registration failed: Please check your email"
             }), 406
 
-        # Postcode Validation
+        # Postcode Validation, Format: AA1 2BB
         regex = r'[A-Z]{1,2}[0-9R][0-9A-Z]? [0-9][A-Z]{2}'
         if not re.search(regex, registration_form['postcode']):
             return jsonify({
@@ -96,6 +101,7 @@ def register() -> json:
         registration_form['password'] = generate_password_hash(registration_form['password'])
         registration_form['postcode'] = generate_password_hash(registration_form['postcode'])
 
+        # An attempt to check if the email given has been already used for registering
         try:
             user = User.query.filter_by(email=registration_form['email']).first()
             if user:
@@ -110,6 +116,7 @@ def register() -> json:
                 'message': "Registration failed: Email might already be taken, try again later"
             }), 500
 
+        # An attempt to check if the username given has been already used for registering
         try:
             user = User.query.filter_by(username=registration_form['username']).first()
             if user:
@@ -124,6 +131,7 @@ def register() -> json:
                 'message': "Registration failed: Username might already be taken, try again later"
             }), 500
 
+        # An attempt to make a user object from data given and save it to a database
         try:
             new_user = User(username=registration_form['username'],
                             email=registration_form['email'],
@@ -149,24 +157,30 @@ def register() -> json:
         }), 406
 
 
+# Logs the user in to the website
 @app.route('/login', methods=['GET', 'POST'])
 def login() -> json:
     if request.is_json and ("username" and "password" in request.json):
         login_form = request.json
 
+        # Converts json object into dictionary and checks if there are empty
         if empty_values(login_form) == -1:
             return jsonify({
                 'status': -1,
                 'message': "Login failed: Fill all fields"
             }), 406
 
+        # Finds the user by searching for the username given
         user = User.query.filter_by(username=login_form['username']).first()
 
+        # Checks if the username and password is correct
         if not user or not check_password_hash(user.password, login_form['password']):
             return jsonify({
                 'status': -1,
                 'message': "Login failed: Username or password is incorrect!"
             }), 406
+
+        # Attempts to create a token to send to front-end with the user logged in data
         try:
             access_token = create_access_token(identity=user)
             return jsonify({
@@ -186,6 +200,7 @@ def login() -> json:
         }), 406
 
 
+# Logs the user out of the website
 @app.route("/logout")
 @jwt_required()
 def logout() -> json:
@@ -205,11 +220,16 @@ def logout() -> json:
                }, 500
 
 
+# The admin page used to manage complaints
 @app.route("/admin")
 @jwt_required()
 def admin() -> json:
+
+    # Checks if the user is an admin
     current_user = get_jwt_identity()
     requires_roles(current_user, 'admin')
+
+    # Currently a work in progress
     return jsonify({
         'status': 200,
         'message': "Work in progress"
