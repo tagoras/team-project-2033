@@ -2,8 +2,6 @@
 import datetime
 import json
 import re
-from functools import wraps
-
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
@@ -28,23 +26,6 @@ def empty_values(dictionary):
         if dictionary[key] == '':
             return 'Empty'
     return 0
-
-
-# Checks if the user is allowed to be on the current page
-def requires_roles(*roles):
-    current_user = get_jwt_identity()
-
-    def wrapper(f):
-        @wraps(f)
-        def wrapped(*args, **kwargs):
-            if current_user.role not in roles:
-                return jsonify({'status': -1,
-                                'message': "Unauthorised access attempt"}), 403
-            return f(*args, **kwargs)
-
-        return wrapped
-
-    return wrapper
 
 
 # just for testing : return a hello world json object, for debugging api calls
@@ -219,9 +200,12 @@ def allowed_file(filename):
 
 @app.route('/submission', methods=['POST'])
 @jwt_required()
-@requires_roles("user")
 def submission():
     current_user = get_jwt_identity()
+    if current_user.role != 'user':
+        return jsonify({'status': -1,
+                        'message': "Unauthorised access attempt"}), 403
+
     submission_json = request.get_json()
     if "title" and "description" and "postcode" and "date" in submission_json:
         try:
@@ -285,11 +269,12 @@ def logout() -> json:
 # The admin page used to manage complaints
 @app.route("/admin")
 @jwt_required()
-@requires_roles("admin")
 def admin() -> json:
     # Checks if the user is an admin
     current_user = get_jwt_identity()
-    requires_roles(current_user, 'admin')
+    if current_user.role != 'admin':
+        return jsonify({'status': -1,
+                        'message': "Unauthorised access attempt"}), 403
 
     # Currently a work in progress
     return jsonify({
