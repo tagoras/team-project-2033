@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 
 function UserPage(){
    const {register, handleSubmit, reset} = useForm();
-   const onSubmit = (data,) =>{
+   const onSubmit = (data) =>{
        console.log(data)
        reset();
         //TODO: after the fields are resetted, file input is not saved
