@@ -2,6 +2,8 @@
 import datetime
 import json
 import re
+
+import flask
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
@@ -267,7 +269,7 @@ def logout() -> json:
 
 
 # The admin page used to manage complaints
-@app.route("/admin")
+@app.route("/admin", method=["POST"])
 @jwt_required()
 def admin() -> json:
     # Checks if the user is an admin
@@ -276,11 +278,29 @@ def admin() -> json:
         return jsonify({'status': -1,
                         'message': "Unauthorised access attempt"}), 403
 
-    # Currently a work in progress
-    return jsonify({
-        'status': 200,
-        'message': "Work in progress"
-    })
+    complaints = []
+
+    from sqlalchemy import desc
+    quick_search = db.session.query(Complaint.id).order_by(desc(Complaint.id)).limit(20)
+
+    for recent_complaints_id in quick_search:
+        complaint = db.session.query(Complaint).filter_by(id=recent_complaints_id[0]).first()
+        complaints.append(complaint[0])
+
+    JSON_complaints = []
+
+    for complaint in complaints:
+        JSON_complaint = {'id': complaint.id,
+                          'title': complaint.title,
+                          'description': complaint.description,
+                          'postcode': complaint.postcode,
+                          'date': complaint.date}
+
+        JSON_complaints.append(JSON_complaint)
+
+    return jsonify({'status': 0,
+                    'list of complaints': JSON_complaints
+                    }), 200
 
 
 if __name__ == "__main__":
