@@ -230,8 +230,8 @@ def submission():
         import os
         if image and allowed_file(image.filename):
             image_name = str(uuid.uuid4()) + pathlib.Path(image.filename).suffix
-            file_path = 'data/' + str(current_user.id) + "/" + str(image_name)
-            os.system("mkdir " + 'data/' + str(current_user.id))
+            file_path = 'data/images/' + str(current_user.id) + "/" + str(image_name)
+            os.system("mkdir " + '/' + str(current_user.id))
             image.save(file_path)
 
             complaint = Complaint(title=submission_json["title"],
@@ -269,9 +269,10 @@ def logout() -> json:
 
 
 # The admin page used to manage complaints
-@app.route("/admin", method=["POST"])
+@app.route("/admin", methods=["POST"])
 @jwt_required()
 def admin() -> json:
+
     # Checks if the user is an admin
     current_user = get_jwt_identity()
     if current_user.role != 'admin':
@@ -279,6 +280,9 @@ def admin() -> json:
                         'message': "Unauthorised access attempt"}), 403
 
     complaints = []
+    urls = []
+    JSON_complaints = []
+    JSON_urls = []
 
     from sqlalchemy import desc
     quick_search = db.session.query(Complaint.id).order_by(desc(Complaint.id)).limit(20)
@@ -287,7 +291,9 @@ def admin() -> json:
         complaint = db.session.query(Complaint).filter_by(id=recent_complaints_id[0]).first()
         complaints.append(complaint[0])
 
-    JSON_complaints = []
+    for complaint in complaints:
+        url = str(my_host + ':8000' + complaint.img_path)
+        urls.append(url)
 
     for complaint in complaints:
         JSON_complaint = {'id': complaint.id,
@@ -295,11 +301,15 @@ def admin() -> json:
                           'description': complaint.description,
                           'postcode': complaint.postcode,
                           'date': complaint.date}
-
         JSON_complaints.append(JSON_complaint)
 
+    for url in urls:
+        JSON_url = {'url': url}
+        JSON_urls.append(JSON_url)
+
     return jsonify({'status': 0,
-                    'list of complaints': JSON_complaints
+                    'list of complaints': JSON_complaints,
+                    'list of urls': JSON_urls
                     }), 200
 
 
