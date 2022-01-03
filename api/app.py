@@ -230,7 +230,7 @@ def submission() -> json:
         import os
         if image and allowed_file(image.filename):
             image_name = str(uuid.uuid4()) + pathlib.Path(image.filename).suffix
-            file_path = 'data/images/' + str(current_user.id) + "/" + str(image_name)
+            file_path = 'api/data/images/' + str(current_user.id) + "/" + str(image_name)
             os.system("mkdir " + '/' + str(current_user.id))
             image.save(file_path)
 
