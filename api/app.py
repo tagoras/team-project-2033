@@ -246,6 +246,9 @@ def submission() -> json:
             return jsonify({
                 'status': 0,
                 'message': "Submission successful"}), 201
+        return jsonify({
+            'status': -1,
+            'message': "Submission failed: Try again!"}), 406
 
 
 # Logs the user out of the website
