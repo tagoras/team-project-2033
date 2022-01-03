@@ -224,22 +224,22 @@ def submission() -> json:
                 'status': -1,
                 'message': "Submission failed: Image is missing! "}), 406
 
-        image = request.files['image']
+        img = request.files['image']
         import uuid
         import pathlib
         import os
-        if image and allowed_file(image.filename):
-            image_name = str(uuid.uuid4()) + pathlib.Path(image.filename).suffix
-            file_path = 'api/data/images/' + str(current_user.id) + "/" + str(image_name)
-            os.system("mkdir " + '/' + str(current_user.id))
-            image.save(file_path)
+        if img and allowed_file(img.filename):
+            img_name = str(uuid.uuid4()) + pathlib.Path(img.filename).suffix
+            img_path = 'api/data/images/' + current_user.id + "/" + img_name
+            os.system("mkdir " + '/' + current_user.id)
+            img.save(img_path)
 
             complaint = Complaint(title=submission_json["title"],
                                   description=submission_json["description"],
                                   postcode=submission_json["postcode"],
                                   date=submission_json["date"],
                                   user_id=current_user.id,
-                                  img_path=file_path)
+                                  img_path=img_path)
 
             db.session.add(complaint)
             db.session.commit()
