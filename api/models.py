@@ -1,3 +1,4 @@
+# IMPORTS
 try:
     from app import db
 except ModuleNotFoundError:
@@ -12,6 +13,7 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash
 
 
+# User Table
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
@@ -20,14 +22,38 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     postcode = db.Column(db.String(100), nullable=False)
+    role = db.Column(db.String(10), nullable=False)
 
-    def __init__(self, username, email, password, postcode):
+    # Initialise User Object
+    def __init__(self, username, email, password, postcode, role):
         self.username = username
         self.email = email
         self.password = password
         self.postcode = postcode
+        self.role = role
 
 
+class Complaint(db.Model):
+    __tablename__ = 'complaints'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(200), nullable=False)
+    postcode = db.Column(db.String(100), nullable=False)
+    date = db.Column(db.String(100), nullable=False)
+    img_path = db.Column(db.String(300), nullable=False)
+
+    def __init__(self, user_id, title, description, postcode, date, img_path):
+        self.user_id = user_id
+        self.title = title
+        self.description = description
+        self.postcode = postcode
+        self.date = date
+        self.img_path = img_path
+
+
+# Initialising the database
 def init_db():
     import os
     print("running init_db...")
@@ -40,7 +66,8 @@ def init_db():
     test_user = User(username='Joe',
                      email='test1@test.com',
                      password=generate_password_hash('Njdka3rq39h!'),
-                     postcode=generate_password_hash("NE6 9RU"))
+                     postcode=generate_password_hash("NE6 9RU"),
+                     role='admin')
 
     db.session.add(test_user)
     db.session.commit()

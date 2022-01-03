@@ -21,3 +21,4 @@ pymongo
 Flask-Cors
 pyyaml
 bson
+flask_jwt_extended
