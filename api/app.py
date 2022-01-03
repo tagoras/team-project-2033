@@ -3,7 +3,6 @@ import datetime
 import json
 import re
 
-import flask
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
@@ -176,11 +175,19 @@ def login() -> json:
 
         # Attempts to create a token to send to front-end with the user logged in data
         try:
+            user = {
+                'id': user.id,
+                'postcode': user.postcode,
+                'username': user.username,
+                'email': user.email,
+                'role': user.role
+            }
+
             access_token = create_access_token(identity=user)
             return jsonify({
                 'status': 0,
-                'message': "User successfully logged in"},
-                access_token=access_token), 202
+                'message': "User successfully logged in",
+                'JWT': access_token}), 202
         except Exception as e:
             print(e)
             return jsonify({
@@ -272,7 +279,7 @@ def logout() -> json:
 
 
 # The admin page used to manage complaints
-@app.route("/admin", methods=["POST"])
+@app.route("/admin/view_all", methods=["GET"])
 @jwt_required()
 def admin() -> json:
 
