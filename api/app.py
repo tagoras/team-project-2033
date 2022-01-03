@@ -202,7 +202,7 @@ def allowed_file(filename):
 
 @app.route('/submission', methods=['POST'])
 @jwt_required()
-def submission():
+def submission() -> json:
     current_user = get_jwt_identity()
     if current_user.role != 'user':
         return jsonify({'status': -1,
