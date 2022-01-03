@@ -289,7 +289,7 @@ def admin() -> json:
 
     for recent_complaints_id in quick_search:
         complaint = db.session.query(Complaint).filter_by(id=recent_complaints_id[0]).first()
-        complaints.append(complaint[0])
+        complaints.append(complaint)
 
     for complaint in complaints:
         url = str(my_host + ':8000' + complaint.img_path)
