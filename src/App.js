@@ -20,6 +20,7 @@ function App() {
     <div className="AppContainer">
       <Navbar/>
       <Routes>
+        <Route path='/about-us' element={<AboutUs/>}/>
         <Route path="/" element={<Showcase/>}/>
         <Route path='/home' element={<Showcase/>}/>
         <Route path='/register' element ={<RegisterPage/>}/>
