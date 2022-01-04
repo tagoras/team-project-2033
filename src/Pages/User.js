@@ -4,9 +4,17 @@ import { useForm } from 'react-hook-form';
 function UserPage(){
    const {register, handleSubmit, reset} = useForm();
    const onSubmit = (data) =>{
-       console.log(data)
+       fetch("/User", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'},
+        body: JSON.stringify(data),
+      }).then(
+        (value) => {
+          console.log(value);
+        }
+      );
        reset();
-        //TODO: after the fields are resetted, file input is not saved
    }
        return(
         <form onSubmit={handleSubmit(onSubmit)}>
