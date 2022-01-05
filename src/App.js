@@ -7,6 +7,7 @@ import LoginPage from './Pages/login';
 import RegisterPage from './Pages/register';
 import AboutUs from './Components/AboutUsSection/AboutUs';
 import Footer from './Components/Footer/Footer.component';
+import UserPage from './Pages/User';
 
 
 import AdminPage from './Pages/Admin';
@@ -24,7 +25,11 @@ function App() {
         <Route path='/register' element ={<RegisterPage/>}/>
         <Route path='/login' element={<LoginPage/>}/>
         <Route path='/Admin' element={<AdminPage/>}></Route>
+        <Route path='/User' element={<UserPage/>}></Route>
         <Route path='/get-in-touch' element={<GetInTouch/>}/>
+        {/* TODO 
+          Add Default Routing If Page Does not exist!!!
+        */}
       </Routes>
     </div>
   );

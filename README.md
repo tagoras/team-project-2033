@@ -1,70 +1,104 @@
-# Getting Started with Create React App
+# Infrastructure Reporting System - Team 32
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was created by the members of Team 32 for the CSC2033 Group Project at Newcastle University.
+[Github](https://github.com/tagoras/team-project-2033)
 
-## Available Scripts
+## Requirements: 
+- [Python](https://www.python.org/)
+- [NodeJS](https://nodejs.org/en/download/)
+- [Git](https://git-scm.com/)
 
-In the project directory, you can run:
+## Instructions:
+For the application to work you need both react front-end and python back-end running simultaniously:
 
-### `yarn start`
+### Windows: 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+In a Git Bash terminal:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Clone the project:
+```bash
+git clone https://github.com/tagoras/team-project-2033
+cd team-project-2033
+```
 
-### `yarn test`
+Front-end setup :
+```bash
+npm install
+npm update
+```
+To start the React server run:
+```bash
+npm start # Starts on localhost:3000
+```
+In a second git-bash window:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Back-end setup : 
+```bash
+cd api/
+python -m venv venv
+source venv/bin/Scripts/activate
+pip install -r requirements.txt
+```
+Start python: 
+```bash
+python
+```
+then:
+```python
+>>> from models import init_db
+>>> init_db()
+>>> exit()
+```
+To start the Back-end server:
+```bash
+python app.py # Starts on localhost:5000
+```
+Press `Ctrl+C` (in the terminal) to stop any server.
 
-### `yarn build`
+### Mac/Linux:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Open terminal:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Clone the project:
+```bash
+git clone https://github.com/tagoras/team-project-2033 && cd team-project-2033
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Front-end setup :
+```bash
+npm install && npm update
+```
+To start the React server run:
+```bash
+npm start # Starts on localhost:3000
+```
+In a second terminal:   
 
-### `yarn eject`
+Back-end setup : 
+```bash
+cd api/ && python -m venv venv
+source venv/bin//activate
+pip install -r requirements.txt
+```
+Start python: 
+```bash
+python
+```
+then:
+```python
+>>> from models import init_db
+>>> init_db()
+>>> exit()
+```
+To start the Back-end server:
+```bash
+python app.py # Starts on localhost:5000
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Website Features
 
-## Learn More
+The homepage has a navbar which allows the user to select different pages to view.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

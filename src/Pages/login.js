@@ -5,18 +5,24 @@ function LoginPage() {
   function addLoginHandler(loginData) {
     console.log(JSON.stringify(loginData));
     fetch("/login", {
-      method: "GET",
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
       body: JSON.stringify(loginData),
     }).then(
-      (value) => {
-        console.log(value);
-        navigate("/Admin");
+      (responseObject) => {
+        console.log(responseObject.status);
+        return responseObject.json();
       },
-      () => {
-        console.log("ERROR");
-        navigate("/Admin");
+      (ErrorObject) => {
+        console.log(ErrorObject);
       }
-    );
+    ).then(responseInJSON => {
+      console.log(responseInJSON);
+      if(responseInJSON.status == -1) navigate("/home");
+      else navigate("/Admin");
+    });
   }
   return (
     <section>
