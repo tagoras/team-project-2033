@@ -291,8 +291,8 @@ def admin() -> json:
 
     complaints = []
     urls = []
-    JSON_complaints = []
-    JSON_urls = []
+    json_complaints = []
+    json_urls = []
 
     from sqlalchemy import desc
     quick_search = db.session.query(Complaint.id).order_by(desc(Complaint.id)).limit(20)
@@ -306,20 +306,20 @@ def admin() -> json:
         urls.append(url)
 
     for complaint in complaints:
-        JSON_complaint = {'id': complaint.id,
+        json_complaint = {'id': complaint.id,
                           'title': complaint.title,
                           'description': complaint.description,
                           'postcode': complaint.postcode,
                           'date': complaint.date}
-        JSON_complaints.append(JSON_complaint)
+        json_complaints.append(json_complaint)
 
     for url in urls:
-        JSON_url = {'url': url}
-        JSON_urls.append(JSON_url)
+        json_url = {'url': url}
+        json_urls.append(json_url)
 
     return jsonify({'status': 0,
-                    'list of complaints': JSON_complaints,
-                    'list of urls': JSON_urls
+                    'list of complaints': json_complaints,
+                    'list of urls': json_urls
                     }), 200
 
 
