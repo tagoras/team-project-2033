@@ -330,7 +330,9 @@ def admin_delete_submission() -> json:
     if request.is_json and ("id" in request.json):
         # Checks if the user is an admin
         current_user = get_jwt_identity()
+
         if current_user["role"] != 'admin':
+
             return jsonify({'status': -1,
                             'message': "Unauthorised access attempt"}), 403
         _id = request.json["id"]
@@ -351,6 +353,7 @@ def admin_delete_submission() -> json:
             }), 500
 
 
+
 @app.route("/get_role", methods=["GET"])
 @jwt_required()
 def getRole() -> json:
@@ -358,6 +361,7 @@ def getRole() -> json:
     return jsonify(role=current_user["role"]), 201
 
 
+  
 if __name__ == "__main__":
     my_host = "localhost"
     my_port = 5000
