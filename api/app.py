@@ -14,6 +14,8 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/api.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'This is supposed to be a secret key, thank you for your understanding.'
+app.config["JWT_COOKIE_SECURE"] = True
+app.config["JWT_TOKEN_LOCATION"] = ["headers", "cookies"]
 db = SQLAlchemy(app)
 CORS(app)
 
@@ -151,7 +153,7 @@ def register() -> json:
 
 
 # Logs the user in to the website
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login() -> json:
     if request.is_json and ("username" and "password" in request.json):
         login_form = request.json
@@ -203,8 +205,8 @@ def login() -> json:
 
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in {'png', '.webp', 'jpg', '.jfif',
-                                                  '.pjpeg', '.pjp', 'jpeg', 'gif', '.apng'}
+           filename.rsplit('.', 1)[1].lower() in {'.png', '.webp', '.jpg', '.jfif',
+                                                  '.pjpeg', '.pjp', '.jpeg', '.gif', '.apng'}
 
 
 @app.route('/submission', methods=['POST'])
@@ -279,10 +281,9 @@ def logout() -> json:
 
 
 # The admin page used to manage complaints
-@app.route("/admin/view_all", methods=["GET"])
+@app.route("/admin/view_all", methods=["POST"])
 @jwt_required()
-def admin() -> json:
-
+def admin_view_all() -> json:
     # Checks if the user is an admin
     current_user = get_jwt_identity()
     if current_user.role != 'admin':
@@ -291,8 +292,8 @@ def admin() -> json:
 
     complaints = []
     urls = []
-    JSON_complaints = []
-    JSON_urls = []
+    json_complaints = []
+    json_urls = []
 
     from sqlalchemy import desc
     quick_search = db.session.query(Complaint.id).order_by(desc(Complaint.id)).limit(20)
@@ -306,21 +307,48 @@ def admin() -> json:
         urls.append(url)
 
     for complaint in complaints:
-        JSON_complaint = {'id': complaint.id,
+        json_complaint = {'id': complaint.id,
                           'title': complaint.title,
                           'description': complaint.description,
                           'postcode': complaint.postcode,
                           'date': complaint.date}
-        JSON_complaints.append(JSON_complaint)
+        json_complaints.append(json_complaint)
 
     for url in urls:
-        JSON_url = {'url': url}
-        JSON_urls.append(JSON_url)
+        json_url = {'url': url}
+        json_urls.append(json_url)
 
     return jsonify({'status': 0,
-                    'list of complaints': JSON_complaints,
-                    'list of urls': JSON_urls
+                    'list of complaints': json_complaints,
+                    'list of urls': json_urls
                     }), 200
+
+
+@app.route("/admin/delete", methods=["DELETE"])
+@jwt_required()
+def admin_delete_submission() -> json:
+    if request.is_json and ("id" in request.json):
+        # Checks if the user is an admin
+        current_user = get_jwt_identity()
+        if current_user.role != 'admin':
+            return jsonify({'status': -1,
+                            'message': "Unauthorised access attempt"}), 403
+        _id = request.json["id"]
+        try:
+            match = db.session.query(Complaint).filter_by(id=_id).first()
+            db.session.delete(match)
+            db.session.commit()
+            return jsonify({
+                'status': 0,
+                'message': "Database operation successful"
+            }), 201
+
+        except Exception as e:
+            print(e)
+            return jsonify({
+                'status': -1,
+                'message': "Database operation failed: Internal error"
+            }), 500
 
 
 if __name__ == "__main__":

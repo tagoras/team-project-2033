@@ -20,11 +20,13 @@ function LoginPage() {
       }
     ).then(responseInJSON => {
       console.log(responseInJSON);
+
       document.cookie = `SessionID=${responseInJSON.JWT}`;
       if(responseInJSON.status == -1) console.log("Bad Login");
       else console.log("");
 
       console.log(document.cookie.substring(10));
+
     });
   }
   return (

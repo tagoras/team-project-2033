@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+
 import "../GenericFunctions";
 import { sentSyncrhonousAccessRequest } from '../GenericFunctions';
 
@@ -10,7 +11,7 @@ function UserPage(){
 
    accessGranted.then((resultInJSON => {console.log(resultInJSON)}, (Error) => console.log(Error)));
    // If access denied (Role is admin) -> render error Page.
-   
+
    const {register, handleSubmit, reset} = useForm();
    const onSubmit = (data) =>{
        console.log(data)
