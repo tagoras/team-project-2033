@@ -281,8 +281,7 @@ def logout() -> json:
 # The admin page used to manage complaints
 @app.route("/admin/view_all", methods=["POST"])
 @jwt_required()
-def admin() -> json:
-
+def admin_view_all() -> json:
     # Checks if the user is an admin
     current_user = get_jwt_identity()
     if current_user.role != 'admin':
