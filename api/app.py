@@ -335,10 +335,24 @@ def admin_delete_submission() -> json:
 
             return jsonify({'status': -1,
                             'message': "Unauthorised access attempt"}), 403
+
         _id = request.json["id"]
+        complaint_image = request.json["img_path"]
+
         try:
+            import os
+
             match = db.session.query(Complaint).filter_by(id=_id).first()
             db.session.delete(match)
+
+            if os.path.exists(complaint_image):
+                os.remove(complaint_image)
+            else:
+                return jsonify({
+                    'status': -1,
+                    'message': "Image doesn't exist/ Internal Error"
+                }), 404
+
             db.session.commit()
             return jsonify({
                 'status': 0,
@@ -353,7 +367,6 @@ def admin_delete_submission() -> json:
             }), 500
 
 
-
 @app.route("/get_role", methods=["GET"])
 @jwt_required()
 def getRole() -> json:
@@ -361,7 +374,6 @@ def getRole() -> json:
     return jsonify(role=current_user["role"]), 201
 
 
-  
 if __name__ == "__main__":
     my_host = "localhost"
     my_port = 5000
