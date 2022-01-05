@@ -290,13 +290,21 @@ def admin_view_all() -> json:
         return jsonify({'status': -1,
                         'message': "Unauthorised access attempt"}), 403
 
+    from sqlalchemy import func, desc
+
+    last_complaint_id = request.json['last_complaint']
+    if last_complaint_id is None:
+        search_id = db.session.query(func.max(Complaint.id))
+        search_id = search_id[0] + 1
+    else:
+        search_id = last_complaint_id
+
     complaints = []
     urls = []
     json_complaints = []
     json_urls = []
 
-    from sqlalchemy import desc
-    quick_search = db.session.query(Complaint.id).order_by(desc(Complaint.id)).limit(20)
+    quick_search = db.session.query(Complaint.id).filter_by(Complaint.id < search_id).order_by(desc(Complaint.id)).limit(20)
 
     for recent_complaints_id in quick_search:
         complaint = db.session.query(Complaint).filter_by(id=recent_complaints_id[0]).first()
@@ -332,7 +340,6 @@ def admin_delete_submission() -> json:
         current_user = get_jwt_identity()
 
         if current_user["role"] != 'admin':
-
             return jsonify({'status': -1,
                             'message': "Unauthorised access attempt"}), 403
 
@@ -365,6 +372,27 @@ def admin_delete_submission() -> json:
                 'status': -1,
                 'message': "Database operation failed: Internal error"
             }), 500
+
+
+@app.route('/admin/search', methods=["GET", "POST"])
+@jwt_required()
+def admin_next_page() -> json:
+    if request.is_json and ("id" in request.json):
+        current_user = get_jwt_identity()
+
+        if current_user["role"] != 'admin':
+            return jsonify({'status': -1,
+                            'message': "Unauthorised access attempt"}), 403
+
+        complaint_id = request.json["complaint_id"]
+
+        if complaint_id - 1 <= 0:
+            return jsonify({'status': -1,
+                            'message': "End of Complaints"}), 200
+        else:
+            return jsonify({'status': 0,
+                            'last_complaint_id': complaint_id,
+                            'message': "Go to admin_view_all function"}), 200
 
 
 @app.route("/get_role", methods=["GET"])
