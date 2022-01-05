@@ -151,7 +151,7 @@ def register() -> json:
 
 
 # Logs the user in to the website
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login() -> json:
     if request.is_json and ("username" and "password" in request.json):
         login_form = request.json
@@ -279,7 +279,7 @@ def logout() -> json:
 
 
 # The admin page used to manage complaints
-@app.route("/admin/view_all", methods=["GET"])
+@app.route("/admin/view_all", methods=["POST"])
 @jwt_required()
 def admin() -> json:
 
