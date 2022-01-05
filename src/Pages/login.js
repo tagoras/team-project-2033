@@ -20,12 +20,7 @@ function LoginPage() {
       }
     ).then(responseInJSON => {
       console.log(responseInJSON);
-<<<<<<< HEAD
       document.cookie = `SessionID=${responseInJSON.JWT}; path=/`;
-=======
-
-      document.cookie = `SessionID=${responseInJSON.JWT}`;
->>>>>>> 196f9b14e8ec02358edaee77f9c843dbd8fecb5d
       if(responseInJSON.status == -1) console.log("Bad Login");
       else console.log("");
 
