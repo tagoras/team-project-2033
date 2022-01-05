@@ -213,7 +213,7 @@ def allowed_file(filename):
 @jwt_required()
 def submission() -> json:
     current_user = get_jwt_identity()
-    if current_user.role != 'user':
+    if current_user["role"] != 'user':
         return jsonify({'status': -1,
                         'message': "Unauthorised access attempt"}), 403
 
@@ -286,7 +286,7 @@ def logout() -> json:
 def admin_view_all() -> json:
     # Checks if the user is an admin
     current_user = get_jwt_identity()
-    if current_user.role != 'admin':
+    if current_user["role"] != 'admin':
         return jsonify({'status': -1,
                         'message': "Unauthorised access attempt"}), 403
 
@@ -330,7 +330,7 @@ def admin_delete_submission() -> json:
     if request.is_json and ("id" in request.json):
         # Checks if the user is an admin
         current_user = get_jwt_identity()
-        if current_user.role != 'admin':
+        if current_user["role"] != 'admin':
             return jsonify({'status': -1,
                             'message': "Unauthorised access attempt"}), 403
         _id = request.json["id"]
