@@ -203,8 +203,8 @@ def login() -> json:
 
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in {'png', '.webp', 'jpg', '.jfif',
-                                                  '.pjpeg', '.pjp', 'jpeg', 'gif', '.apng'}
+           filename.rsplit('.', 1)[1].lower() in {'.png', '.webp', '.jpg', '.jfif',
+                                                  '.pjpeg', '.pjp', '.jpeg', '.gif', '.apng'}
 
 
 @app.route('/submission', methods=['POST'])
