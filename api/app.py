@@ -351,6 +351,13 @@ def admin_delete_submission() -> json:
             }), 500
 
 
+@app.route("/get_role", methods=["GET"])
+@jwt_required()
+def getRole() -> json:
+    current_user = get_jwt_identity()
+    return jsonify(role=current_user["role"]), 201
+
+
 if __name__ == "__main__":
     my_host = "localhost"
     my_port = 5000
