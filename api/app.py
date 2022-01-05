@@ -322,6 +322,33 @@ def admin_view_all() -> json:
                     }), 200
 
 
+@app.route("/admin/delete", methods=["DELETE"])
+@jwt_required()
+def admin_delete_submission() -> json:
+    if request.is_json and ("id" in request.json):
+        # Checks if the user is an admin
+        current_user = get_jwt_identity()
+        if current_user.role != 'admin':
+            return jsonify({'status': -1,
+                            'message': "Unauthorised access attempt"}), 403
+        _id = request.json["id"]
+        try:
+            match = db.session.query(Complaint).filter_by(id=_id).first()
+            db.session.delete(match)
+            db.session.commit()
+            return jsonify({
+                'status': 0,
+                'message': "Database operation successful"
+            }), 201
+
+        except Exception as e:
+            print(e)
+            return jsonify({
+                'status': -1,
+                'message': "Database operation failed: Internal error"
+            }), 500
+
+
 if __name__ == "__main__":
     my_host = "localhost"
     my_port = 5000
