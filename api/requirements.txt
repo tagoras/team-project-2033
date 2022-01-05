@@ -1,7 +1,6 @@
 click
 Flask
 itsdangerous
-Jinja2
 MarkupSafe
 pip
 setuptools
@@ -11,7 +10,6 @@ Flask-Login
 Flask-Talisman
 pyotp
 pycryptodome
-SQLAlchemy
 WTForms
 cryptography
 Flask-WTF
@@ -19,6 +17,4 @@ email-validator
 mysql-connector-python
 pymongo
 Flask-Cors
-pyyaml
-bson
 flask_jwt_extended
