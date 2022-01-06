@@ -290,13 +290,21 @@ def admin_view_all() -> json:
         return jsonify({'status': -1,
                         'message': "Unauthorised access attempt"}), 403
 
+    from sqlalchemy import func, desc
+
+    last_complaint_id = request.json['last_complaint']
+    if last_complaint_id is None:
+        search_id = db.session.query(func.max(Complaint.id))
+        search_id = search_id[0] + 1
+    else:
+        search_id = last_complaint_id
+
     complaints = []
     urls = []
     json_complaints = []
     json_urls = []
 
-    from sqlalchemy import desc
-    quick_search = db.session.query(Complaint.id).order_by(desc(Complaint.id)).limit(20)
+    quick_search = db.session.query(Complaint.id).filter_by(Complaint.id < search_id).order_by(desc(Complaint.id)).limit(20)
 
     for recent_complaints_id in quick_search:
         complaint = db.session.query(Complaint).filter_by(id=recent_complaints_id[0]).first()
@@ -332,13 +340,26 @@ def admin_delete_submission() -> json:
         current_user = get_jwt_identity()
 
         if current_user["role"] != 'admin':
-
             return jsonify({'status': -1,
                             'message': "Unauthorised access attempt"}), 403
+
         _id = request.json["id"]
+        complaint_image = request.json["img_path"]
+
         try:
+            import os
+
             match = db.session.query(Complaint).filter_by(id=_id).first()
             db.session.delete(match)
+
+            if os.path.exists(complaint_image):
+                os.remove(complaint_image)
+            else:
+                return jsonify({
+                    'status': -1,
+                    'message': "Image doesn't exist/ Internal Error"
+                }), 404
+
             db.session.commit()
             return jsonify({
                 'status': 0,
@@ -361,7 +382,51 @@ def getRole() -> json:
     return jsonify(role=current_user["role"]), 201
 
 
-  
+
+@app.route('/admin/search', methods=["GET", "POST"])
+@jwt_required()
+def admin_next_page() -> json:
+
+    current_user = get_jwt_identity()
+
+    if current_user["role"] != 'admin':
+        return jsonify({'status': -1,
+                        'message': "Unauthorised access attempt"}), 403
+
+    complaint_id = request.json["complaint_id"]
+
+    if complaint_id - 1 <= 0:
+        return jsonify({'status': -1,
+                        'message': "End of Complaints"}), 200
+    else:
+        return jsonify({'status': 0,
+                        'last_complaint_id': complaint_id,
+                        'message': "Go to admin_view_all function"}), 200
+
+
+@app.route('/admin/edit', methods=['GET', 'POST'])
+@jwt_required()
+def admin_edit_submission() -> json:
+
+    current_user = get_jwt_identity()
+
+    if current_user["role"] != 'admin':
+        return jsonify({'status': -1,
+                        'message': "Unauthorised access attempt"}), 403
+    submission_id = request.json["submission_id"]
+    to_edit = Complaint.query.filter_by(id=submission_id).first()
+
+    db.session.query(Complaint).filter_by(id=submission_id)\
+        .update({Complaint.title: request.json["submission_title"],
+                 Complaint.description: request.json["submission_description"],
+                 Complaint.postcode: request.json["submission_postcode"],
+                 Complaint.date: request.json["date"]})
+    db.session.commit()
+
+    return jsonify({'status': 0,
+                    'message': 'Submission edited'})
+
+
 if __name__ == "__main__":
     my_host = "localhost"
     my_port = 5000
