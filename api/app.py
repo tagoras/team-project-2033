@@ -23,12 +23,20 @@ app.config["JWT_SECRET_KEY"] = "Yet again another super secret key, thank you fo
 jwt = JWTManager(app)
 
 
-# Searches through a dictionary to see if any key has an empty value
-def empty_values(dictionary):
-    for key in dictionary:
-        if dictionary[key] == '':
-            return 'Empty'
-    return 0
+# Searches through a dictionary/array containing a string to see if any key has an empty string
+def has_empty_value(obj):
+    for k in obj:
+        t = 0
+        for s in obj[k]:
+            if s == '':
+                return True
+            elif s == ' ':
+                t += 1
+            else:
+                return False
+        if len(obj[k]) == t:
+            return True
+    return False
 
 
 # just for testing : return a hello world json object, for debugging api calls
@@ -56,7 +64,7 @@ def register() -> json:
     if request.is_json and ("username" and "password" and "email" and "postcode" in request.json):
         # Converts json object into dictionary and checks if there are empty
         registration_form = request.json
-        if empty_values(registration_form) == -1:
+        if has_empty_value(registration_form):
             return jsonify({
                 'status': -1,
                 'message': "Registration failed: Fill all fields"
@@ -159,7 +167,7 @@ def login() -> json:
         login_form = request.json
 
         # Converts json object into dictionary and checks if there are empty
-        if empty_values(login_form) == -1:
+        if has_empty_value(login_form):
             return jsonify({
                 'status': -1,
                 'message': "Login failed: Fill all fields"
