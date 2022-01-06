@@ -312,7 +312,8 @@ def admin_view_all() -> json:
     json_complaints = []
     json_urls = []
 
-    quick_search = db.session.query(Complaint.id).filter_by(Complaint.id < search_id).order_by(desc(Complaint.id)).limit(20)
+    quick_search = db.session.query(Complaint.id).filter_by(Complaint.id < search_id).order_by(
+        desc(Complaint.id)).limit(20)
 
     for recent_complaints_id in quick_search:
         complaint = db.session.query(Complaint).filter_by(id=recent_complaints_id[0]).first()
@@ -382,7 +383,6 @@ def admin_delete_submission() -> json:
             }), 500
 
 
-
 @app.route("/get_role", methods=["GET"])
 @jwt_required()
 def getRole() -> json:
@@ -390,11 +390,9 @@ def getRole() -> json:
     return jsonify(role=current_user["role"]), 201
 
 
-
 @app.route('/admin/search', methods=["GET", "POST"])
 @jwt_required()
 def admin_next_page() -> json:
-
     current_user = get_jwt_identity()
 
     if current_user["role"] != 'admin':
@@ -415,7 +413,6 @@ def admin_next_page() -> json:
 @app.route('/admin/edit', methods=['GET', 'POST'])
 @jwt_required()
 def admin_edit_submission() -> json:
-
     current_user = get_jwt_identity()
 
     if current_user["role"] != 'admin':
@@ -424,7 +421,7 @@ def admin_edit_submission() -> json:
     submission_id = request.json["submission_id"]
     to_edit = Complaint.query.filter_by(id=submission_id).first()
 
-    db.session.query(Complaint).filter_by(id=submission_id)\
+    db.session.query(Complaint).filter_by(id=submission_id) \
         .update({Complaint.title: request.json["submission_title"],
                  Complaint.description: request.json["submission_description"],
                  Complaint.postcode: request.json["submission_postcode"],
