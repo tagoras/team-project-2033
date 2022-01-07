@@ -18,3 +18,4 @@ mysql-connector-python
 pymongo
 Flask-Cors
 flask_jwt_extended
+requests
