@@ -23,7 +23,7 @@ app.config["JWT_SECRET_KEY"] = "Yet again another super secret key, thank you fo
 jwt = JWTManager(app)
 
 
-# Searches through a dictionary/array containing a string to see if any key has an empty string
+# Searches through a dictionary containing a string to see if any key has an empty string
 def has_empty_value(obj):
     for k in obj:
         t = 0
@@ -33,7 +33,7 @@ def has_empty_value(obj):
             elif s == ' ':
                 t += 1
             else:
-                return False
+                continue
         if len(obj[k]) == t:
             return True
     return False
