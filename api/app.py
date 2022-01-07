@@ -326,7 +326,7 @@ def admin_view_all() -> json:
         complaints.append(complaint)
 
     for complaint in complaints:
-        url = str(my_host + ':8000' + complaint.img_path)
+        url = str(my_host + ':5000/file/' + complaint.img_path)
         urls.append(url)
 
     for complaint in complaints:
