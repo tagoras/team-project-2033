@@ -3,7 +3,7 @@ import datetime
 import json
 import re
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 from flask_sqlalchemy import SQLAlchemy
@@ -388,6 +388,11 @@ def admin_delete_submission() -> json:
 def getRole() -> json:
     current_user = get_jwt_identity()
     return jsonify(role=current_user["role"]), 201
+
+
+@app.route('/file/<string:_id>/<string:_filename>', methods=["GET"])
+def get_single_file(_id, _filename):
+    return send_from_directory(path=_id + '/' + _filename, directory="data")
 
 
 @app.route('/admin/search', methods=["GET", "POST"])
