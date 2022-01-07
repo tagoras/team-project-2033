@@ -217,7 +217,7 @@ def allowed_file(filename):
                                                   '.pjpeg', '.pjp', '.jpeg', '.gif', '.apng'}
 
 
-@app.route('/submission', methods=['POST'])
+@app.route('/submission', methods=['PUT'])
 @jwt_required()
 def submission() -> json:
     current_user = get_jwt_identity()
@@ -226,6 +226,12 @@ def submission() -> json:
                         'message': "Unauthorised access attempt"}), 403
 
     submission_json = request.get_json()
+    if has_empty_value(submission_json):
+        return jsonify({
+            'status': -1,
+            'message': "Submission failed: Fill all fields!"
+        }), 406
+
     if "title" and "description" and "postcode" and "date" in submission_json:
         try:
             datetime.datetime.strptime(submission_json["date"], "%m/%d/%y")
@@ -236,7 +242,7 @@ def submission() -> json:
                 'message': "Submission failed: Date is in the wrong format ! "
                            "Should be %m/%d/%y"}), 406
 
-        if 'image' not in request.files or request.files['image'].filename == '':
+        if 'image' not in request.files or has_empty_value(request.files):
             return jsonify({
                 'status': -1,
                 'message': "Submission failed: Image is missing! "}), 406
@@ -247,15 +253,15 @@ def submission() -> json:
         import os
         if img and allowed_file(img.filename):
             img_name = str(uuid.uuid4()) + pathlib.Path(img.filename).suffix
-            img_path = 'api/data/images/' + current_user.id + "/" + img_name
-            os.system("mkdir " + '/' + current_user.id)
+            img_path = current_user[id] + "/" + img_name
+            os.system('mkdir ' + 'data/' + current_user[id])
             img.save(img_path)
 
             complaint = Complaint(title=submission_json["title"],
                                   description=submission_json["description"],
                                   postcode=submission_json["postcode"],
                                   date=submission_json["date"],
-                                  user_id=current_user.id,
+                                  user_id=current_user[id],
                                   img_path=img_path)
 
             db.session.add(complaint)
