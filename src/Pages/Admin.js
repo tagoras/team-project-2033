@@ -10,9 +10,21 @@ function AdminPage(){
 
     // Sent request for access by sending a cookie JWT
     let accessGranted = sentSyncrhonousAccessRequest("/admin/view_all");
+    let booleanValue = true;
 
-    accessGranted.catch((responseInJSON) => console.log(responseInJSON));
+    accessGranted.then((responseInJSON) => console.log(responseInJSON));
+    let userRole = sentSyncrhonousAccessRequest("/get_role");
+    userRole.then((resultInJSON => {
+        let role = resultInJSON.role;
+        if(role == "admin"){
+            console.log("Render successful");
+        }  
+        else{
+            booleanValue = false;
+        }
+    }));
 
+    if(!booleanValue) return null;
 
     return(
         <div className="Container">
