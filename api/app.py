@@ -385,7 +385,7 @@ def admin_delete_submission() -> json:
 
 @app.route("/get_role", methods=["GET"])
 @jwt_required()
-def getRole() -> json:
+def get_role() -> json:
     current_user = get_jwt_identity()
     return jsonify(role=current_user["role"]), 201
 
