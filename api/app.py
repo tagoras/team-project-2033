@@ -14,12 +14,12 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/api.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'This is supposed to be a secret key, thank you for your understanding.'
-app.config["JWT_COOKIE_SECURE"] = True
-app.config["JWT_TOKEN_LOCATION"] = ["headers", "cookies"]
 db = SQLAlchemy(app)
 CORS(app)
 
 app.config["JWT_SECRET_KEY"] = "Yet again another super secret key, thank you for your understanding."
+app.config["JWT_COOKIE_SECURE"] = True
+app.config["JWT_TOKEN_LOCATION"] = ["headers", "cookies"]
 jwt = JWTManager(app)
 
 
