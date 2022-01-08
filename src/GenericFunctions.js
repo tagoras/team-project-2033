@@ -1,11 +1,11 @@
 import jwt, {Bearer} from "jsonwebtoken";
 
-export async function sentSyncrhonousAccessRequest(page){
+export async function sentSyncrhonousAccessRequest(page, method){
   console.log(page);
   console.log(document.cookie.substring(10));
   let string = document.cookie.substring(10);
     let result = await fetch(`${page}`, {
-      method: "POST",
+      method: `${method}`,
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
         'Authorization': `Bearer ${document.cookie.substring(10)}`

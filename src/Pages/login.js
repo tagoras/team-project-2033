@@ -1,6 +1,7 @@
 import LoginForm from "../Components/Form/loginForm.js";
 import { useNavigate } from "react-router-dom";
 import {useState} from 'react';
+import {sentSyncrhonousAccessRequest} from "../GenericFunctions";
 
 function LoginPage() {
 
@@ -10,7 +11,7 @@ function LoginPage() {
  
 
   const navigate = useNavigate();
-  function addLoginHandler(loginData) {
+  async function addLoginHandler(loginData) {
     
     fetch("/login", {
       method: "POST",
@@ -29,14 +30,13 @@ function LoginPage() {
         setErrorMessage(responseInJSON.message);
       }
 
-      else document.cookie = `SessionID=${responseInJSON.JWT}; path=/`;
       
-    
-
-    }).catch((error) => {
-      if(error.status == -1) {
-        console.log("Error Caught");
-      }
+      document.cookie = `SessionID=${responseInJSON.JWT}; path=/`;
+      let access = sentSyncrhonousAccessRequest("/get_role", "GET")
+      access.then((response) => {
+        if(response.role == 'user') navigate("/User");
+        else if(response.role == 'admin') navigate("/admin");
+      });
     });
   }
   
