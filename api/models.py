@@ -1,4 +1,6 @@
 # IMPORTS
+
+
 try:
     from app import db
 except ModuleNotFoundError:
@@ -71,4 +73,19 @@ def init_db():
 
     db.session.add(test_user)
     db.session.commit()
+    import requests
+    import shutil
+    os.system("mkdir data/cats")
+    url1 = "https://hddesktopwallpapers.in/wp-content/uploads/2015/09/brown-cat.jpg"
+    res1 = requests.get(url=url1, stream=True)
+    if res1.status_code == 200:
+        with open("data/cats/cat.jpg", 'wb') as f:
+            shutil.copyfileobj(res1.raw, f)
+
+    url2 = "https://welovecatsandkittens.com/wp-content/uploads/2017/01/wiggle.gif"
+    res2 = requests.get(url=url2, stream=True)
+    if res2.status_code == 200:
+        with open("data/cats/cat.gif", 'wb') as f:
+            shutil.copyfileobj(res2.raw, f)
+
     print("init_db successful")

@@ -95,6 +95,17 @@ To start the Back-end server:
 python app.py # Starts on localhost:5000
 ```
 
+## Testing
+
+To start the testing suite:
+
+```bash
+python testing.py
+```
+or
+```bash
+python -m unittest testing.py
+```
 
 
 

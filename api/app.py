@@ -3,7 +3,7 @@ import datetime
 import json
 import re
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 from flask_sqlalchemy import SQLAlchemy
@@ -14,21 +14,29 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/api.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'This is supposed to be a secret key, thank you for your understanding.'
-app.config["JWT_COOKIE_SECURE"] = True
-app.config["JWT_TOKEN_LOCATION"] = ["headers", "cookies"]
 db = SQLAlchemy(app)
 CORS(app)
 
 app.config["JWT_SECRET_KEY"] = "Yet again another super secret key, thank you for your understanding."
+app.config["JWT_COOKIE_SECURE"] = True
+app.config["JWT_TOKEN_LOCATION"] = ["headers", "cookies"]
 jwt = JWTManager(app)
 
 
-# Searches through a dictionary to see if any key has an empty value
-def empty_values(dictionary):
-    for key in dictionary:
-        if dictionary[key] == '':
-            return 'Empty'
-    return 0
+# Searches through a dictionary containing a string to see if any key has an empty string
+def has_empty_value(obj):
+    for k in obj:
+        t = 0
+        for s in obj[k]:
+            if s == '':
+                return True
+            elif s == ' ':
+                t += 1
+            else:
+                continue
+        if len(obj[k]) == t:
+            return True
+    return False
 
 
 # just for testing : return a hello world json object, for debugging api calls
@@ -56,7 +64,7 @@ def register() -> json:
     if request.is_json and ("username" and "password" and "email" and "postcode" in request.json):
         # Converts json object into dictionary and checks if there are empty
         registration_form = request.json
-        if empty_values(registration_form) == -1:
+        if has_empty_value(registration_form):
             return jsonify({
                 'status': -1,
                 'message': "Registration failed: Fill all fields"
@@ -159,7 +167,7 @@ def login() -> json:
         login_form = request.json
 
         # Converts json object into dictionary and checks if there are empty
-        if empty_values(login_form) == -1:
+        if has_empty_value(login_form):
             return jsonify({
                 'status': -1,
                 'message': "Login failed: Fill all fields"
@@ -209,7 +217,7 @@ def allowed_file(filename):
                                                   '.pjpeg', '.pjp', '.jpeg', '.gif', '.apng'}
 
 
-@app.route('/submission', methods=['POST'])
+@app.route('/submission', methods=['PUT'])
 @jwt_required()
 def submission() -> json:
     current_user = get_jwt_identity()
@@ -218,6 +226,12 @@ def submission() -> json:
                         'message': "Unauthorised access attempt"}), 403
 
     submission_json = request.get_json()
+    if has_empty_value(submission_json):
+        return jsonify({
+            'status': -1,
+            'message': "Submission failed: Fill all fields!"
+        }), 406
+
     if "title" and "description" and "postcode" and "date" in submission_json:
         try:
             datetime.datetime.strptime(submission_json["date"], "%m/%d/%y")
@@ -228,7 +242,7 @@ def submission() -> json:
                 'message': "Submission failed: Date is in the wrong format ! "
                            "Should be %m/%d/%y"}), 406
 
-        if 'image' not in request.files or request.files['image'].filename == '':
+        if 'image' not in request.files or has_empty_value(request.files):
             return jsonify({
                 'status': -1,
                 'message': "Submission failed: Image is missing! "}), 406
@@ -239,15 +253,15 @@ def submission() -> json:
         import os
         if img and allowed_file(img.filename):
             img_name = str(uuid.uuid4()) + pathlib.Path(img.filename).suffix
-            img_path = 'api/data/images/' + current_user.id + "/" + img_name
-            os.system("mkdir " + '/' + current_user.id)
+            img_path = current_user[id] + "/" + img_name
+            os.system('mkdir ' + 'data/' + current_user[id])
             img.save(img_path)
 
             complaint = Complaint(title=submission_json["title"],
                                   description=submission_json["description"],
                                   postcode=submission_json["postcode"],
                                   date=submission_json["date"],
-                                  user_id=current_user.id,
+                                  user_id=current_user[id],
                                   img_path=img_path)
 
             db.session.add(complaint)
@@ -304,14 +318,15 @@ def admin_view_all() -> json:
     json_complaints = []
     json_urls = []
 
-    quick_search = db.session.query(Complaint.id).filter_by(Complaint.id < search_id).order_by(desc(Complaint.id)).limit(20)
+    quick_search = db.session.query(Complaint.id).filter_by(Complaint.id < search_id).order_by(
+        desc(Complaint.id)).limit(20)
 
     for recent_complaints_id in quick_search:
         complaint = db.session.query(Complaint).filter_by(id=recent_complaints_id[0]).first()
         complaints.append(complaint)
 
     for complaint in complaints:
-        url = str(my_host + ':8000' + complaint.img_path)
+        url = str(my_host + ':5000/file/' + complaint.img_path)
         urls.append(url)
 
     for complaint in complaints:
@@ -377,16 +392,20 @@ def admin_delete_submission() -> json:
 
 @app.route("/get_role", methods=["GET"])
 @jwt_required()
-def getRole() -> json:
+def get_role() -> json:
     current_user = get_jwt_identity()
     return jsonify(role=current_user["role"]), 201
 
 
 
+@app.route('/file/<string:_id>/<string:_filename>', methods=["GET"])
+def get_single_file(_id, _filename):
+    return send_from_directory(path=_id + '/' + _filename, directory="data")
+
+
 @app.route('/admin/search', methods=["GET", "POST"])
 @jwt_required()
 def admin_next_page() -> json:
-
     current_user = get_jwt_identity()
 
     if current_user["role"] != 'admin':
@@ -407,7 +426,6 @@ def admin_next_page() -> json:
 @app.route('/admin/edit', methods=['GET', 'POST'])
 @jwt_required()
 def admin_edit_submission() -> json:
-
     current_user = get_jwt_identity()
 
     if current_user["role"] != 'admin':
@@ -416,7 +434,7 @@ def admin_edit_submission() -> json:
     submission_id = request.json["submission_id"]
     to_edit = Complaint.query.filter_by(id=submission_id).first()
 
-    db.session.query(Complaint).filter_by(id=submission_id)\
+    db.session.query(Complaint).filter_by(id=submission_id) \
         .update({Complaint.title: request.json["submission_title"],
                  Complaint.description: request.json["submission_description"],
                  Complaint.postcode: request.json["submission_postcode"],
