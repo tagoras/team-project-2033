@@ -26,7 +26,6 @@ jwt = JWTManager(app)
 # Searches through a dictionary containing a string to see if any key has an empty string
 
 def has_empty_value(obj) -> bool:
-
     for k in obj:
         t = 0
         for s in obj[k]:
@@ -321,7 +320,6 @@ def admin_view_all() -> json:
     urls = []
     json_complaints = []
     json_urls = []
-
 
     quick_search = db.session.query(Complaint.id).order_by(
 
