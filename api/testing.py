@@ -9,14 +9,6 @@ import app
 
 
 class FlaskApp(unittest.TestCase):
-    
-    def test_hello_world(self):
-        r = requests.get('http://localhost:5000/hello_world')
-        json_content = r.json()
-        self.assertEqual(json_content[0], {'title': "Hello!", 'content': "Hello World"})
-        self.assertEqual(r.headers['Content-Type'], 'application/json')
-        self.assertEqual(r.status_code, 200)
-        self.assertEqual(r.url, 'http://localhost:5000/hello_world')
 
     def test_has_empty_value(self):
         d1 = {1: ""}
@@ -27,6 +19,14 @@ class FlaskApp(unittest.TestCase):
         self.assertTrue(app.has_empty_value(d2))
         self.assertTrue(app.has_empty_value(d3))
         self.assertFalse(app.has_empty_value(d4))
+
+    def test_hello_world(self):
+        r = requests.get('http://localhost:5000/hello_world')
+        json_content = r.json()
+        self.assertEqual(json_content[0], {'title': "Hello!", 'content': "Hello World"})
+        self.assertEqual(r.headers['Content-Type'], 'application/json')
+        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.url, 'http://localhost:5000/hello_world')
 
 
 if __name__ == '__main__':
