@@ -352,7 +352,7 @@ def admin_view_all() -> json:
 @app.route("/admin/delete", methods=["DELETE"])
 @jwt_required()
 def admin_delete_submission() -> json:
-    if request.is_json and ("id" in request.get_json()):
+    if request.is_json and ("id" in request.json):
         # Checks if the user is an admin
         current_user = get_jwt_identity()
 
