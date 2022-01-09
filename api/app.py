@@ -389,11 +389,13 @@ def admin_delete_submission() -> json:
             }), 500
 
 
+
 @app.route("/get_role", methods=["GET"])
 @jwt_required()
 def get_role() -> json:
     current_user = get_jwt_identity()
     return jsonify(role=current_user["role"]), 201
+
 
 
 @app.route('/file/<string:_id>/<string:_filename>', methods=["GET"])

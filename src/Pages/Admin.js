@@ -8,12 +8,6 @@ import {navigate} from 'react-router-dom';
 
 function AdminPage(){
 
-    // Sent request for access by sending a cookie JWT
-    let accessGranted = sentSyncrhonousAccessRequest("/admin/view_all");
-
-    accessGranted.catch((responseInJSON) => console.log(responseInJSON));
-
-
     return(
         <div className="Container">
             <ul className="Grid-Unordered-List">

@@ -3,6 +3,8 @@ import {useRef,useState} from 'react';
 import backgroundImage from "../Photos/x.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
+import {ErrorBox} from '../ErrorBox/ErrorBox';
+
 const eye = <FontAwesomeIcon icon={faEye} />;
 
 function LoginForm(props){
@@ -43,6 +45,7 @@ function LoginForm(props){
                   />
                 <i onClick={togglePasswordVisibility}>{eye}</i>{" "}
             </div>
+            <ErrorBox errorOccurred={props.errorStatus} text={props.errorMessage}/>
             <div className="loginSubmit">
                 <button>Log in</button>
             </div>
