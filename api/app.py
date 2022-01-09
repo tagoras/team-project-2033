@@ -24,7 +24,9 @@ jwt = JWTManager(app)
 
 
 # Searches through a dictionary containing a string to see if any key has an empty string
-def has_empty_value(obj):
+
+def has_empty_value(obj) -> bool:
+
     for k in obj:
         t = 0
         for s in obj[k]:
@@ -78,7 +80,7 @@ def register() -> json:
                 'status': -1,
                 'message': "Registration failed: Please check password"
             }), 406
-        elif 6 > password_size > 12:
+        elif password_size > 12 or password_size < 6:
             return jsonify({
                 'status': -1,
                 'message': "Registration failed: Please check password"
@@ -102,7 +104,7 @@ def register() -> json:
 
         # One way encrypt
         registration_form['password'] = generate_password_hash(registration_form['password'])
-        registration_form['postcode'] = generate_password_hash(registration_form['postcode'])
+        # registration_form['postcode'] = generate_password_hash(registration_form['postcode'])
 
         # An attempt to check if the email given has been already used for registering
         try:
@@ -320,7 +322,9 @@ def admin_view_all() -> json:
     json_complaints = []
     json_urls = []
 
+
     quick_search = db.session.query(Complaint.id).order_by(
+
         desc(Complaint.id)).limit(20)
 
     for recent_complaints_id in quick_search:

@@ -68,7 +68,8 @@ def init_db():
     test_user = User(username='Joe',
                      email='test1@test.com',
                      password=generate_password_hash('Njdka3rq39h!'),
-                     postcode=generate_password_hash("NE6 9RU"),
+                     # postcode=generate_password_hash("NE6 9RU"),
+                     postcode="NE6 9RU",
                      role='admin')
 
     db.session.add(test_user)
