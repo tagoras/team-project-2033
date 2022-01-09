@@ -102,7 +102,7 @@ def register() -> json:
 
         # One way encrypt
         registration_form['password'] = generate_password_hash(registration_form['password'])
-        registration_form['postcode'] = generate_password_hash(registration_form['postcode'])
+        # registration_form['postcode'] = generate_password_hash(registration_form['postcode'])
 
         # An attempt to check if the email given has been already used for registering
         try:
