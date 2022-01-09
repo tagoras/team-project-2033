@@ -320,7 +320,7 @@ def admin_view_all() -> json:
     json_complaints = []
     json_urls = []
 
-    quick_search = db.session.query(Complaint.id).filter_by(Complaint.id).order_by(
+    quick_search = db.session.query(Complaint.id).order_by(
         desc(Complaint.id)).limit(20)
 
     for recent_complaints_id in quick_search:
