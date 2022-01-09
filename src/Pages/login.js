@@ -32,7 +32,7 @@ function LoginPage() {
 
       
       document.cookie = `SessionID=${responseInJSON.JWT}; path=/`;
-      let access = sentSyncrhonousAccessRequest("/get_role", "GET")
+      let access = sentSyncrhonousAccessRequest("/get_role", "GET");
       access.then((response) => {
         if(response.role == 'user') navigate("/User");
         else if(response.role == 'admin') navigate("/admin");
