@@ -306,19 +306,21 @@ def admin_view_all() -> json:
 
     from sqlalchemy import func, desc
 
+    '''
     last_complaint_id = request.json['last_complaint']
     if last_complaint_id is None:
         search_id = db.session.query(func.max(Complaint.id))
         search_id = search_id[0] + 1
     else:
         search_id = last_complaint_id
+    '''
 
     complaints = []
     urls = []
     json_complaints = []
     json_urls = []
 
-    quick_search = db.session.query(Complaint.id).filter_by(Complaint.id < search_id).order_by(
+    quick_search = db.session.query(Complaint.id).filter_by(Complaint.id).order_by(
         desc(Complaint.id)).limit(20)
 
     for recent_complaints_id in quick_search:
@@ -389,13 +391,11 @@ def admin_delete_submission() -> json:
             }), 500
 
 
-
 @app.route("/get_role", methods=["GET"])
 @jwt_required()
 def get_role() -> json:
     current_user = get_jwt_identity()
     return jsonify(role=current_user["role"]), 201
-
 
 
 @app.route('/file/<string:_id>/<string:_filename>', methods=["GET"])
