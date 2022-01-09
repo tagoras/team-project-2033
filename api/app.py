@@ -24,7 +24,9 @@ jwt = JWTManager(app)
 
 
 # Searches through a dictionary containing a string to see if any key has an empty string
+
 def has_empty_value(obj) -> bool:
+
     for k in obj:
         t = 0
         for s in obj[k]:
@@ -306,19 +308,23 @@ def admin_view_all() -> json:
 
     from sqlalchemy import func, desc
 
+    '''
     last_complaint_id = request.json['last_complaint']
     if last_complaint_id is None:
         search_id = db.session.query(func.max(Complaint.id))
         search_id = search_id[0] + 1
     else:
         search_id = last_complaint_id
+    '''
 
     complaints = []
     urls = []
     json_complaints = []
     json_urls = []
 
-    quick_search = db.session.query(Complaint.id).filter_by(Complaint.id < search_id).order_by(
+
+    quick_search = db.session.query(Complaint.id).order_by(
+
         desc(Complaint.id)).limit(20)
 
     for recent_complaints_id in quick_search:
@@ -359,12 +365,12 @@ def admin_delete_submission() -> json:
                             'message': "Unauthorised access attempt"}), 403
 
         _id = request.json["id"]
-        complaint_image = request.json["img_path"]
 
         try:
             import os
 
             match = db.session.query(Complaint).filter_by(id=_id).first()
+            complaint_image = match.img_path
             db.session.delete(match)
 
             if os.path.exists(complaint_image):

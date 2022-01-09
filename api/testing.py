@@ -10,6 +10,7 @@ import app
 
 class FlaskApp(unittest.TestCase):
 
+
     def test_has_empty_value(self):
         d1 = {1: ""}
         d2 = {1: " "}
@@ -19,6 +20,7 @@ class FlaskApp(unittest.TestCase):
         self.assertTrue(app.has_empty_value(d2))
         self.assertTrue(app.has_empty_value(d3))
         self.assertFalse(app.has_empty_value(d4))
+
 
     def test_hello_world(self):
         r = requests.get('http://localhost:5000/hello_world')
