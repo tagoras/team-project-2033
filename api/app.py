@@ -24,7 +24,7 @@ jwt = JWTManager(app)
 
 
 # Searches through a dictionary containing a string to see if any key has an empty string
-def has_empty_value(obj):
+def has_empty_value(obj) -> bool:
     for k in obj:
         t = 0
         for s in obj[k]:
