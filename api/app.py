@@ -361,12 +361,12 @@ def admin_delete_submission() -> json:
                             'message': "Unauthorised access attempt"}), 403
 
         _id = request.json["id"]
-        complaint_image = request.json["img_path"]
 
         try:
             import os
 
             match = db.session.query(Complaint).filter_by(id=_id).first()
+            complaint_image = match.img_path
             db.session.delete(match)
 
             if os.path.exists(complaint_image):
