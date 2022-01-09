@@ -9,7 +9,8 @@ import app
 
 
 class FlaskApp(unittest.TestCase):
-    def testHello_World(self):
+    
+    def test_hello_world(self):
         r = requests.get('http://localhost:5000/hello_world')
         json_content = r.json()
         self.assertEqual(json_content[0], {'title': "Hello!", 'content': "Hello World"})
@@ -17,7 +18,7 @@ class FlaskApp(unittest.TestCase):
         self.assertEqual(r.status_code, 200)
         self.assertEqual(r.url, 'http://localhost:5000/hello_world')
 
-    def testHas_Empty_Value(self):
+    def test_has_empty_value(self):
         d1 = {1: ""}
         d2 = {1: " "}
         d3 = {1: "Hello World", 2: "   "}
