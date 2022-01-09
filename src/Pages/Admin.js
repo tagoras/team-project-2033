@@ -8,12 +8,14 @@ import {navigate} from 'react-router-dom';
 
 function AdminPage(){
 
+    // Have no idea why this request is bad
+    let complaints =  sentSyncrhonousAccessRequest("/admin/view_all", "POST");
+    complaints.then((text) => console.log(text));
+
     return(
         <div className="Container">
             <ul className="Grid-Unordered-List">
-                {data.map( complaint => {
-                    return <li key={complaint.complaintID}><ComplaintCard complaint={complaint}/></li>
-                })}
+                
             </ul>
         </div>
     )
