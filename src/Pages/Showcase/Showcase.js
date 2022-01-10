@@ -1,7 +1,7 @@
 import react, { Component } from "react";
-import "../Photos/photo7.jpg";
+import "../../Components/Photos/photo7.jpg";
 import "./Showcase.css";
-import AboutUs from "../AboutUsSection/AboutUs";
+import AboutUs from "../../Components/AboutUsSection/AboutUs";
 
 export class Showcase extends Component {
   render() {

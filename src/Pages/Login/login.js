@@ -1,7 +1,7 @@
-import LoginForm from "../Components/Form/loginForm.js";
+import LoginForm from "../../Components/Form/loginForm.js";
 import { useNavigate } from "react-router-dom";
 import {useState} from 'react';
-import {sentSyncrhonousAccessRequest} from "../GenericFunctions";
+import {sentSyncrhonousAccessRequest} from "../../GenericFunctions";
 
 function LoginPage() {
 
