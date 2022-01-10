@@ -8,12 +8,14 @@ import app
 
 
 class FlaskApp(unittest.TestCase):
+
     """
         def __init__(self, JWT='', ADMIN_JWT=''):
             super().__init__()
             self.JWT = JWT
             self.ADMIN_JWT = ADMIN_JWT
     """
+
 
     def test_has_empty_value(self):
         d1 = {1: ""}
