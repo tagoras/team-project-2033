@@ -1,7 +1,6 @@
 # Infrastructure Reporting System - Team 32
 
 This project was created by the members of Team 32 for the CSC2033 Group Project at Newcastle University.
-[Github](https://github.com/tagoras/team-project-2033)
 
 ## Requirements: 
 - [Python](https://www.python.org/)
