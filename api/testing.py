@@ -1,7 +1,6 @@
 import unittest
 # import json
 # import os
-# import webbrowser
 
 import requests
 
@@ -103,6 +102,21 @@ class FlaskApp(unittest.TestCase):
         admin_jwt = r.json()['JWT']
         print(admin_jwt)
         self.ADMIN_JWT = admin_jwt
+
+    def test_get_single_file(self):
+        import webbrowser
+
+        url1 = 'http://localhost:5000/file/cats/cat.gif'
+        url2 = 'http://localhost:5000/file/cats/cat.jpg'
+
+        webbrowser.open_new_tab(url1)
+        webbrowser.open_new_tab(url2)
+
+        status_code = requests.get(url=url1, stream=True).status_code
+        self.assertEqual(200, status_code)
+
+        status_code = requests.get(url=url2, stream=True).status_code
+        self.assertEqual(200, status_code)
 
 
 if __name__ == '__main__':
