@@ -27,7 +27,7 @@ class FlaskApp(unittest.TestCase):
         self.assertFalse(app.has_empty_value(d4))
 
     def test_hello_world(self):
-        r = requests.get('http://localhost:5000/hello_world')
+        r = requests.get('http://localhost:5000/hello_world', stream=True)
         json_content = r.json()
         print(json_content)
         self.assertEqual({'title': "Hello!", 'content': "Hello World"}, json_content[0])
@@ -42,28 +42,28 @@ class FlaskApp(unittest.TestCase):
                 'email': 'An incorrect email :(',
                 'postcode': 'NE2 5RE',
                 'password': 'He110 w0r1d£'}
-        r = requests.post(url=url, json=data)
+        r = requests.post(url=url, json=data, stream=True)
         self.assertEqual(406, r.status_code)
 
         data = {'username': 'Test',
                 'email': 'Test@example.com',
                 'postcode': 'A bad postcode :(',
                 'password': 'He110 w0r1d£'}
-        r = requests.post(url=url, json=data)
+        r = requests.post(url=url, json=data, stream=True)
         self.assertEqual(406, r.status_code)
 
         data = {'username': 'Test',
                 'email': 'Test@example.com',
                 'postcode': 'NE2 5RE',
                 'password': 'A not so good password :('}
-        r = requests.post(url=url, json=data)
+        r = requests.post(url=url, json=data, stream=True)
         self.assertEqual(406, r.status_code)
 
         data = {'username': 'Test',
                 'email': 'Test@example.com',
                 'postcode': 'NE2 5RE',
                 'password': 'He110 w0r1d£'}
-        r = requests.post(url=url, json=data)
+        r = requests.post(url=url, json=data, stream=True)
         self.assertEqual(201, r.status_code)
 
     def test_login(self):
@@ -71,18 +71,18 @@ class FlaskApp(unittest.TestCase):
 
         login_data = {'username': 'An incorrect username',
                       'password': 'He110 w0r1d£'}
-        r = requests.post(url=url, json=login_data)
+        r = requests.post(url=url, json=login_data, stream=True)
         self.assertEqual(406, r.status_code)
 
         login_data = {'empty_fields_perhaps': ':(',
                       'username': '',
                       'password': ''}
-        r = requests.post(url=url, json=login_data)
+        r = requests.post(url=url, json=login_data, stream=True)
         self.assertEqual(406, r.status_code)
 
         login_data = {'username': 'Test',
                       'password': 'A not so good password :('}
-        r = requests.post(url=url, json=login_data)
+        r = requests.post(url=url, json=login_data, stream=True)
         self.assertEqual(406, r.status_code)
 
         """        
@@ -97,7 +97,7 @@ class FlaskApp(unittest.TestCase):
         """
         login_data = {'username': 'Joe',
                       'password': 'Njdka3rq39h!'}
-        r = requests.post(url=url, json=login_data)
+        r = requests.post(url=url, json=login_data, stream=True)
         self.assertEqual(202, r.status_code)
 
         admin_jwt = r.json()['JWT']
