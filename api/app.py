@@ -366,16 +366,21 @@ def admin_delete_submission() -> json:
             import os
 
             match = db.session.query(Complaint).filter_by(id=_id).first()
+            print(match)
             complaint_image = match.img_path
             db.session.delete(match)
+            
+            try: 
+                if os.path.exists(complaint_image):
+                    os.remove(complaint_image)
+                else:
+                    return jsonify({
+                        'status': -1,
+                        'message': "Image doesn't exist/ Internal Error"
+                    }), 404
 
-            if os.path.exists(complaint_image):
-                os.remove(complaint_image)
-            else:
-                return jsonify({
-                    'status': -1,
-                    'message': "Image doesn't exist/ Internal Error"
-                }), 404
+            except Exception as e:
+                print(e)
 
             db.session.commit()
             return jsonify({
