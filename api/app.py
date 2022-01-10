@@ -432,17 +432,21 @@ def admin_edit_submission() -> json:
         return jsonify({'status': -1,
                         'message': "Unauthorised access attempt"}), 403
     submission_id = request.json["submission_id"]
+
     to_edit = Complaint.query.filter_by(id=submission_id).first()
+    if to_edit and not has_empty_value(request.json):
+        db.session.query(Complaint).filter_by(id=submission_id) \
+            .update({Complaint.title: request.json["submission_title"],
+                     Complaint.description: request.json["submission_description"],
+                     Complaint.postcode: request.json["submission_postcode"],
+                     Complaint.date: request.json["date"]})
+        db.session.commit()
 
-    db.session.query(Complaint).filter_by(id=submission_id) \
-        .update({Complaint.title: request.json["submission_title"],
-                 Complaint.description: request.json["submission_description"],
-                 Complaint.postcode: request.json["submission_postcode"],
-                 Complaint.date: request.json["date"]})
-    db.session.commit()
-
-    return jsonify({'status': 0,
-                    'message': 'Submission edited'})
+        return jsonify({'status': 0,
+                        'message': 'Submission edited'}), 201
+    else:
+        return jsonify({'status': -1,
+                        'message': 'ID Incorrect, try again'}), 406
 
 
 if __name__ == "__main__":
