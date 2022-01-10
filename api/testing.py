@@ -8,14 +8,12 @@ import app
 
 
 class FlaskApp(unittest.TestCase):
-
     """
         def __init__(self, JWT='', ADMIN_JWT=''):
             super().__init__()
             self.JWT = JWT
             self.ADMIN_JWT = ADMIN_JWT
     """
-
 
     def test_has_empty_value(self):
         d1 = {1: ""}
@@ -86,16 +84,15 @@ class FlaskApp(unittest.TestCase):
         r = requests.post(url=url, json=login_data, stream=True)
         self.assertEqual(406, r.status_code)
 
-        """        
         login_data = {'username': 'Test',
                       'password': 'He110 w0r1d£'}
         r = requests.post(url=url, json=login_data)
         self.assertEqual(202, r.status_code)
 
-        jwt = r.json()[0]['JWT']
+        jwt = r.json()['JWT']
         print(jwt)
-        self.JWT = jwt
-        """
+        JWT = jwt
+
         login_data = {'username': 'Joe',
                       'password': 'Njdka3rq39h!'}
         r = requests.post(url=url, json=login_data, stream=True)
@@ -103,7 +100,7 @@ class FlaskApp(unittest.TestCase):
 
         admin_jwt = r.json()['JWT']
         print(admin_jwt)
-        self.ADMIN_JWT = admin_jwt
+        ADMIN_JWT = admin_jwt
 
     def test_get_single_file(self):
         import webbrowser
@@ -122,4 +119,6 @@ class FlaskApp(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    JWT = ''
+    ADMIN_JWT = ''
     unittest.main()
