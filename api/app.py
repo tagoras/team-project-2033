@@ -263,8 +263,8 @@ def submission() -> json:
 
             complaint = Complaint(name=submission_json["name"],
                                   description=submission_json["description"],
-                                  x_coord='',
-                                  y_coord='',
+                                  x_coord=submission_json["x_coord"],
+                                  y_coord=submission_json["y_coord"],
                                   date=date,
                                   user_id=current_user[id],
                                   img_path=img_path)
