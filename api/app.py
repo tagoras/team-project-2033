@@ -26,6 +26,8 @@ jwt = JWTManager(app)
 # Searches through a dictionary containing a string to see if any key has an empty string
 
 def has_empty_value(obj) -> bool:
+    if obj is None:
+        return True
     for k in obj:
         t = 0
         for s in obj[k]:
@@ -218,7 +220,7 @@ def allowed_file(filename):
                                                   '.pjpeg', '.pjp', '.jpeg', '.gif', '.apng'}
 
 
-@app.route('/submission', methods=['PUT'])
+@app.route('/submission', methods=['PUT', 'POST'])
 @jwt_required()
 def submission() -> json:
     current_user = get_jwt_identity()
@@ -227,7 +229,9 @@ def submission() -> json:
                         'message': "Unauthorised access attempt"}), 403
 
     submission_json = request.get_json()
+    print(request.json)
     if has_empty_value(submission_json):
+        print(submission_json)
         return jsonify({
             'status': -1,
             'message': "Submission failed: Fill all fields!"
