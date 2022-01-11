@@ -40,17 +40,19 @@ class Complaint(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
-    title = db.Column(db.String(100), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(200), nullable=False)
-    postcode = db.Column(db.String(100), nullable=False)
-    date = db.Column(db.String(100), nullable=False)
+    x_coord = db.Column(db.String(100), nullable=False)
+    y_coord = db.Column(db.String(100), nullable=False)
+    date = db.Column(db.String(15), nullable=False)
     img_path = db.Column(db.String(300), nullable=False)
 
-    def __init__(self, user_id, title, description, postcode, date, img_path):
+    def __init__(self, user_id, name, description, x_coord, y_coord, date, img_path):
         self.user_id = user_id
-        self.title = title
+        self.name = name
         self.description = description
-        self.postcode = postcode
+        self.x_coord = x_coord
+        self.y_coord = y_coord
         self.date = date
         self.img_path = img_path
 
@@ -80,9 +82,10 @@ def init_db():
                      role='user')
 
     test_submission = Complaint(user_id=2,
-                                title='Test Submission',
+                                name='Test Submission',
                                 description='To use for testing',
-                                postcode='NE8 8BC',
+                                x_coord='72',
+                                y_coord='10',
                                 date='1/5/2022',
                                 img_path='data/cats/cat.jpg')
 

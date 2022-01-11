@@ -236,17 +236,15 @@ def submission() -> json:
             'status': -1,
             'message': "Submission failed: Fill all fields!"
         }), 406
-    #TODO: change variable names
-    if "name" and "description" and "email" and "picture" in submission_json:
-        try:
-            print('it passed')
-            datetime.datetime.strptime(submission_json["date"], "%m/%d/%y")
-        except ValueError as e:
-            print(e)
-            return jsonify({
-                'status': -1,
-                'message': "Submission failed: Date is in the wrong format ! "
-                           "Should be %m/%d/%y"}), 406
+
+    if "name" and "description" and "email" and "picture" and "x_coords" and "y_coords" in submission_json:
+
+        import datetime
+        dt = datetime.datetime.today()
+        month = dt.month
+        day = dt.day
+        year = dt.year
+        date = "{}/{}/{}".format(month, day, year)
 
         if 'image' not in request.files or has_empty_value(request.files):
             return jsonify({
@@ -263,10 +261,11 @@ def submission() -> json:
             os.system('mkdir ' + 'data/' + current_user[id])
             img.save(img_path)
 
-            complaint = Complaint(title=submission_json["title"],
+            complaint = Complaint(name=submission_json["name"],
                                   description=submission_json["description"],
-                                  postcode=submission_json["postcode"],
-                                  date=submission_json["date"],
+                                  x_coord='',
+                                  y_coord='',
+                                  date=date,
                                   user_id=current_user[id],
                                   img_path=img_path)
 
@@ -441,9 +440,10 @@ def admin_edit_submission() -> json:
     to_edit = Complaint.query.filter_by(id=submission_id).first()
     if to_edit and not has_empty_value(request.json):
         db.session.query(Complaint).filter_by(id=submission_id) \
-            .update({Complaint.title: request.json["submission_title"],
+            .update({Complaint.name: request.json["submission_name"],
                      Complaint.description: request.json["submission_description"],
-                     Complaint.postcode: request.json["submission_postcode"],
+                     Complaint.x_coord: request.json["submission_x_coord"],
+                     Complaint.y_coord: request.json["submission_y_coord"],
                      Complaint.date: request.json["date"]})
         db.session.commit()
 
