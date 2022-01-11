@@ -1,7 +1,7 @@
 import Block from "../UI/Block.js";
 import "./Register.style.css";
 import { useRef,useState } from "react";
-import backgroundImage from "../Photos/x.jpg";
+import backgroundImage from "../Photos/registerBG.jpg";
 import ErrorBox from "../ErrorBox/ErrorBox.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
@@ -34,8 +34,8 @@ function RegisterForm(props) {
 
   return (
     <div className="containerContainer">
-      <img src={backgroundImage} className="backgroundImage"></img>
-      <div className="filter"></div>
+      {/* <img src={backgroundImage} className="backgroundImage"></img>
+      <div className="filter"></div> */}
       <div className="formContainer">
         <form className="form" onSubmit={registerSubmitHandler}>
           <div className="legend">Register</div>

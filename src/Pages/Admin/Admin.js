@@ -1,71 +1,80 @@
 import React from "react";
-import data from '../../Components/Complaint/Data';
-import './Admin.style.css';
+import data from "../../Components/Complaint/Data";
+import "./Admin.style.css";
 import ComplaintCard from "../../Components/Complaint/ComplaintCard";
 import "../../GenericFunctions";
 import { sentSyncrhonousAccessRequest } from "../../GenericFunctions";
-import {navigate} from 'react-router-dom';
-import {useState}  from 'react';
+import { navigate } from "react-router-dom";
+import { useState } from "react";
+import { Navbar } from "../../Components/Navbar/Navbar";
+import { SearchBar } from "../../Components/SearchBar/SearchBar";
+import LoginForm from './../../Components/Form/loginForm';
 
-function AdminPage(){
-
+function AdminPage() {
   let [data, setData] = useState([]);
   console.log(data);
 
-    // WORKS!
-    // let complaints =  sentSyncrhonousAccessRequest("/admin/view_all", "POST");
-    // complaints.then((text) => console.log(text));
+  // WORKS!
+  // let complaints =  sentSyncrhonousAccessRequest("/admin/view_all", "POST");
+  // complaints.then((text) => console.log(text));
 
-    // WORKS!
-    // let objectToSend = {
-    //     method: `DELETE`,
-    //     headers: {
-    //       'Content-Type': 'application/json;charset=utf-8',
-    //       'Authorization': `Bearer ${document.cookie.substring(10)}`
-    //     },
-    //     id: 1
-    //   }
-    
-    // //console.log(JSON.stringify(objectToSend));
-    // console.log(JSON.parse(JSON.stringify(objectToSend)));
-    // let result = fetch(`/admin/delete`, {
-    //     method: `DELETE`,
-    //     headers: {
-    //       'Content-Type': 'application/json;charset=utf-8',
-    //       'Authorization': `Bearer ${document.cookie.substring(10)}`
-    //     },
-    //     body: JSON.stringify({id: 9})
-    //   });
+  // WORKS!
+  // let objectToSend = {
+  //     method: `DELETE`,
+  //     headers: {
+  //       'Content-Type': 'application/json;charset=utf-8',
+  //       'Authorization': `Bearer ${document.cookie.substring(10)}`
+  //     },
+  //     id: 1
+  //   }
 
-    // result.then((response) => response.text()).then((response) => console.log(response));
+  // //console.log(JSON.stringify(objectToSend));
+  // console.log(JSON.parse(JSON.stringify(objectToSend)));
+  // let result = fetch(`/admin/delete`, {
+  //     method: `DELETE`,
+  //     headers: {
+  //       'Content-Type': 'application/json;charset=utf-8',
+  //       'Authorization': `Bearer ${document.cookie.substring(10)}`
+  //     },
+  //     body: JSON.stringify({id: 9})
+  //   });
 
-    //Testing Edit
-    //
+  // result.then((response) => response.text()).then((response) => console.log(response));
 
-    if(data.length == 0){
-      let complaints = sentSyncrhonousAccessRequest("/admin/view_all", "POST");
+  //Testing Edit
+  //
 
-      let array = [];
+  if (data.length == 0) {
+    let complaints = sentSyncrhonousAccessRequest("/admin/view_all", "POST");
+
+    let array = [];
+
+    complaints.then((resultInJSON) => {
+      array = resultInJSON["list of complaints"];
+      console.log(array);
+      setData(array);
+    });
+
+    console.log(complaints);
+  }
+
+  let [string, changeString] = useState("");
+
+  return (
+    <div>
+      <Navbar />
+      <SearchBar/>
+      <div className="ComplaintsHolder">
+      {data.map((item, index, array) => {
+        if(String(item.id).indexOf(string) != -1) return <ComplaintCard key={item.id} changePattern={changeString()} complaintObject={item}/>
+        else if(item.title.indexOf(string) != -1) return <ComplaintCard key={item.id} changePattern={changeString()} complaintObject={item}/>
+        else if(item.date.index(string) != -1)return <ComplaintCard key={item.id} changePattern={changeString()} complaintObject={item}/>
+        else return null;
+      })}
+      </div>
+    </div>
+  );
   
-      complaints.then((resultInJSON) => {
-        array = resultInJSON['list of complaints'];
-        console.log(array);
-        setData(array);
-      })
-  
-      console.log(complaints);
-    }
-    
-
-    return(
-        <div>
-          {data.map((item, index, array) => {
-            return <ComplaintCard/>
-          })}
-          
-        </div>
-    )
-    
 }
 
 export default AdminPage;

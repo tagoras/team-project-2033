@@ -1,0 +1,9 @@
+.SearchForm{
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.SearchBarInput{
+    width: 100%;
+    max-width: 99%;
+}

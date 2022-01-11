@@ -1,9 +1,7 @@
-.Container{
-  margin: 5px;
-}
 
-.Grid-Unordered-List{
-    display: grid;
-    grid-template-columns: auto auto auto auto auto;
-    gap: 5px;
+
+.ComplaintsHolder{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }

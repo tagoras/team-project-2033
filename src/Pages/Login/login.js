@@ -1,51 +1,57 @@
 import LoginForm from "../../Components/Form/loginForm.js";
 import { useNavigate } from "react-router-dom";
-import {useState} from 'react';
-import {sentSyncrhonousAccessRequest} from "../../GenericFunctions";
+import { useState } from "react";
+import { sentSyncrhonousAccessRequest } from "../../GenericFunctions";
+import { Navbar } from "../../Components/Navbar/Navbar.js";
+import Footer from "../../Components/Footer/Footer.component.jsx";
 
 function LoginPage() {
-
   const [errorStatus, setErrorStatus] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
- 
-
   const navigate = useNavigate();
   async function addLoginHandler(loginData) {
-    
     fetch("/login", {
       method: "POST",
       headers: {
-        'Content-Type': 'application/json;charset=utf-8'
+        "Content-Type": "application/json;charset=utf-8",
       },
       body: JSON.stringify(loginData),
-    }).then((response) => {
-      console.log(response);
-      return response.json();
-    }).then(responseInJSON => {
-      
-      console.log(responseInJSON);
-      if(responseInJSON.status == -1){
-        setErrorStatus(true);
-        setErrorMessage(responseInJSON.message);
-      }
+    })
+      .then((response) => {
+        console.log(response);
+        return response.json();
+      })
+      .then((responseInJSON) => {
+        console.log(responseInJSON);
+        if (responseInJSON.status == -1) {
+          setErrorStatus(true);
+          setErrorMessage(responseInJSON.message);
+        }
 
-      
-      document.cookie = `SessionID=${responseInJSON.JWT}; path=/`;
-      let access = sentSyncrhonousAccessRequest("/get_role", "GET");
-      access.then((response) => {
-        if(response.role == 'user') navigate("/User");
-        else if(response.role == 'admin') navigate("/admin");
+        document.cookie = `SessionID=${responseInJSON.JWT}; path=/`;
+        let access = sentSyncrhonousAccessRequest("/get_role", "GET");
+        access.then((response) => {
+          if (response.role == "user") navigate("/User");
+          else if (response.role == "admin") navigate("/admin");
+        });
       });
-    });
   }
-  
+
   return (
-    <section>
-      <div className="login">
-        <LoginForm addLoginForm={addLoginHandler} errorStatus={errorStatus} errorMessage={errorMessage}/>
-      </div>
-    </section>
+    <div>
+      <Navbar />
+      <section>
+        <div className="login">
+          <LoginForm
+            addLoginForm={addLoginHandler}
+            errorStatus={errorStatus}
+            errorMessage={errorMessage}
+          />
+        </div>
+      </section>
+      <Footer />
+    </div>
   );
 }
 export default LoginPage;

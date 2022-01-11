@@ -4,7 +4,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 20px;
+
 }
 
 .contentHolder{
@@ -12,6 +12,7 @@
     height: 90%;
     text-align: center;
     padding: 20px;
+    margin-bottom: 2rem;
 }
 
 .contentHolder h1{
@@ -36,12 +37,13 @@
     padding: 20px 30px;
     background-color: black;
     color: white;
+    box-shadow: 1px 1px 5px black;
 }
 
 .Button-1:hover{
     transition: 1s;
     color: white;
-    background-color: orangered;
-    font-weight: bold;
+    background-color: rgb(228, 61, 0);
+    
 }
 

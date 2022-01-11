@@ -2,6 +2,8 @@ import RegisterForm from "../../Components/Form/registerForm";
 import "./Register.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Navbar } from "../../Components/Navbar/Navbar";
+import Footer from "../../Components/Footer/Footer.component";
 
 function RegisterPage() {
 
@@ -29,11 +31,14 @@ function RegisterPage() {
   }
 
   return (
-    <section>
+    <div>
+    <Navbar/>
+      <section>
       <div className="register">
         <RegisterForm addRegisterForm={addRegisterHandler} errorOccurred = {status.statusCode == -1} errorText={status.message}/>
       </div>
     </section>
+    </div>
   );
 }
 export default RegisterPage;
