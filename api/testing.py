@@ -111,6 +111,25 @@ class FlaskApp(unittest.TestCase):
         status_code = requests.get(url=url2, stream=True).status_code
         self.assertEqual(200, status_code)
 
+    def test_submission(self):
+        url = "http://localhost:5000/submisison"
+        submission = {
+            "title": "This is a title",
+            "description": "This is a very good description",
+            "postcode": "NE6 6BA",
+            "date": "02/12/02"
+
+        }
+        headers = {
+            "Authorization": f"Bearer {JWT}",
+        }
+        files = {
+            "image": open("data/cats/cat.gif", "rb")
+        }
+
+        r = requests.put(url=url, json=submission, headers=headers, files=files)
+        self.assertEqual(201, r.status_code)
+
 
 if __name__ == '__main__':
     JWT = ''
