@@ -14,12 +14,12 @@ import usePlacesAutocomplete, {
     ComboboxOption,
   } from "@reach/combobox";
 
+  import "../GenericFunctions";
+  import { sentSyncrhonousAccessRequest } from '../GenericFunctions';
+  
 
 
 const libraries = ['places'];
-
-import "../GenericFunctions";
-import { sentSyncrhonousAccessRequest } from '../GenericFunctions';
 
 function UserPage(){
   const {isLoaded,loadError} = useLoadScript({
@@ -31,10 +31,11 @@ function UserPage(){
   //FIX: file and address are not being sent to the DB
   const onSubmit = (data) =>{
       console.log(addressRef);
-        fetch("/User", {
-         method: "POST",
+        fetch("/submission", {
+         method: "PUT",
          headers: {
              'Content-Type': 'application/json;charset=utf-8'},
+             'Authorization': `Bearer ${document.cookie.substring(10)}`,
          body: JSON.stringify(data),
        }).then(
          (value) => {
