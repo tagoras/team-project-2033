@@ -9,7 +9,6 @@ import app
 
 class FlaskApp(unittest.TestCase):
 
-
     def test_has_empty_value(self):
         d1 = {1: ""}
         d2 = {1: " "}
@@ -19,7 +18,6 @@ class FlaskApp(unittest.TestCase):
         self.assertTrue(app.has_empty_value(d2))
         self.assertTrue(app.has_empty_value(d3))
         self.assertFalse(app.has_empty_value(d4))
-
 
     def test_hello_world(self):
         r = requests.get('http://localhost:5000/hello_world')
@@ -144,6 +142,26 @@ class FlaskApp(unittest.TestCase):
         print(submission)
         print(r2.request.headers)
         self.assertEqual(201, r2.status_code)
+
+    def test_admin_view_all(self):
+        url = 'http://localhost:5000/login'
+
+        login_data = {'username': 'Joe',
+                      'password': 'Njdka3rq39h!'}
+        r = requests.post(url=url, json=login_data)
+
+        self.assertEqual(202, r.status_code)
+
+        url = 'http://localhost:5000/admin/view_all'
+
+        jwt = r.json()['JWT']
+        headers = {
+            "Authorization": f"Bearer {jwt}",
+            'Connection': 'close'
+        }
+        r = requests.post(url=url, headers=headers)
+
+        self.assertEqual(200, r.status_code)
 
 
 if __name__ == '__main__':
