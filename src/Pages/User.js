@@ -30,17 +30,21 @@ function UserPage(){
   const addressRef = useRef()
   //FIX: file and address are not being sent to the DB
   const onSubmit = (data) =>{
-      console.log(addressRef);
+      console.log(data);
         fetch("/submission", {
          method: "PUT",
          headers: {
-             'Content-Type': 'application/json;charset=utf-8'},
-             'Authorization': `Bearer ${document.cookie.substring(10)}`,
+             'Content-Type': 'application/json;charset=utf-8',
+             'Authorization': `Bearer ${document.cookie.substring(10)}`,},
+             
          body: JSON.stringify(data),
        }).then(
          (value) => {
-           console.log(value);
+           return value.json();
          }
+       ).then(
+           (result)=>{console.log(result)
+            ;}
        );
         //
     }
