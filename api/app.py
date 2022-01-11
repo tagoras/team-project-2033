@@ -1,5 +1,4 @@
 # IMPORTS
-import datetime
 import json
 import re
 
@@ -309,7 +308,7 @@ def admin_view_all() -> json:
         return jsonify({'status': -1,
                         'message': "Unauthorised access attempt"}), 403
 
-    from sqlalchemy import func, desc
+    from sqlalchemy import desc
 
     '''
     last_complaint_id = request.json['last_complaint']
