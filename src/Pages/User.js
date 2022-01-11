@@ -13,7 +13,6 @@ import usePlacesAutocomplete, {
     ComboboxList,
     ComboboxOption,
   } from "@reach/combobox";
-  import { formatRelative } from "date-fns";
 
 
 
@@ -25,8 +24,10 @@ function UserPage(){
          libraries,
      });
   const {register, handleSubmit, reset} = useForm();
+  const addressRef = useRef()
   //FIX: file and address are not being sent to the DB
   const onSubmit = (data) =>{
+      console.log(addressRef);
         fetch("/User", {
          method: "POST",
          headers: {
@@ -37,18 +38,15 @@ function UserPage(){
            console.log(value);
          }
        );
-        reset();
+        //
     }
   const [marker, setMarker] = useState();
 
   const onMapClick = useCallback((event)=>{
-      console.log(event.latLng.lat());
-      console.log(event.latLng.lng());
            setMarker({
             lat: event.latLng.lat(),
             lng: event.latLng.lng(),
-            time: new Date(),
-           }
+           },
            );
            
   },[])
@@ -100,26 +98,22 @@ function UserPage(){
             <input type='file' name='picture' {...register('picture')} />
         </div>
         {/* FIX: returns 'undifined' instead of coordinates*/ }
-        <Search goTo={goTo} {...register('adress')}  />
-        <div >
-            
-            <GoogleMap className='mapContainer'
-            mapContainerStyle={mapContainerStyle} 
-            zoom={15} 
-            center={center}
-            options={options}
-            onClick={onMapClick}
-            onLoad={onMapLoad}>
-
-                {<Marker position={marker}/>}
-
-            </GoogleMap>
-        </div>
+        <Search goTo={goTo}  />
+        <GoogleMap className='mapContainer'
+        mapContainerStyle={mapContainerStyle} 
+        zoom={15} 
+        center={center}
+        options={options}
+        onClick={onMapClick }
+        onLoad={onMapLoad}
+        >  
+            {<Marker position={marker} ref={addressRef}/>}
+        </GoogleMap>
         <button>Submit Picture</button>
     </form>
 )  
 }
-//TODO: add to the address that is typed in
+//TODO: add marker to the address that is typed in
 function Search({goTo}){
 const {ready, value, suggestions:{status,data},setValue, clearSuggestions} = usePlacesAutocomplete({
     requestOptions: {
@@ -127,7 +121,7 @@ const {ready, value, suggestions:{status,data},setValue, clearSuggestions} = use
         radius:100*1000,
     }
 });
-    return ( 
+    return (
         <Combobox className='contactInfo'
         onSelect={async (address)=>{
             setValue(address,false);
@@ -135,6 +129,7 @@ const {ready, value, suggestions:{status,data},setValue, clearSuggestions} = use
             try{
                 const results = await getGeocode({ address });
                 const { lat, lng } = await getLatLng(results[0]);
+
                 goTo({lat,lng});
             }
             catch(error){
@@ -145,7 +140,8 @@ const {ready, value, suggestions:{status,data},setValue, clearSuggestions} = use
             value={value} 
             onChange={(e)=>{setValue(e.target.value);}}
             disabled={!ready}
-            placeholder='Enter Address here'/>
+            placeholder='Enter Address here'
+            />
             <ComboboxList>
                 <ComboboxPopover>
                     {status==="OK" && data.map(({id, description})=><ComboboxOption key={id} value={description}/>)}
