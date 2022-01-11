@@ -74,7 +74,7 @@ def init_db():
 
     test_user = User(username='Steve',
                      email='Steve@test.com',
-                     password=generate_password_hash('Pass123'),
+                     password=generate_password_hash('Pass123!'),
                      # postcode=generate_password_hash("NE6 9RU"),
                      postcode="NE1 2AA",
                      role='user')
