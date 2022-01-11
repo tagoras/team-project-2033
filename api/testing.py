@@ -163,6 +163,29 @@ class FlaskApp(unittest.TestCase):
 
         self.assertEqual(200, r.status_code)
 
+    def test_admin_delete_submission(self):
+        url = 'http://localhost:5000/login'
+
+        login_data = {'username': 'Joe',
+                      'password': 'Njdka3rq39h!'}
+        r = requests.post(url=url, json=login_data)
+
+        self.assertEqual(202, r.status_code)
+
+        url = 'http://localhost:5000/admin/delete'
+
+        jwt = r.json()['JWT']
+        headers = {"Authorization": f"Bearer {jwt}",
+                   'Connection': 'close'}
+        body = {"submission_id": 1}
+        r = requests.post(url=url, headers=headers, json=body)
+
+        self.assertEqual(201, r.status_code)
+
+        r = requests.post(url=url, headers=headers, json=body)
+
+        self.assertEqual(500, r.status_code)
+
 
 if __name__ == '__main__':
     unittest.main()
