@@ -236,9 +236,10 @@ def submission() -> json:
             'status': -1,
             'message': "Submission failed: Fill all fields!"
         }), 406
-
-    if "title" and "description" and "postcode" and "date" in submission_json:
+    #TODO: change variable names
+    if "name" and "description" and "email" and "picture" in submission_json:
         try:
+            print('it passed')
             datetime.datetime.strptime(submission_json["date"], "%m/%d/%y")
         except ValueError as e:
             print(e)
