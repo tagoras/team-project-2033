@@ -76,7 +76,7 @@ In a second terminal:
 Back-end setup : 
 ```bash
 cd api/ && python -m venv venv
-source venv/bin//activate
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 Start python: 
