@@ -1,7 +1,7 @@
 import {react} from 'react';
 import './ErrorBox.style.css';
 
-function ErrorBox(props){
+export function ErrorBox(props){
     if(props.errorOccurred){
         return(
             <div className='container'>
@@ -11,6 +11,5 @@ function ErrorBox(props){
     }
     return null;
 }
-
 
 export default ErrorBox;

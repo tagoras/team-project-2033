@@ -18,6 +18,9 @@ import usePlacesAutocomplete, {
 
 const libraries = ['places'];
 
+import "../GenericFunctions";
+import { sentSyncrhonousAccessRequest } from '../GenericFunctions';
+
 function UserPage(){
   const {isLoaded,loadError} = useLoadScript({
          googleMapsApiKey: 'AIzaSyAi4NJSYk62SkXRXqDDwjaGAoo4e30rkjw',
@@ -113,43 +116,49 @@ function UserPage(){
     </form>
 )  
 }
+
+   // Sent request for access by sending a cookie JWT
+   /*let accessGranted = sentSyncrhonousAccessRequest("/admin");
+
+   accessGranted.then((resultInJSON => {console.log(resultInJSON)}, (Error) => console.log(Error)));
+   // If access denied (Role is admin) -> render error Page.
+*/
 //TODO: add marker to the address that is typed in
 function Search({goTo}){
-const {ready, value, suggestions:{status,data},setValue, clearSuggestions} = usePlacesAutocomplete({
-    requestOptions: {
-        location: {lat:() =>54.978252,lng:() =>-1.617780},
-        radius:100*1000,
-    }
-});
-    return (
-        <Combobox className='contactInfo'
-        onSelect={async (address)=>{
-            setValue(address,false);
-            clearSuggestions();
-            try{
-                const results = await getGeocode({ address });
-                const { lat, lng } = await getLatLng(results[0]);
-
-                goTo({lat,lng});
-            }
-            catch(error){
-                console.log(error);
-            }
-            }}>
-            <ComboboxInput 
-            value={value} 
-            onChange={(e)=>{setValue(e.target.value);}}
-            disabled={!ready}
-            placeholder='Enter Address here'
-            />
-            <ComboboxList>
-                <ComboboxPopover>
-                    {status==="OK" && data.map(({id, description})=><ComboboxOption key={id} value={description}/>)}
-                </ComboboxPopover>
-            </ComboboxList>
-        </Combobox>
-
-
-    )
+    const {ready, value, suggestions:{status,data},setValue, clearSuggestions} = usePlacesAutocomplete({
+        requestOptions: {
+            location: {lat:() =>54.978252,lng:() =>-1.617780},
+            radius:100*1000,
+        }
+    });
+        return (
+            <Combobox className='contactInfo'
+            onSelect={async (address)=>{
+                setValue(address,false);
+                clearSuggestions();
+                try{
+                    const results = await getGeocode({ address });
+                    const { lat, lng } = await getLatLng(results[0]);
+    
+                    goTo({lat,lng});
+                }
+                catch(error){
+                    console.log(error);
+                }
+                }}>
+                <ComboboxInput 
+                value={value} 
+                onChange={(e)=>{setValue(e.target.value);}}
+                disabled={!ready}
+                placeholder='Enter Address here'
+                />
+                <ComboboxList>
+                    <ComboboxPopover>
+                        {status==="OK" && data.map(({id, description})=><ComboboxOption key={id} value={description}/>)}
+                    </ComboboxPopover>
+                </ComboboxList>
+            </Combobox>
+    
+        )
 }
 export default UserPage;
