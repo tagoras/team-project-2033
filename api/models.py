@@ -65,18 +65,37 @@ def init_db():
     db.drop_all()
     db.create_all()
 
-    test_user = User(username='Joe',
-                     email='test1@test.com',
-                     password=generate_password_hash('Njdka3rq39h!'),
-                     postcode=generate_password_hash("NE6 9RU"),
-                     role='admin')
+    test_admin = User(username='Joe',
+                      email='test1@test.com',
+                      password=generate_password_hash('Njdka3rq39h!'),
+                      # postcode=generate_password_hash("NE6 9RU"),
+                      postcode="NE6 9RU",
+                      role='admin')
 
+    test_user = User(username='Steve',
+                     email='Steve@test.com',
+                     password=generate_password_hash('Pass123!'),
+                     # postcode=generate_password_hash("NE6 9RU"),
+                     postcode="NE1 2AA",
+                     role='user')
+
+    test_submission = Complaint(user_id=2,
+                                title='Test Submission',
+                                description='To use for testing',
+                                postcode='NE8 8BC',
+                                date='1/5/2022',
+                                img_path='data/cats/cat.jpg')
+
+    db.session.add(test_admin)
     db.session.add(test_user)
+    db.session.add(test_submission)
     db.session.commit()
+
     import requests
     import shutil
     os.system("mkdir data/cats")
-    url1 = "https://hddesktopwallpapers.in/wp-content/uploads/2015/09/brown-cat.jpg"
+    url1 = "https://2.bp.blogspot.com/-i5JOdegCL2k/UIUR2YDLauI/AAAAAAAAHwg/yLoHtvi3qKM/\
+            s1600/close-up_cats_cat_desktop_1920x1200_hd-wallpaper-834709.jpg"
     res1 = requests.get(url=url1, stream=True)
     if res1.status_code == 200:
         with open("data/cats/cat.jpg", 'wb') as f:
