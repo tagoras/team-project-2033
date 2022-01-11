@@ -78,7 +78,7 @@ def init_db():
     import shutil
     os.system("mkdir data/cats")
     url1 = "https://2.bp.blogspot.com/-i5JOdegCL2k/UIUR2YDLauI/AAAAAAAAHwg/yLoHtvi3qKM/\
-            s1600/close-up_cats_cat_desktop_1920x1200_hd-wallpaper-834709.jpg "
+            s1600/close-up_cats_cat_desktop_1920x1200_hd-wallpaper-834709.jpg"
     res1 = requests.get(url=url1, stream=True)
     if res1.status_code == 200:
         with open("data/cats/cat.jpg", 'wb') as f:
