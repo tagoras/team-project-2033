@@ -28,6 +28,43 @@ class FlaskApp(unittest.TestCase):
         self.assertEqual(200, r.status_code, )
         self.assertEqual('http://localhost:5000/hello_world', r.url, )
 
+    def test_logout(self):
+        url = 'http://localhost:5000/login'
+
+        login_data = {'username': 'Test',
+                      'password': 'He110 w0r1d£'}
+        r = requests.post(url=url, json=login_data)
+        self.assertEqual(202, r.status_code)
+
+        jwt = r.json()['JWT']
+        print(jwt)
+
+        url = 'http://localhost:5000/logout'
+        headers = {
+            "Authorization": f"Bearer {jwt}",
+        }
+
+        r = requests.get(url=url, headers=headers)
+        self.assertEqual(200, r.status_code)
+
+        url = 'http://localhost:5000/login'
+
+        login_data = {'username': 'Joe',
+                      'password': 'Njdka3rq39h!'}
+        r = requests.post(url=url, json=login_data)
+        self.assertEqual(202, r.status_code)
+
+        jwt = r.json()['JWT']
+        print(jwt)
+
+        url = 'http://localhost:5000/logout'
+        headers = {
+            "Authorization": f"Bearer {jwt}",
+        }
+
+        r = requests.get(url=url, headers=headers)
+        self.assertEqual(200, r.status_code)
+
     def test_register(self):
         url = 'http://localhost:5000/register'
 

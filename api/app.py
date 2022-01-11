@@ -280,7 +280,7 @@ def submission() -> json:
 
 
 # Logs the user out of the website
-@app.route("/logout")
+@app.route("/logout", methods=["GET"])
 @jwt_required()
 def logout() -> json:
     try:
