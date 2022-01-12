@@ -1,5 +1,4 @@
 # IMPORTS
-import datetime
 import json
 import re
 
@@ -236,19 +235,17 @@ def submission() -> json:
             'status': -1,
             'message': "Submission failed: Fill all fields!"
         }), 406
-    #TODO: change variable names
-    if "name" and "description" and "email" and "picture" in submission_json:
-        try:
-            print('it passed')
-            datetime.datetime.strptime(submission_json["date"], "%m/%d/%y")
-        except ValueError as e:
-            print(e)
-            return jsonify({
-                'status': -1,
-                'message': "Submission failed: Date is in the wrong format ! "
-                           "Should be %m/%d/%y"}), 406
 
-        if 'image' not in request.files or has_empty_value(request.files):
+    if "name" and "description" and "email" and "x_coords" and "y_coords" in submission_json:
+
+        import datetime
+        dt = datetime.datetime.today()
+        month = dt.month
+        day = dt.day
+        year = dt.year
+        date = "{}/{}/{}".format(month, day, year)
+
+        if 'picture' not in request.files or has_empty_value(request.files):
             return jsonify({
                 'status': -1,
                 'message': "Submission failed: Image is missing! "}), 406
@@ -263,10 +260,11 @@ def submission() -> json:
             os.system('mkdir ' + 'data/' + current_user[id])
             img.save(img_path)
 
-            complaint = Complaint(title=submission_json["title"],
+            complaint = Complaint(name=submission_json["name"],
                                   description=submission_json["description"],
-                                  postcode=submission_json["postcode"],
-                                  date=submission_json["date"],
+                                  x_coord=submission_json["x_coord"],
+                                  y_coord=submission_json["y_coord"],
+                                  date=date,
                                   user_id=current_user[id],
                                   img_path=img_path)
 
@@ -281,7 +279,7 @@ def submission() -> json:
 
 
 # Logs the user out of the website
-@app.route("/logout")
+@app.route("/logout", methods=["GET"])
 @jwt_required()
 def logout() -> json:
     try:
@@ -310,7 +308,7 @@ def admin_view_all() -> json:
         return jsonify({'status': -1,
                         'message': "Unauthorised access attempt"}), 403
 
-    from sqlalchemy import func, desc
+    from sqlalchemy import desc
 
     '''
     last_complaint_id = request.json['last_complaint']
@@ -340,9 +338,10 @@ def admin_view_all() -> json:
 
     for complaint in complaints:
         json_complaint = {'id': complaint.id,
-                          'title': complaint.title,
+                          'title': complaint.name,
                           'description': complaint.description,
-                          'postcode': complaint.postcode,
+                          'x_coord': complaint.x_coord,
+                          'y_coord': complaint.y_coord,
                           'date': complaint.date}
         json_complaints.append(json_complaint)
 
@@ -441,9 +440,10 @@ def admin_edit_submission() -> json:
     to_edit = Complaint.query.filter_by(id=submission_id).first()
     if to_edit and not has_empty_value(request.json):
         db.session.query(Complaint).filter_by(id=submission_id) \
-            .update({Complaint.title: request.json["submission_title"],
+            .update({Complaint.name: request.json["submission_name"],
                      Complaint.description: request.json["submission_description"],
-                     Complaint.postcode: request.json["submission_postcode"],
+                     Complaint.x_coord: request.json["submission_x_coord"],
+                     Complaint.y_coord: request.json["submission_y_coord"],
                      Complaint.date: request.json["date"]})
         db.session.commit()
 

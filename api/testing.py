@@ -28,6 +28,43 @@ class FlaskApp(unittest.TestCase):
         self.assertEqual(200, r.status_code, )
         self.assertEqual('http://localhost:5000/hello_world', r.url, )
 
+    def test_logout(self):
+        url = 'http://localhost:5000/login'
+
+        login_data = {'username': 'Test',
+                      'password': 'He110 w0r1d£'}
+        r = requests.post(url=url, json=login_data)
+        self.assertEqual(202, r.status_code)
+
+        jwt = r.json()['JWT']
+        print(jwt)
+
+        url = 'http://localhost:5000/logout'
+        headers = {
+            "Authorization": f"Bearer {jwt}",
+        }
+
+        r = requests.get(url=url, headers=headers)
+        self.assertEqual(200, r.status_code)
+
+        url = 'http://localhost:5000/login'
+
+        login_data = {'username': 'Joe',
+                      'password': 'Njdka3rq39h!'}
+        r = requests.post(url=url, json=login_data)
+        self.assertEqual(202, r.status_code)
+
+        jwt = r.json()['JWT']
+        print(jwt)
+
+        url = 'http://localhost:5000/logout'
+        headers = {
+            "Authorization": f"Bearer {jwt}",
+        }
+
+        r = requests.get(url=url, headers=headers)
+        self.assertEqual(200, r.status_code)
+
     def test_register(self):
         url = 'http://localhost:5000/register'
 
@@ -162,6 +199,29 @@ class FlaskApp(unittest.TestCase):
         r = requests.post(url=url, headers=headers)
 
         self.assertEqual(200, r.status_code)
+
+    def test_admin_delete_submission(self):
+        url = 'http://localhost:5000/login'
+
+        login_data = {'username': 'Joe',
+                      'password': 'Njdka3rq39h!'}
+        r = requests.post(url=url, json=login_data)
+
+        self.assertEqual(202, r.status_code)
+
+        url = 'http://localhost:5000/admin/delete'
+
+        jwt = r.json()['JWT']
+        headers = {"Authorization": f"Bearer {jwt}",
+                   "Connection": 'close'}
+        body = {"id": 1}
+        r = requests.delete(url=url, headers=headers, json=body)
+
+        self.assertEqual(201, r.status_code)
+
+        r = requests.delete(url=url, headers=headers, json=body)
+
+        self.assertEqual(500, r.status_code)
 
 
 if __name__ == '__main__':
