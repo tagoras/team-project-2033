@@ -18,7 +18,7 @@
   opacity: 0.6;
 }
 
-img {
+.LoginBackgroundImage {
   position: absolute;
   top: 0;
   left: 0;
@@ -63,17 +63,8 @@ input {
   width: 100%;
   max-width: 94%;
 }
-i {
-  position: absolute;
-  top: auto;
-  right: 43%;
-}
-i:hover {
-  cursor: pointer;
-  color: rgb(156, 156, 156);
-  cursor: pointer;
-  font-weight: bold;
-}
+
+
 
 .loginSubmit {
   margin-bottom: 1rem;

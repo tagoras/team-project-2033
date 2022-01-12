@@ -1,21 +1,48 @@
-.complaintContainer{
-    color: white;
-    height: 300px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    position: relative;
+.ComplaintContainer{
+    width: 15vw;
+    padding: 1rem;
+    box-shadow: 2px 2px 5px black;
+    transition: 1.5s;
 }
 
-.complaintContainer:hover{
+.ComplaintContainer{
+    font-size: 1.2rem;
+}
+
+.ComplaintContainer:hover{
+    cursor: pointer;
+    background-color: rgb(63, 63, 63);
+    color: white;
+    transition: 1.5s;
+}
+
+.ComplaintCardImage{
+    display: inline-block;
+    height: 60%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.ComplaintInfo{
+    padding: 0.2rem;
+}
+
+.ComplaintText{
+    font-weight: bold;
+}
+
+.ComplaintIconHolder{
+    display: flex;
+}
+
+.ComplaintIconHolder i{
+    margin-top: 1rem;
+}
+
+.ComplaintIconHolder i:hover{
+    margin-top: 1rem;
     cursor: pointer;
 }
 
-.aboveFilterContent{
-    z-index: 1;
-}
 
-img{
-    position: absolute;
-}
+

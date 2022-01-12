@@ -49,18 +49,18 @@ function AdminPage(){
   
       complaints.then((resultInJSON) => {
         array = resultInJSON['list of complaints'];
-        console.log(array);
+        //console.log(array);
         setData(array);
       })
   
-      console.log(complaints);
+      console.log(data);
     }
     
 
     return(
-        <div>
+        <div className="AdminMainContainer">
           {data.map((item, index, array) => {
-            return <h1>{item.id}</h1>
+            return <ComplaintCard key={index} complaint={item}/>
           })}
         </div>
     )

@@ -27,7 +27,7 @@ export function LoginForm(props){
     }
     return (
     <div className="mainContainer">
-        <img src={backgroundImage}></img>
+        <img className="LoginBackgroundImage" src={backgroundImage}></img>
         <div className="filter"></div>
         <div className="loginFormContainer">
         
