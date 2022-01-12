@@ -64,17 +64,7 @@
   width: 100%;
   padding: 0.2rem;
 }
-i {
-  position: absolute;
-  top: auto;
-  right: 43%;
-}
-i:hover {
-  cursor: pointer;
-  color: rgb(156, 156, 156);
-  cursor: pointer;
-  font-weight: bold;
-}
+
 
 .submitButton {
   transition: 1s;

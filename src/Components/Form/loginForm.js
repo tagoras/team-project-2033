@@ -7,7 +7,7 @@ import {ErrorBox} from '../ErrorBox/ErrorBox';
 
 const eye = <FontAwesomeIcon icon={faEye} />;
 
-function LoginForm(props){
+export function LoginForm(props){
     const [passwordShown, setPasswordShown] = useState(false);
     const togglePasswordVisibility = () =>{
         setPasswordShown(passwordShown ? false:true);
@@ -27,7 +27,7 @@ function LoginForm(props){
     }
     return (
     <div className="mainContainer">
-        <img src={backgroundImage}></img>
+        <img className="LoginBackgroundImage" src={backgroundImage}></img>
         <div className="filter"></div>
         <div className="loginFormContainer">
         

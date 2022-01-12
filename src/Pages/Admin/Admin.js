@@ -1,9 +1,9 @@
 import React from "react";
-import data from '../Components/Complaint/Data';
+import data from '../../Components/Complaint/Data';
 import './Admin.style.css';
-import ComplaintCard from "../Components/Complaint/ComplaintCard";
-import "../GenericFunctions";
-import { sentSyncrhonousAccessRequest } from "../GenericFunctions";
+import ComplaintCard from "../../Components/Complaint/ComplaintCard";
+import "../../GenericFunctions";
+import { sentSyncrhonousAccessRequest } from "../../GenericFunctions";
 import {navigate} from 'react-router-dom';
 import {useState}  from 'react';
 
@@ -49,18 +49,18 @@ function AdminPage(){
   
       complaints.then((resultInJSON) => {
         array = resultInJSON['list of complaints'];
-        console.log(array);
+        //console.log(array);
         setData(array);
       })
   
-      console.log(complaints);
+      console.log(data);
     }
     
 
     return(
-        <div>
+        <div className="AdminMainContainer">
           {data.map((item, index, array) => {
-            return <h1>{item.id}</h1>
+            return <ComplaintCard key={index} complaint={item}/>
           })}
         </div>
     )

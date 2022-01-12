@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import backgroundImage from "../Components/Photos/x.jpg";
+import backgroundImage from "../../Components/Photos/x.jpg";
 import "./GetInTouch.css";
 import {FaPhone, FaEnvelope} from 'react-icons/fa';
 
