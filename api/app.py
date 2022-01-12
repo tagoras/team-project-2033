@@ -236,7 +236,7 @@ def submission() -> json:
             'message': "Submission failed: Fill all fields!"
         }), 406
 
-    if "name" and "description" and "email" and "picture" and "x_coords" and "y_coords" in submission_json:
+    if "name" and "description" and "email" and "x_coords" and "y_coords" in submission_json:
 
         import datetime
         dt = datetime.datetime.today()
@@ -245,7 +245,7 @@ def submission() -> json:
         year = dt.year
         date = "{}/{}/{}".format(month, day, year)
 
-        if 'image' not in request.files or has_empty_value(request.files):
+        if 'picture' not in request.files or has_empty_value(request.files):
             return jsonify({
                 'status': -1,
                 'message': "Submission failed: Image is missing! "}), 406
@@ -338,9 +338,10 @@ def admin_view_all() -> json:
 
     for complaint in complaints:
         json_complaint = {'id': complaint.id,
-                          'title': complaint.title,
+                          'title': complaint.name,
                           'description': complaint.description,
-                          'postcode': complaint.postcode,
+                          'x_coord': complaint.x_coord,
+                          'y_coord': complaint.y_coord,
                           'date': complaint.date}
         json_complaints.append(json_complaint)
 
