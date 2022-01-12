@@ -91,20 +91,24 @@ def init_db():
     db.session.add(test_submission)
     db.session.commit()
 
-    import requests
-    import shutil
-    os.system("mkdir data/cats")
-    url1 = "https://2.bp.blogspot.com/-i5JOdegCL2k/UIUR2YDLauI/AAAAAAAAHwg/yLoHtvi3qKM/\
-            s1600/close-up_cats_cat_desktop_1920x1200_hd-wallpaper-834709.jpg"
-    res1 = requests.get(url=url1, stream=True)
-    if res1.status_code == 200:
-        with open("data/cats/cat.jpg", 'wb') as f:
-            shutil.copyfileobj(res1.raw, f)
+    # the code breaks during init_db()
+    # Somehow line 98 seems to fail to create a folder and then
+    # when it accesses it, the script crashes
+    
+    # import requests
+    # import shutil
+    # os.system("mkdir data/cats")
+    # url1 = "https://2.bp.blogspot.com/-i5JOdegCL2k/UIUR2YDLauI/AAAAAAAAHwg/yLoHtvi3qKM/\
+    #         s1600/close-up_cats_cat_desktop_1920x1200_hd-wallpaper-834709.jpg"
+    # res1 = requests.get(url=url1, stream=True)
+    # if res1.status_code == 200:
+    #     with open("data/cats/cat.jpg", 'wb') as f:
+    #         shutil.copyfileobj(res1.raw, f)
 
-    url2 = "https://welovecatsandkittens.com/wp-content/uploads/2017/01/wiggle.gif"
-    res2 = requests.get(url=url2, stream=True)
-    if res2.status_code == 200:
-        with open("data/cats/cat.gif", 'wb') as f:
-            shutil.copyfileobj(res2.raw, f)
+    # url2 = "https://welovecatsandkittens.com/wp-content/uploads/2017/01/wiggle.gif"
+    # res2 = requests.get(url=url2, stream=True)
+    # if res2.status_code == 200:
+    #     with open("data/cats/cat.gif", 'wb') as f:
+    #         shutil.copyfileobj(res2.raw, f)
 
     print("init_db successful")
