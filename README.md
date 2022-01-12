@@ -105,16 +105,12 @@ python app.py # Starts on localhost:5000
 To start the testing suite:
 
 ```bash
-cd api/
-source venv/bin/activate
-python testing.py
+api/venv/bin/python testing.py
 ```
 or
 
 ```bash
-cd api/
-source venv/bin/activate
-python -m unittest testing.py
+api/venv/bin/python -m unittest testing.py
 ```
 
 
