@@ -44,21 +44,9 @@ cd api/
 python -m venv venv
 source venv/bin/Scripts/activate
 pip install -r requirements.txt
+python __init__.py
 ```
 
-Start python:
-
-```bash
-python
-```
-
-then:
-
-```python
->>> from models import init_db
->>> init_db()
->>> exit()
-```
 
 To start the React server run:
 
@@ -105,12 +93,18 @@ python app.py # Starts on localhost:5000
 To start the testing suite:
 
 ```bash
-api/venv/bin/python testing.py
+#Linux
+api/venv/bin/python3 testing.py
+#Windows
+api/venv/Scripts/python.exe testing.py
 ```
 or
 
 ```bash
-api/venv/bin/python -m unittest testing.py
+#Linux
+api/venv/bin/python3 -m unittest testing.py
+#Windows
+api/venv/Lib/python.exe -m unittest testing.py
 ```
 
 
