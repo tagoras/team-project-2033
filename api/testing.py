@@ -213,13 +213,13 @@ class FlaskApp(unittest.TestCase):
 
         jwt = r.json()['JWT']
         headers = {"Authorization": f"Bearer {jwt}",
-                   'Connection': 'close'}
-        body = {"submission_id": 1}
-        r = requests.post(url=url, headers=headers, json=body)
+                   "Connection": 'close'}
+        body = {"id": 1}
+        r = requests.delete(url=url, headers=headers, json=body)
 
         self.assertEqual(201, r.status_code)
 
-        r = requests.post(url=url, headers=headers, json=body)
+        r = requests.delete(url=url, headers=headers, json=body)
 
         self.assertEqual(500, r.status_code)
 
