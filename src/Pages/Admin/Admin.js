@@ -1,9 +1,9 @@
 import React from "react";
-import data from '../Components/Complaint/Data';
+import data from '../../Components/Complaint/Data';
 import './Admin.style.css';
-import ComplaintCard from "../Components/Complaint/ComplaintCard";
-import "../GenericFunctions";
-import { sentSyncrhonousAccessRequest } from "../GenericFunctions";
+import ComplaintCard from "../../Components/Complaint/ComplaintCard";
+import "../../GenericFunctions";
+import { sentSyncrhonousAccessRequest } from "../../GenericFunctions";
 import {navigate} from 'react-router-dom';
 import {useState}  from 'react';
 
