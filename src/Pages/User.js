@@ -13,24 +13,26 @@ import usePlacesAutocomplete, {
     ComboboxList,
     ComboboxOption,
   } from "@reach/combobox";
-
+  import "@reach/combobox/styles.css"
   import "../GenericFunctions";
   import { sentSyncrhonousAccessRequest } from '../GenericFunctions';
+  import Geocode from "react-geocode";
   
 
 
 const libraries = ['places'];
-
+Geocode.setApiKey("AIzaSyAi4NJSYk62SkXRXqDDwjaGAoo4e30rkjw");
 function UserPage(){
+    //Sets up Google scripts
   const {isLoaded,loadError} = useLoadScript({
          googleMapsApiKey: 'AIzaSyAi4NJSYk62SkXRXqDDwjaGAoo4e30rkjw',
          libraries,
      });
   const {register, handleSubmit, reset} = useForm();
-  const addressRef = useRef()
-  //FIX: file and address are not being sent to the DB
+
+//Sents user submission data to the database
   const onSubmit = (data) =>{
-      console.log(data);
+      //console.log(data);
         fetch("/submission", {
          method: "PUT",
          headers: {
@@ -38,18 +40,20 @@ function UserPage(){
              'Authorization': `Bearer ${document.cookie.substring(10)}`,},
              
          body: JSON.stringify(data),
-       }).then(
+       },
+       ).then(
          (value) => {
            return value.json();
          }
        ).then(
-           (result)=>{console.log(result)
-            ;}
+           (result)=>{
+               console.log(result);
+              },
        );
-        //
-    }
+       reset();
+    };
+    //Marker coordinates
   const [marker, setMarker] = useState();
-
   const onMapClick = useCallback((event)=>{
            setMarker({
             lat: event.latLng.lat(),
@@ -58,17 +62,32 @@ function UserPage(){
            );
            
   },[])
+  const [center, setCenter] = useState({
+    lat: 54.978252,
+    lng: -1.617780,
+});
+//Saves map instance
   const mapRef = useRef();
   const onMapLoad = useCallback((map)=>{
       mapRef.current = map;
   });
+//Recenters the map accordind to the marker
+  function handleCenter() {
+    if (!mapRef.current) return;
+
+    const newPos = mapRef.current.getCenter().toJSON();
+    setCenter(newPos);
+  }
+  //Moves the map to,and zooms in,the specified location
   const goTo = useCallback(({ lat, lng }) => {
     mapRef.current.panTo({ lat, lng });
     mapRef.current.setZoom(16);
   }, []);
+
   if (loadError) return 'Error loading maps';
   if(!isLoaded) return 'Loading maps';
- 
+
+ //Google map styling
   const mapContainerStyle = {
         position: "absolute",
         top: "70px",
@@ -78,15 +97,24 @@ function UserPage(){
         width:'700px',
         height:'430px',  
   }
-  
-  const center ={
-        lat: 54.978252,
-        lng: -1.617780,
-    }
+
   const options={
         disableDefaultUI:true,
         zoomControl: true,
     }
+    //Fix: make function execute after a marker is placed
+   /* const address = async (marker) =>{
+        if (marker==undefined){}
+       await Geocode.fromLatLng(marker.lat.toString(),marker.lng.toString()).then(
+            (response) => {
+              const address = response.results[0].formatted_address;
+              console.log(address);
+            },
+            (error) => {
+              console.error(error);
+            }
+          )
+    }*/
  return(
     <form onSubmit={handleSubmit(onSubmit)}>
         <h1>User page</h1>
@@ -103,31 +131,32 @@ function UserPage(){
             <input type={'textarea'} {...register('description')} ></input>
         </div>   
         <div className='picture'>
-            <input type='file' name='picture' {...register('picture')} />
+            <input type={'file'} {...register('picture')}/>
         </div>
-        {/* FIX: returns 'undifined' instead of coordinates*/ }
-        <Search goTo={goTo}  />
+        <div className='contactInfo'>
+            <input type='text' > 
+              </input>
+        </div>
+      
+        <Search goTo={goTo}></Search>
         <GoogleMap className='mapContainer'
         mapContainerStyle={mapContainerStyle} 
         zoom={15} 
         center={center}
+        onDragEnd={handleCenter}
         options={options}
-        onClick={onMapClick }
         onLoad={onMapLoad}
+        onClick={onMapClick }
+       
         >  
-            {<Marker position={marker} ref={addressRef}/>}
+            {<Marker position={marker} />}
+           
+            
         </GoogleMap>
-        <button>Submit Picture</button>
+        <button>Submit</button>
     </form>
 )  
 }
-
-   // Sent request for access by sending a cookie JWT
-   /*let accessGranted = sentSyncrhonousAccessRequest("/admin");
-
-   accessGranted.then((resultInJSON => {console.log(resultInJSON)}, (Error) => console.log(Error)));
-   // If access denied (Role is admin) -> render error Page.
-*/
 //TODO: add marker to the address that is typed in
 function Search({goTo}){
     const {ready, value, suggestions:{status,data},setValue, clearSuggestions} = usePlacesAutocomplete({
@@ -137,21 +166,23 @@ function Search({goTo}){
         }
     });
         return (
+        <div className='contactInfo'>
             <Combobox className='contactInfo'
             onSelect={async (address)=>{
                 setValue(address,false);
                 clearSuggestions();
                 try{
                     const results = await getGeocode({ address });
+                    console.log(results);
                     const { lat, lng } = await getLatLng(results[0]);
-    
                     goTo({lat,lng});
                 }
                 catch(error){
                     console.log(error);
                 }
                 }}>
-                <ComboboxInput 
+                <ComboboxInput
+                className="city-search-input" 
                 value={value} 
                 onChange={(e)=>{setValue(e.target.value);}}
                 disabled={!ready}
@@ -163,7 +194,7 @@ function Search({goTo}){
                     </ComboboxPopover>
                 </ComboboxList>
             </Combobox>
-    
+        </div>
         )
 }
 export default UserPage;
