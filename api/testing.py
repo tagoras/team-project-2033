@@ -298,6 +298,41 @@ class FlaskApp(unittest.TestCase):
         self.assertEqual(200, r.status_code)
         self.assertEqual('End of Complaints', r.json()['message'])
 
+    def test_admin_edit_submission(self):
+
+        url = 'http://localhost:5000/login'
+        login_admin = {'username': 'Joe',
+                       'password': 'Njdka3rq39h!'}
+        r = requests.post(url=url, json=login_admin)
+
+        self.assertEqual(202, r.status_code)
+        jwt = r.json()['JWT']
+        headers = {"Authorization": f"Bearer {jwt}",
+                   'Connection': 'close'}
+
+        url = 'http://localhost:5000/admin/edit'
+        complaint_id = {'submission_id': 1,
+                        'submission_name': 'Checkpoint 1',
+                        'submission_description': 'Checkpoint 2',
+                        'submission_x_coord': 3,
+                        'submission_y_coord': 4,
+                        'date': '01/13/2022'}
+        r = requests.post(url=url, headers=headers, json=complaint_id)
+
+        self.assertEqual(201, r.status_code)
+        self.assertEqual('Submission edited', r.json()['message'])
+
+        complaint_id = {'submission_id': 2,
+                        'submission_name': 'Checkpoint 5',
+                        'submission_description': 'Checkpoint 6',
+                        'submission_x_coord': 7,
+                        'submission_y_coord': 8,
+                        'date': '01/13/2022'}
+        r = requests.post(url=url, headers=headers, json=complaint_id)
+
+        self.assertEqual(406, r.status_code)
+        self.assertEqual('ID Incorrect, try again', r.json()['message'])
+
 
 if __name__ == '__main__':
     unittest.main()
