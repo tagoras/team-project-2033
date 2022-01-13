@@ -29,14 +29,14 @@ def has_empty_value(obj) -> bool:
         return True
     for k in obj:
         t = 0
-        for s in obj[k]:
+        for s in str(obj[k]):
             if s == '':
                 return True
             elif s == ' ':
                 t += 1
             else:
                 continue
-        if len(obj[k]) == t:
+        if len(str(obj[k])) == t:
             return True
     return False
 
