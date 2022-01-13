@@ -223,6 +223,40 @@ class FlaskApp(unittest.TestCase):
 
         self.assertEqual(500, r.status_code)
 
+    def test_get_role(self):
+
+        url = 'http://localhost:5000/login'
+        user = {'username': 'Steve',
+                'password': 'Pass123!'}
+        r = requests.post(url=url, json=user)
+
+        self.assertEqual(202, r.status_code)
+        jwt = r.json()['JWT']
+
+        url = 'http://localhost:5000/get_role'
+        header = {"Authorization": f"Bearer {jwt}",
+                  'Connection': 'close'}
+        r = requests.get(url=url, headers=header)
+
+        self.assertEqual(201, r.status_code)
+        self.assertEqual('user', r.json()['role'])
+
+        url = 'http://localhost:5000/login'
+        user = {'username': 'Joe',
+                'password': 'Njdka3rq39h!'}
+        r = requests.post(url=url, json=user)
+
+        self.assertEqual(202, r.status_code)
+        jwt = r.json()['JWT']
+
+        url = 'http://localhost:5000/get_role'
+        header = {"Authorization": f"Bearer {jwt}",
+                  'Connection': 'close'}
+        r = requests.get(url=url, headers=header)
+
+        self.assertEqual(201, r.status_code)
+        self.assertEqual('admin', r.json()['role'])
+
 
 if __name__ == '__main__':
     unittest.main()
