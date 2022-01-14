@@ -138,4 +138,5 @@ api/data/*
 # Documentation build
 /api/build
 /api/build/*
-/docs/*
+docs/*
+/docs/
