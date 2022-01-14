@@ -9,7 +9,7 @@ This project was created by the members of Team 32 for the CSC2033 Group Project
 - [Make](https://www.gnu.org/software/make/) (Included in git bash but necessary in Linux)
 
 ## Instructions:
-For the application to work you need both react front-end and python back-end running simultaniously:
+For the application to work you need both react front-end and python back-end running simultaneously:
 
 ### Windows:
 
@@ -28,7 +28,8 @@ Try:
 make
 ```
 
-If this worked for you can skip setup instructions and go straight to starting both programs, otherwise continue
+If this worked for you can skip setup instructions and go straight to [starting](###Starting on Windows) both programs,
+otherwise keep reading:
 
 Front-end setup :
 
@@ -47,7 +48,7 @@ pip install -r requirements.txt
 python __init__.py
 ```
 
-
+### Starting on Windows
 To start the React server run:
 
 ```bash
@@ -55,6 +56,7 @@ npm start # Starts on localhost:3000
 ```
 
 In a second git-bash window:
+While in the python virtual environment ([venv](https://docs.python.org/3/library/venv.html)):
 
 To start the Back-end server:
 
@@ -92,22 +94,38 @@ python app.py # Starts on localhost:5000
 
 To start the testing suite:
 
+While in the python virtual environment ([venv](https://docs.python.org/3/library/venv.html)):
 ```bash
 #Linux
-api/venv/bin/python3 testing.py
+python testing.py
 #Windows
-api/venv/Scripts/python.exe testing.py
+python testing.py
 ```
 or
 
 ```bash
 #Linux
-api/venv/bin/python3 -m unittest testing.py
+python -m unittest testing.py
 #Windows
-api/venv/Lib/python.exe -m unittest testing.py
+python -m unittest testing.py
 ```
 
+## Documentation
 
+While in the python virtual environment ([venv](https://docs.python.org/3/library/venv.html)):
+
+```bash
+#Linux
+cd api
+Makefile html
+#Windows
+cd api
+make.bat html
+```
+
+The Documentation will be in the form of a navigable website in the [/docs](./docs) the, start reading
+from [here](./docs/html/index.html)
+after you have generated it.
 
 ## Website Features
 
