@@ -9,6 +9,7 @@ import app
 
 class FlaskApp(unittest.TestCase):
 
+    # Tests if has_empty_value function works
     def test_has_empty_value(self):
         d1 = {1: ""}
         d2 = {1: " "}
@@ -19,6 +20,7 @@ class FlaskApp(unittest.TestCase):
         self.assertTrue(app.has_empty_value(d3))
         self.assertFalse(app.has_empty_value(d4))
 
+    # Tests if hello_world function works
     def test_hello_world(self):
         r = requests.get('http://localhost:5000/hello_world')
         json_content = r.json()
@@ -28,6 +30,7 @@ class FlaskApp(unittest.TestCase):
         self.assertEqual(200, r.status_code, )
         self.assertEqual('http://localhost:5000/hello_world', r.url, )
 
+    # Tests the logging out of the user
     def test_logout(self):
         url = 'http://localhost:5000/login'
 
@@ -65,6 +68,7 @@ class FlaskApp(unittest.TestCase):
         r = requests.get(url=url, headers=headers)
         self.assertEqual(200, r.status_code)
 
+    # Tests the registering of a user
     def test_register(self):
         url = 'http://localhost:5000/register'
 
@@ -96,6 +100,7 @@ class FlaskApp(unittest.TestCase):
         r = requests.post(url=url, json=data)
         self.assertEqual(201, r.status_code)
 
+    # Tests the logging in of a user
     def test_login(self):
         url = 'http://localhost:5000/login'
 
@@ -133,6 +138,7 @@ class FlaskApp(unittest.TestCase):
         print(admin_jwt)
         ADMIN_JWT = admin_jwt
 
+    # Tests the getting a single file
     def test_get_single_file(self):
         import webbrowser
 
@@ -148,6 +154,7 @@ class FlaskApp(unittest.TestCase):
         status_code = requests.get(url=url2).status_code
         self.assertEqual(200, status_code)
 
+    # Tests the adding of submissions from a user
     def test_submission(self):
         url = 'http://localhost:5000/login'
         login_data = {'username': 'Test',
@@ -180,6 +187,7 @@ class FlaskApp(unittest.TestCase):
         print(r2.request.headers)
         self.assertEqual(201, r2.status_code)
 
+    # Tests if the admin can see 20 of the largest ids
     def test_admin_view_all(self):
         url = 'http://localhost:5000/login'
 
@@ -200,6 +208,7 @@ class FlaskApp(unittest.TestCase):
 
         self.assertEqual(200, r.status_code)
 
+    # Tests if the admin can delete a users submission
     def test_admin_delete_submission(self):
         url = 'http://localhost:5000/login'
 
@@ -223,6 +232,7 @@ class FlaskApp(unittest.TestCase):
 
         self.assertEqual(500, r.status_code)
 
+    # Tests if front-end can get the role of the current user
     def test_get_role(self):
 
         url = 'http://localhost:5000/login'
@@ -257,6 +267,7 @@ class FlaskApp(unittest.TestCase):
         self.assertEqual(201, r.status_code)
         self.assertEqual('admin', r.json()['role'])
 
+    # Tests if the admin can see the next 20 submissions
     def test_admin_next_page(self):
 
         url = 'http://localhost:5000/login'
@@ -298,6 +309,7 @@ class FlaskApp(unittest.TestCase):
         self.assertEqual(200, r.status_code)
         self.assertEqual('End of Complaints', r.json()['message'])
 
+    # Tests if the admin can edit a submission in the complaints table
     def test_admin_edit_submission(self):
 
         url = 'http://localhost:5000/login'
