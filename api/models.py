@@ -47,6 +47,7 @@ class Complaint(db.Model):
     date = db.Column(db.String(15), nullable=False)
     img_path = db.Column(db.String(300), nullable=False)
 
+    # Initialise Complaint Object
     def __init__(self, user_id, name, description, x_coord, y_coord, date, img_path):
         self.user_id = user_id
         self.name = name
@@ -96,7 +97,9 @@ def init_db():
 
     import requests
     import shutil
+    # Creates a folder in data called cats
     os.system("mkdir data/cats")
+    # Downloads an image from the internet
     url1 = "https://2.bp.blogspot.com/-i5JOdegCL2k/UIUR2YDLauI/AAAAAAAAHwg/yLoHtvi3qKM/\
             s1600/close-up_cats_cat_desktop_1920x1200_hd-wallpaper-834709.jpg"
     res1 = requests.get(url=url1, stream=True)
@@ -104,6 +107,7 @@ def init_db():
         with open("data/cats/cat.jpg", 'wb') as f:
             shutil.copyfileobj(res1.raw, f)
 
+    # Downloads a gif from the internet
     url2 = "https://welovecatsandkittens.com/wp-content/uploads/2017/01/wiggle.gif"
     res2 = requests.get(url=url2, stream=True)
     if res2.status_code == 200:
