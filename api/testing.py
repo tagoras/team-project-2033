@@ -1,5 +1,5 @@
 import unittest
-import json
+# import json
 # import os
 
 import requests
@@ -162,6 +162,8 @@ class FlaskApp(unittest.TestCase):
             "title": "This is a title",
             "description": "This is a very good description",
             "postcode": "NE6 6BA",
+            "lat": 51,
+            "lng": 49,
             "date": "02/12/02",
 
         }

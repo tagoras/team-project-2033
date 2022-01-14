@@ -236,7 +236,7 @@ def submission() -> json:
             'message': "Submission failed: Fill all fields!"
         }), 406
 
-    if "name" and "description" and "email" and "x_coords" and "y_coords" in submission_json:
+    if "name" and "description" and "email" and "lng" and "lat" in submission_json:
 
         import datetime
         dt = datetime.datetime.today()
@@ -262,8 +262,8 @@ def submission() -> json:
 
             complaint = Complaint(name=submission_json["name"],
                                   description=submission_json["description"],
-                                  x_coord=submission_json["x_coord"],
-                                  y_coord=submission_json["y_coord"],
+                                  lng=submission_json["lng"],
+                                  lat=submission_json["lat"],
                                   date=date,
                                   user_id=current_user[id],
                                   img_path=img_path)
@@ -340,8 +340,8 @@ def admin_view_all() -> json:
         json_complaint = {'id': complaint.id,
                           'title': complaint.name,
                           'description': complaint.description,
-                          'x_coord': complaint.x_coord,
-                          'y_coord': complaint.y_coord,
+                          'lng': complaint.lng,
+                          'lat': complaint.lat,
                           'date': complaint.date}
         json_complaints.append(json_complaint)
 
@@ -442,8 +442,8 @@ def admin_edit_submission() -> json:
         db.session.query(Complaint).filter_by(id=submission_id) \
             .update({Complaint.name: request.json["submission_name"],
                      Complaint.description: request.json["submission_description"],
-                     Complaint.x_coord: request.json["submission_x_coord"],
-                     Complaint.y_coord: request.json["submission_y_coord"],
+                     Complaint.lng: request.json["submission_lng"],
+                     Complaint.lat: request.json["submission_lat"],
                      Complaint.date: request.json["date"]})
         db.session.commit()
 

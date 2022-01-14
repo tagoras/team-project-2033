@@ -42,17 +42,17 @@ class Complaint(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(200), nullable=False)
-    x_coord = db.Column(db.String(100), nullable=False)
-    y_coord = db.Column(db.String(100), nullable=False)
+    lng = db.Column(db.String(100), nullable=False)
+    lat = db.Column(db.String(100), nullable=False)
     date = db.Column(db.String(15), nullable=False)
     img_path = db.Column(db.String(300), nullable=False)
 
-    def __init__(self, user_id, name, description, x_coord, y_coord, date, img_path):
+    def __init__(self, user_id, name, description, lat, lng, date, img_path):
         self.user_id = user_id
         self.name = name
         self.description = description
-        self.x_coord = x_coord
-        self.y_coord = y_coord
+        self.lat = lat
+        self.lng = lng
         self.date = date
         self.img_path = img_path
 
@@ -84,8 +84,8 @@ def init_db():
     test_submission = Complaint(user_id=2,
                                 name='Test Submission',
                                 description='To use for testing',
-                                x_coord='72',
-                                y_coord='10',
+                                lat='50',
+                                lng='50',
                                 date='1/5/2022',
                                 img_path='data/cats/cat.jpg')
 
