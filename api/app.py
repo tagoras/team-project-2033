@@ -213,20 +213,24 @@ def login() -> json:
         }), 406
 
 
+# Checks the file type and allow certain ones in
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in {'.png', '.webp', '.jpg', '.jfif',
                                                   '.pjpeg', '.pjp', '.jpeg', '.gif', '.apng'}
 
 
+# Allows an logged in user to submit a complaint which then gets stored in the database
 @app.route('/submission', methods=['PUT', 'POST'])
 @jwt_required()
 def submission() -> json:
+    # Grabs the user information and see if they have the role of a user
     current_user = get_jwt_identity()
     if current_user["role"] != 'user':
         return jsonify({'status': -1,
                         'message': "Unauthorised access attempt"}), 403
 
+    # Checks if submission has passed in any empty fields, if so it will produce error message for front-end
     submission_json = request.get_json()
     print(request.json)
     if has_empty_value(submission_json):
@@ -236,8 +240,10 @@ def submission() -> json:
             'message': "Submission failed: Fill all fields!"
         }), 406
 
+    # Sees if these fields are given by front-end
     if "name" and "description" and "email" and "x_coords" and "y_coords" in submission_json:
 
+        # Gets date of when submission is handed in
         import datetime
         dt = datetime.datetime.today()
         month = dt.month
@@ -245,6 +251,7 @@ def submission() -> json:
         year = dt.year
         date = "{}/{}/{}".format(month, day, year)
 
+        # Checks if an image file has been sent through
         if 'picture' not in request.files or has_empty_value(request.files):
             return jsonify({
                 'status': -1,
@@ -254,12 +261,15 @@ def submission() -> json:
         import uuid
         import pathlib
         import os
+        # See if given file is an image and then saves it to a file and records image path
+        # If image isn't allowed produces error
         if img and allowed_file(img.filename):
             img_name = str(uuid.uuid4()) + pathlib.Path(img.filename).suffix
             img_path = current_user[id] + "/" + img_name
             os.system('mkdir ' + 'data/' + current_user[id])
             img.save(img_path)
 
+            # Saves the user submission to database into the complaint table
             complaint = Complaint(name=submission_json["name"],
                                   description=submission_json["description"],
                                   x_coord=submission_json["x_coord"],
@@ -302,7 +312,7 @@ def logout() -> json:
 @app.route("/admin/view_all", methods=["POST"])
 @jwt_required()
 def admin_view_all() -> json:
-    # Checks if the user is an admin
+    # Grabs user info and checks if the user is an admin
     current_user = get_jwt_identity()
     if current_user["role"] != 'admin':
         return jsonify({'status': -1,
@@ -310,6 +320,7 @@ def admin_view_all() -> json:
 
     from sqlalchemy import desc
 
+    # Not in use yet but will be for checking the next page
     '''
     last_complaint_id = request.json['last_complaint']
     if last_complaint_id is None:
@@ -324,18 +335,20 @@ def admin_view_all() -> json:
     json_complaints = []
     json_urls = []
 
-    quick_search = db.session.query(Complaint.id).order_by(
+    # Used to search the database for the 20 biggest ids in complaint id
+    quick_search = db.session.query(Complaint.id).order_by(desc(Complaint.id)).limit(20)
 
-        desc(Complaint.id)).limit(20)
-
+    # Puts all of the complaints into complaints list
     for recent_complaints_id in quick_search:
         complaint = db.session.query(Complaint).filter_by(id=recent_complaints_id[0]).first()
         complaints.append(complaint)
 
+    # Grabs the image urls for each complaint and adds them to the urls list
     for complaint in complaints:
         url = str(my_host + ':5000/file/' + complaint.img_path)
         urls.append(url)
 
+    # Turns all complaints in complaints list to a dictionary and adds them to json complaints list
     for complaint in complaints:
         json_complaint = {'id': complaint.id,
                           'title': complaint.name,
@@ -345,16 +358,19 @@ def admin_view_all() -> json:
                           'date': complaint.date}
         json_complaints.append(json_complaint)
 
+    # Turns all urls in urls list into a dictionary and adds them to json urls list
     for url in urls:
         json_url = {'url': url}
         json_urls.append(json_url)
 
+    # Sends the list of complaints and urls to front-end
     return jsonify({'status': 0,
                     'list of complaints': json_complaints,
                     'list of urls': json_urls
                     }), 200
 
 
+# Admin can delete a submission
 @app.route("/admin/delete", methods=["DELETE"])
 @jwt_required()
 def admin_delete_submission() -> json:
@@ -366,15 +382,18 @@ def admin_delete_submission() -> json:
             return jsonify({'status': -1,
                             'message': "Unauthorised access attempt"}), 403
 
+        # Grabs the the id to search for from front-end
         _id = request.json["id"]
 
         try:
             import os
 
+            # Finds the id in the complaints table
             complaint = db.session.query(Complaint).filter_by(id=_id).first()
             img_path = complaint.img_path
             db.session.delete(complaint)
 
+            # Attempts to find image and delete it
             if os.path.exists(img_path):
                 os.system('rm ' + 'data/' + img_path)
                 # os.remove('data/'+complaint_image)
@@ -395,29 +414,35 @@ def admin_delete_submission() -> json:
             }), 500
 
 
+# Send the role of the user to front-end
 @app.route("/get_role", methods=["GET"])
 @jwt_required()
 def get_role() -> json:
+    # Grabs the logged in user info
     current_user = get_jwt_identity()
     return jsonify(role=current_user["role"]), 201
 
 
+# Gets a single file
 @app.route('/file/<string:_id>/<string:_filename>', methods=["GET"])
 def get_single_file(_id, _filename):
     return send_from_directory(path=_id + '/' + _filename, directory="data")
 
 
+# Used to get the next set of results for admin_view_all function
 @app.route('/admin/search', methods=["GET", "POST"])
 @jwt_required()
 def admin_next_page() -> json:
     current_user = get_jwt_identity()
-
+    # Checks if user is admin
     if current_user["role"] != 'admin':
         return jsonify({'status': -1,
                         'message': "Unauthorised access attempt"}), 403
 
+    # Grabs the last id that was shown in front-end
     complaint_id = request.json["complaint_id"]
 
+    # See if any more complaints could exists
     if complaint_id - 1 <= 0:
         return jsonify({'status': -1,
                         'message': "End of Complaints"}), 200
@@ -427,18 +452,22 @@ def admin_next_page() -> json:
                         'message': "Go to admin_view_all function"}), 200
 
 
+# Admin edits a submission's details
 @app.route('/admin/edit', methods=['GET', 'POST'])
 @jwt_required()
 def admin_edit_submission() -> json:
     current_user = get_jwt_identity()
-
+    # Checks if user is admin
     if current_user["role"] != 'admin':
         return jsonify({'status': -1,
                         'message': "Unauthorised access attempt"}), 403
+    # Gets the submission's id from front-end
     submission_id = request.json["submission_id"]
 
+    # Checks if the submissions id given exists in the database
     to_edit = Complaint.query.filter_by(id=submission_id).first()
     if to_edit and not has_empty_value(request.json):
+        # Changes the submission details with the details given by front-end
         db.session.query(Complaint).filter_by(id=submission_id) \
             .update({Complaint.name: request.json["submission_name"],
                      Complaint.description: request.json["submission_description"],
