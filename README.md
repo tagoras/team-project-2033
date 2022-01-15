@@ -98,18 +98,20 @@ To start the testing suite:
 
 While in the python virtual environment ([venv](https://docs.python.org/3/library/venv.html)):
 ```bash
+cd api/
 #Linux
-python testing.py
+python -v testing.py
 #Windows
-python testing.py
+python -v testing.py
 ```
 or
 
 ```bash
 #Linux
-python -m unittest testing.py
+cd api/
+python -m unittest -v testing.py
 #Windows
-python -m unittest testing.py
+python -m unittest -v testing.py
 ```
 
 ## Documentation
@@ -118,10 +120,10 @@ While in the python virtual environment ([venv](https://docs.python.org/3/librar
 
 ```bash
 #Linux
-cd api
+cd api/
 Makefile html
 #Windows
-cd api
+cd api/
 make.bat html
 ```
 
