@@ -26,10 +26,10 @@ Try:
 
 ```bash
 make
+cd api/ && make.bat html
 ```
 
-If this worked for you can skip setup instructions and go straight to [starting](###Starting on Windows) both programs,
-otherwise keep reading:
+If this worked for you can skip setup instructions and go straight to starting both programs, otherwise keep reading:
 
 Front-end setup :
 
@@ -46,6 +46,7 @@ python -m venv venv
 source venv/bin/Scripts/activate
 pip install -r requirements.txt
 python __init__.py
+make.bat html
 ```
 
 ### Starting on Windows
@@ -77,6 +78,7 @@ git clone https://github.com/tagoras/team-project-2033 && cd team-project-2033
 Setup:
 ```bash
 make
+cd api/ && make html
 ```
 To start the React server run:
 ```bash
@@ -96,18 +98,20 @@ To start the testing suite:
 
 While in the python virtual environment ([venv](https://docs.python.org/3/library/venv.html)):
 ```bash
+cd api/
 #Linux
-python testing.py
+python -v testing.py
 #Windows
-python testing.py
+python -v testing.py
 ```
 or
 
 ```bash
 #Linux
-python -m unittest testing.py
+cd api/
+python -m unittest -v testing.py
 #Windows
-python -m unittest testing.py
+python -m unittest -v testing.py
 ```
 
 ## Documentation
@@ -116,10 +120,10 @@ While in the python virtual environment ([venv](https://docs.python.org/3/librar
 
 ```bash
 #Linux
-cd api
+cd api/
 Makefile html
 #Windows
-cd api
+cd api/
 make.bat html
 ```
 
