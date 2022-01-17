@@ -334,7 +334,7 @@ class FlaskApp(unittest.TestCase):
         self.assertEqual(201, r.status_code)
         self.assertEqual('Submission edited', r.json()['message'])
 
-        complaint_id = {'submission_id': 2,
+        complaint_id = {'submission_id': 102,
                         'submission_name': 'Checkpoint 5',
                         'submission_description': 'Checkpoint 6',
                         'submission_x_coord': 7,
