@@ -52,7 +52,6 @@ function RegisterForm(props) {
               placeholder="********"
               ref={passwordInputRef}
             />
-            <i onClick={togglePasswordVisibility}>{eye}</i>{" "}
           </div>
           <div className="control">
             <label htmlFor="email">Email</label> <br />

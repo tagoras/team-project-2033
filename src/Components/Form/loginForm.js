@@ -46,7 +46,6 @@ export function LoginForm(props){
                     placeholder='********'
                     ref={passwordInputRef}
                 />
-                <i onClick={togglePasswordVisibility}>{eye}</i>{" "}
             </div>
             <div className="loginInput">
                 <input type='text' required id='otp' placeholder='One Time Password' ref={otpInputRef}/>
