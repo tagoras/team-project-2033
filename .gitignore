@@ -133,4 +133,8 @@ RNTester/Pods/*
 # Database, will be generated each time
 # To avoid conflicts (merging, fast-forwarding, etc..) we do this:
 api/data
-api/data/
+api/data/*
+
+# Documentation build
+/api/build
+/api/build/*

@@ -1,6 +1,7 @@
 # IMPORTS
 import json
 import re
+from copy import deepcopy
 
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
@@ -236,7 +237,7 @@ def submission() -> json:
             'message': "Submission failed: Fill all fields!"
         }), 406
 
-    if "name" and "description" and "email" and "x_coords" and "y_coords" in submission_json:
+    if "name" and "description" and "email" and "lng" and "lat" in submission_json:
 
         import datetime
         dt = datetime.datetime.today()
@@ -260,13 +261,15 @@ def submission() -> json:
             os.system('mkdir ' + 'data/' + current_user[id])
             img.save(img_path)
 
+            user = User.query.filter_by(id=current_user["id"]).first()
             complaint = Complaint(name=submission_json["name"],
                                   description=submission_json["description"],
-                                  x_coord=submission_json["x_coord"],
-                                  y_coord=submission_json["y_coord"],
+                                  lng=submission_json["lng"],
+                                  lat=submission_json["lat"],
                                   date=date,
                                   user_id=current_user[id],
-                                  img_path=img_path)
+                                  img_path=img_path,
+                                  user_key=user.user_key)
 
             db.session.add(complaint)
             db.session.commit()
@@ -310,45 +313,51 @@ def admin_view_all() -> json:
 
     from sqlalchemy import desc
 
-    '''
-    last_complaint_id = request.json['last_complaint']
-    if last_complaint_id is None:
-        search_id = db.session.query(func.max(Complaint.id))
-        search_id = search_id[0] + 1
-    else:
-        search_id = last_complaint_id
-    '''
+    # last_complaint_id = request.json['last_complaint']
+    # if last_complaint_id is None:
+    #    search_id = db.session.query(func.max(Complaint.id))
+    #    search_id = search_id[0] + 1
+    # else:
+    #    search_id = last_complaint_id
+    #
 
     complaints = []
     urls = []
     json_complaints = []
     json_urls = []
 
-    quick_search = db.session.query(Complaint.id).order_by(
-
-        desc(Complaint.id)).limit(20)
-
-    for recent_complaints_id in quick_search:
-        complaint = db.session.query(Complaint).filter_by(id=recent_complaints_id[0]).first()
+    id_list = db.session.query(Complaint.id).order_by(desc(Complaint.id)).limit(20)
+    for _id in id_list:
+        complaint = db.session.query(Complaint).filter_by(id=_id[0]).first()
         complaints.append(complaint)
 
-    for complaint in complaints:
-        url = str(my_host + ':5000/file/' + complaint.img_path)
+    complaints_copy = deepcopy(complaints)
+
+    for complaint in complaints_copy:
+        user = User.query.filter_by(id=complaint.user_id).first()
+        complaint_copy = deepcopy(complaint)
+        complaint_copy.view_complaint(user_key=user.user_key)
+        url = str(my_host + ':5000/file/' + complaint_copy.img_path)
         urls.append(url)
 
-    for complaint in complaints:
+    for complaint in complaints_copy:
+        user = User.query.filter_by(id=complaint.user_id).first()
+        complaint.view_complaint(user_key=user.user_key)
         json_complaint = {'id': complaint.id,
                           'title': complaint.name,
                           'description': complaint.description,
-                          'x_coord': complaint.x_coord,
-                          'y_coord': complaint.y_coord,
+                          'lng': complaint.lng,
+                          'lat': complaint.lat,
                           'date': complaint.date}
         json_complaints.append(json_complaint)
 
     for url in urls:
         json_url = {'url': url}
         json_urls.append(json_url)
-
+    print({'status': 0,
+           'list of complaints': json_complaints,
+           'list of urls': json_urls
+           })
     return jsonify({'status': 0,
                     'list of complaints': json_complaints,
                     'list of urls': json_urls
@@ -407,24 +416,24 @@ def get_single_file(_id, _filename):
     return send_from_directory(path=_id + '/' + _filename, directory="data")
 
 
-@app.route('/admin/search', methods=["GET", "POST"])
-@jwt_required()
-def admin_next_page() -> json:
-    current_user = get_jwt_identity()
-
-    if current_user["role"] != 'admin':
-        return jsonify({'status': -1,
-                        'message': "Unauthorised access attempt"}), 403
-
-    complaint_id = request.json["complaint_id"]
-
-    if complaint_id - 1 <= 0:
-        return jsonify({'status': -1,
-                        'message': "End of Complaints"}), 200
-    else:
-        return jsonify({'status': 0,
-                        'last_complaint_id': complaint_id,
-                        'message': "Go to admin_view_all function"}), 200
+# @app.route('/admin/search', methods=["GET", "POST"])
+# @jwt_required()
+# def admin_next_page() -> json:
+#    current_user = get_jwt_identity()
+#
+#    if current_user["role"] != 'admin':
+#        return jsonify({'status': -1,
+#                        'message': "Unauthorised access attempt"}), 403
+#
+#   complaint_id = request.json["complaint_id"]
+#
+#    if complaint_id - 1 <= 0:
+#        return jsonify({'status': -1,
+#                        'message': "End of Complaints"}), 200
+#    else:
+#        return jsonify({'status': 0,
+#                        'last_complaint_id': complaint_id,
+#                        'message': "Go to admin_view_all function"}), 200
 
 
 @app.route('/admin/edit', methods=['GET', 'POST'])
@@ -437,15 +446,17 @@ def admin_edit_submission() -> json:
                         'message': "Unauthorised access attempt"}), 403
     submission_id = request.json["submission_id"]
 
-    to_edit = Complaint.query.filter_by(id=submission_id).first()
-    if to_edit and not has_empty_value(request.json):
-        db.session.query(Complaint).filter_by(id=submission_id) \
-            .update({Complaint.name: request.json["submission_name"],
-                     Complaint.description: request.json["submission_description"],
-                     Complaint.x_coord: request.json["submission_x_coord"],
-                     Complaint.y_coord: request.json["submission_y_coord"],
-                     Complaint.date: request.json["date"]})
-        db.session.commit()
+    complaint = Complaint.query.filter_by(id=submission_id).first()
+    user = User.query.filter_by(id=complaint.user_id).first()
+
+    if complaint and not has_empty_value(request.json):
+        complaint.update_complaint(name=request.json["submission_name"],
+                                   description=request.json["submission_description"],
+                                   lng=request.json["submission_lng"],
+                                   lat=request.json["submission_lat"],
+                                   date=request.json["date"],
+                                   user_key=user.user_key,
+                                   )
 
         return jsonify({'status': 0,
                         'message': 'Submission edited'}), 201

@@ -1,18 +1,22 @@
 # IMPORTS
 
+import base64
 
-try:
-    from app import db
-except ModuleNotFoundError:
-    import os
+from app import db
 
-    print("\033[1;31m\nYou're running python inside the wrong directory...")
-    print("Please make sure console is running inside \033[1;93mapi\033[1;31m and not \033[1;93m" +
-          os.path.basename(os.getcwd()))
-    print("\033[1;31m\nAborting so no permanent damage is done...")
-    exit(-1)
+from Crypto.Protocol.KDF import scrypt
+from Crypto.Random import get_random_bytes
+from cryptography.fernet import Fernet
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash
+
+
+def encrypt(data, key):
+    return Fernet(key).encrypt(bytes(data, 'utf-8'))
+
+
+def decrypt(data, key):
+    return Fernet(key).decrypt(data).decode('utf-8')
 
 
 # User Table
@@ -25,6 +29,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(100), nullable=False)
     postcode = db.Column(db.String(100), nullable=False)
     role = db.Column(db.String(10), nullable=False)
+    user_key = db.Column(db.BLOB)
 
     # Initialise User Object
     def __init__(self, username, email, password, postcode, role):
@@ -33,6 +38,7 @@ class User(db.Model, UserMixin):
         self.password = password
         self.postcode = postcode
         self.role = role
+        self.user_key = base64.urlsafe_b64encode(scrypt(password, str(get_random_bytes(32)), 32, N=2 ** 14, r=8, p=1))
 
 
 class Complaint(db.Model):
@@ -42,19 +48,37 @@ class Complaint(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(200), nullable=False)
-    x_coord = db.Column(db.String(100), nullable=False)
-    y_coord = db.Column(db.String(100), nullable=False)
+    lng = db.Column(db.String(100), nullable=False)
+    lat = db.Column(db.String(100), nullable=False)
     date = db.Column(db.String(15), nullable=False)
     img_path = db.Column(db.String(300), nullable=False)
 
-    def __init__(self, user_id, name, description, x_coord, y_coord, date, img_path):
+    def __init__(self, user_id, name, description, lat, lng, date, img_path, user_key):
         self.user_id = user_id
-        self.name = name
-        self.description = description
-        self.x_coord = x_coord
-        self.y_coord = y_coord
-        self.date = date
-        self.img_path = img_path
+        self.name = encrypt(data=name, key=user_key)
+        self.description = encrypt(data=description, key=user_key)
+        self.lat = encrypt(data=lat, key=user_key)
+        self.lng = encrypt(data=lng, key=user_key)
+        self.date = encrypt(data=date, key=user_key)
+        self.img_path = encrypt(data=img_path, key=user_key)
+
+    def update_complaint(self, user_id, name, description, lat, lng, date, img_path, user_key):
+        self.user_id = user_id
+        self.name = encrypt(data=name, key=user_key)
+        self.description = encrypt(data=description, key=user_key)
+        self.lat = encrypt(data=lat, key=user_key)
+        self.lng = encrypt(data=lng, key=user_key)
+        self.date = encrypt(data=date, key=user_key)
+        self.img_path = encrypt(data=img_path, key=user_key)
+        db.session.commit()
+
+    def view_complaint(self, user_key):
+        self.name = decrypt(data=self.name, key=user_key)
+        self.description = decrypt(data=self.description, key=user_key)
+        self.lat = decrypt(data=self.lat, key=user_key)
+        self.lng = decrypt(data=self.lng, key=user_key)
+        self.date = decrypt(data=self.date, key=user_key)
+        self.img_path = decrypt(data=self.img_path, key=user_key)
 
 
 # Initialising the database
@@ -84,10 +108,11 @@ def init_db():
     test_submission = Complaint(user_id=2,
                                 name='Test Submission',
                                 description='To use for testing',
-                                x_coord='72',
-                                y_coord='10',
+                                lat='50',
+                                lng='50',
                                 date='1/5/2022',
-                                img_path='data/cats/cat.jpg')
+                                img_path='data/cats/cat.jpg',
+                                user_key=test_user.user_key)
 
     db.session.add(test_admin)
     db.session.add(test_user)
