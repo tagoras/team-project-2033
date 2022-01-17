@@ -30,6 +30,7 @@ class User(db.Model, UserMixin):
     postcode = db.Column(db.String(100), nullable=False)
     role = db.Column(db.String(10), nullable=False)
     user_key = db.Column(db.BLOB)
+    otp_key = db.Column(db.String(100), nullable=False)
 
     # Initialise User Object
     def __init__(self, username, email, password, postcode, role):
@@ -39,6 +40,7 @@ class User(db.Model, UserMixin):
         self.postcode = postcode
         self.role = role
         self.user_key = base64.urlsafe_b64encode(scrypt(password, str(get_random_bytes(32)), 32, N=2 ** 14, r=8, p=1))
+        self.otp_key = base64.b32encode(get_random_bytes(20))
 
 
 class Complaint(db.Model):

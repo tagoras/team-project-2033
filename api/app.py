@@ -8,6 +8,7 @@ from flask_cors import CORS
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+import pyotp
 
 # CONFIG
 app = Flask(__name__)
@@ -166,7 +167,7 @@ def register() -> json:
 # Logs the user in to the website
 @app.route('/login', methods=['POST'])
 def login() -> json:
-    if request.is_json and ("username" and "password" in request.json):
+    if request.is_json and ("username" and "password" and "otp" in request.json):
         login_form = request.json
 
         # Converts json object into dictionary and checks if there are empty
@@ -184,6 +185,12 @@ def login() -> json:
             return jsonify({
                 'status': -1,
                 'message': "Login failed: Username or password is incorrect!"
+            }), 406
+
+        if not pyotp.TOTP(user.otp_key).verify(login_form['otp']):
+            return jsonify({
+                'status': -1,
+                'message': "Login failed: One Time Password is incorrect!"
             }), 406
 
         # Attempts to create a token to send to front-end with the user logged in data
