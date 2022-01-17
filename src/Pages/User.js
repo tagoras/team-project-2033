@@ -32,7 +32,7 @@ function UserPage(){
 
 //Sents user submission data to the database
   const onSubmit = (data) =>{
-      //console.log(data);
+        //console.log(data);
         fetch("/submission", {
          method: "PUT",
          headers: {
@@ -102,10 +102,13 @@ function UserPage(){
         disableDefaultUI:true,
         zoomControl: true,
     }
-    //Fix: make function execute after a marker is placed
-   /* const address = async (marker) =>{
-        if (marker==undefined){}
-       await Geocode.fromLatLng(marker.lat.toString(),marker.lng.toString()).then(
+
+    const address = (marker) =>{
+        if (marker===undefined){
+          return 'empty';
+        }
+        else{
+          Geocode.fromLatLng(marker.lat.toString(),marker.lng.toString()).then(
             (response) => {
               const address = response.results[0].formatted_address;
               console.log(address);
@@ -114,7 +117,9 @@ function UserPage(){
               console.error(error);
             }
           )
-    }*/
+        }
+        
+    }
  return(
     <form onSubmit={handleSubmit(onSubmit)}>
         <h1>User page</h1>
@@ -134,8 +139,10 @@ function UserPage(){
             <input type={'file'} {...register('picture')}/>
         </div>
         <div className='contactInfo'>
-            <input type='text' > 
-              </input>
+          <label>Address</label>
+          {/*TODO: put the return of the function in to the input field*/}
+            <input type={'text'} {...register('location')}/>
+            
         </div>
       
         <Search goTo={goTo}></Search>
@@ -157,7 +164,6 @@ function UserPage(){
     </form>
 )  
 }
-//TODO: add marker to the address that is typed in
 function Search({goTo}){
     const {ready, value, suggestions:{status,data},setValue, clearSuggestions} = usePlacesAutocomplete({
         requestOptions: {
