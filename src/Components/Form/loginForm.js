@@ -14,13 +14,16 @@ export function LoginForm(props){
     }
     const usernameInputRef = useRef();
     const passwordInputRef = useRef();
+    const otpInputRef = useRef();
     function loginSubmitHandler(event){
         event.preventDefault();
         const enteredUsername = usernameInputRef.current.value;
         const enteredPassword = passwordInputRef.current.value;
-        const loginData={
+        const enteredOtp = otpInputRef.current.value;
+        const loginData = {
             username: enteredUsername,
             password: enteredPassword,
+            otp: enteredOtp,
         }
         props.addLoginForm(loginData);
 
@@ -38,11 +41,14 @@ export function LoginForm(props){
             </div>
             <div className="loginInput">
                 <input
-                  type={passwordShown ? "text" : "password"}
-                  required id='password'
-                  placeholder='********' 
-                  ref={passwordInputRef}
-                  />
+                    type={passwordShown ? "text" : "password"}
+                    required id='password'
+                    placeholder='********'
+                    ref={passwordInputRef}
+                />
+            </div>
+            <div className="loginInput">
+                <input type='text' required id='otp' placeholder='One Time Password' ref={otpInputRef}/>
             </div>
             <ErrorBox errorOccurred={props.errorStatus} text={props.errorMessage}/>
             <div className="loginSubmit">
