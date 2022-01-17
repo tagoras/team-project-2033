@@ -1,31 +1,75 @@
-.ShowcaseContainer {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  position: relative;
-  height: 93vh;
-  background-image: url("../Photos/photo7.jpg");
-  background-image: url(/src/Components/Photos/photo7.jpg);
+@media screen {
+  *{
+    font-size: 12px;
+    box-sizing: border-box;
+  }
+
+  .ShowcaseContainer {
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    position: relative;
+    height: 70vh;
+  }
+
+  .BackgroundPicture{
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  
+  .ShowcaseContainer h1 {
+    font-size: 3rem;
+    text-align: center;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    line-height: 1.5;
+  }
+  
+  .Filter {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+    background-color: black;
+    top: 0;
+    left: 0;
+    opacity: 0.7;
+  }
 }
 
-.ShowcaseContainer h1 {
-  font-size: 4rem;
-  text-align: center;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  color: white;
-  line-height: 1.5;
+@media screen and (min-width: 320px){
+   .ShowcaseContainer {
+    
+    height: 90vh;
+  }
+  
 }
 
-.Filter {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  z-index: 2;
-  background-color: black;
-  top: 0;
-  left: 0;
-  opacity: 0.7;
+
+@media screen and (min-width: 768px){
+  .ShowcaseContainer h1 {
+    font-size: 3.5rem;
+    
+  }
+}
+
+@media screen and (min-width: 1024px){
+  .ShowcaseContainer {
+    
+    height: 93vh;
+  }
+}
+
+@media screen and (min-width: 1440px){
+  .ShowcaseContainer h1 {
+    font-size: 5rem;
+  }
 }

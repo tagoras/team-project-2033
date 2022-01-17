@@ -1,28 +1,63 @@
+@media screen {
 
-.NavbarUnorderedList {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  background-color: rgb(0, 0, 0);
-  height: 7vh;
+  .NavbarUnorderedList li {
+    text-align: center;
+    background-color: rgb(0, 0, 0);
+    padding: 1rem;
+  }
+  
+  .NavbarUnorderedList li a {
+    color: white;
+    font-size: 1.3rem;
+    width: 100%;
+  }
+
+  .NavbarUnorderedList li a:hover{
+    color: black;
+    transition: 1.1s;
+  }
+  
 }
 
-.NavbarUnorderedList li {
-  margin-right: 2rem;
+@media screen and (min-width: 600px){
+  .NavbarUnorderedList {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    background-color: rgb(0, 0, 0);
+    height: 7vh;
+  }
+
+  .NavbarUnorderedList li {
+    margin-right: 4rem;
+    padding: 0;
+  }
+  
+  .NavbarUnorderedList li a {
+    height: 100%;
+    display: inline-block;
+    padding: 0rem 1rem;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .NavbarUnorderedList li a:hover {
+    transition: 1.1s;
+    color: rgb(0, 0, 0);
+    background-color: white;
+  }
+  
 }
 
-.NavbarUnorderedList li a {
-  height: 100%;
-  display: inline-block;
-  padding: 0rem 1rem;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
+@media screen and (min-width: 1400px){
+  .NavbarUnorderedList li {
+    margin-right: 4rem;
+    padding: 0;
+  }
 
-.NavbarUnorderedList li a:hover {
-  transition: 1.1s;
-  color: rgb(0, 0, 0);
-  background-color: white;
+  .NavbarUnorderedList li a {
+    padding: 1rem 3rem;
+  }
 }

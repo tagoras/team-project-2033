@@ -3,15 +3,15 @@ import './ComplaintCard.style.css';
 import photo from '../Photos/test.jpg';
 
 export function ComplaintCard(props){
-    console.log(props.complaint.id);
+    console.log(props.id);
     return(
         <div className="ComplaintContainer">
             <img className="ComplaintCardImage" src={photo}/>
-            <h3 className="ComplaintInfo">#{props.complaint.id}</h3>
+            <h3 className="ComplaintInfo">#{props.id}</h3>
             <p className="ComplaintInfo ComplaintText">{props.complaint.title}</p>
             <p className="ComplaintInfo">{props.complaint.date}</p>
             <div className="ComplaintIconHolder">
-                <i className="fas fa-trash ComplaintInfo fa-2x"></i>
+                <i className="fas fa-trash ComplaintInfo fa-2x" onClick={() => props.handleDelete(props.id)}></i>
             </div>
         </div>
     )

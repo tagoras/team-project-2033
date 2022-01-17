@@ -1,5 +1,5 @@
 import react, { Component } from "react";
-import "../Photos/photo7.jpg";
+import photo from "../Photos/photo7.jpg";
 import "./Showcase.css";
 import AboutUs from "../AboutUsSection/AboutUs";
 
@@ -8,7 +8,8 @@ export class Showcase extends Component {
     return (
       <div>
         <div className="ShowcaseContainer">
-          <div className="Filter" />
+          <div className="Filter"/>
+          <img src={photo} className="BackgroundPicture"/>
           <h1>
             Building <br /> Infrastructure <br /> With <br /> People
           </h1>

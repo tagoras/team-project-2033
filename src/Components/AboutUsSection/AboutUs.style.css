@@ -1,47 +1,125 @@
-.aboutUsContainer{
-    height: 100%;
-    max-width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 20px;
+@media screen {
+    .aboutUsContainer{
+        height: 100%;
+        max-width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 20px;
+    }
+    
+    .contentHolder{
+        height: 90%;
+        text-align: center;
+        padding: 20px;
+    }
+    
+    .contentHolder h1{
+        margin: 1rem 1rem 3rem;
+        font-size: 2.8rem;
+    }
+    
+    .contentHolder p{
+        font-size: 1.3rem;
+        line-height: 1.8;
+        margin-bottom: 1rem;
+    }
+    
+    .organizationName{
+        font-size: 2.1rem;
+    }
+    
+    .Button-1{
+        transition: 1.5s;
+        display: inline-block;
+        margin-top: 2rem;
+        padding: 20px 30px;
+        background-color: black;
+        color: white;
+    }
+    
+    .Button-1:hover{
+        transition: 1s;
+        color: white;
+        background-color: orangered;
+        font-weight: bold;
+    }
+    
+    
 }
 
-.contentHolder{
-    width: 20%;
-    height: 90%;
-    text-align: center;
-    padding: 20px;
+@media screen and (min-width: 320px){
+    .contentHolder h1{
+        margin: 1rem 1rem 3rem;
+        font-size: 3.3rem;
+    }
+
+    .contentHolder p{
+        font-size: 1.4rem;
+    }
+
+    .contentHolder a{
+        font-size: 1.1rem;
+    }
 }
 
-.contentHolder h1{
-    margin: 50px;
-    font-size: 3rem;
+@media screen and (min-width: 768px){
+    .contentHolder{
+        height: 80vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .contentHolder h1{
+        font-size: 2.5rem;
+    }
+
+    .contentHolder p{
+        font-size: 1.6rem;
+    }
+
+    .contentHolder a{
+        font-size: 1.2rem;
+    }
+
+    .Button-1{
+        margin-top: 4rem;
+    }
 }
 
-.contentHolder p{
-    font-size: 1.3rem;
-    line-height: 1.8;
-    margin-bottom: 1rem;
+@media screen  and (min-width: 900px){
+    .contentHolder{
+        height: 80vh;
+    }
+
+    .contentHolder h1{
+        font-size: 3.3rem;
+    }
+
+    .contentHolder p{
+        font-size: 1.7rem;
+        width: 50%;
+    }
+
+    .contentHolder a{
+        font-size: 1.4rem;
+    }
+
 }
 
-.organizationName{
-    font-size: 2.1rem;
-}
+@media screen and (min-width: 1440px){
+    .contentHolder h1{
+        font-size: 4rem;
+    }
 
-.Button-1{
-    transition: 1.5s;
-    display: inline-block;
-    margin-top: 10px;
-    padding: 20px 30px;
-    background-color: black;
-    color: white;
-}
+    .contentHolder p{
+        font-size: 1.6rem;
+        width: 30%;
+    }
 
-.Button-1:hover{
-    transition: 1s;
-    color: white;
-    background-color: orangered;
-    font-weight: bold;
+    .contentHolder a{
+        font-size: 1.1rem;
+    }
 }
-

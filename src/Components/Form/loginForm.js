@@ -43,7 +43,6 @@ export function LoginForm(props){
                   placeholder='********' 
                   ref={passwordInputRef}
                   />
-                <i onClick={togglePasswordVisibility}>{eye}</i>{" "}
             </div>
             <ErrorBox errorOccurred={props.errorStatus} text={props.errorMessage}/>
             <div className="loginSubmit">
