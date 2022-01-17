@@ -65,15 +65,21 @@ function RegisterForm(props) {
             />
           </div>
           <div className="control">
-            <label htmlFor="postcode">Postcode</label> <br />
+            <label htmlFor="postcode">Postcode</label> <br/>
             <input
-              type="text"
-              required
-              id="postcode"
-              placeholder="e.g. NE4 5TG"
-              ref={postcodeInputRef}
+                type="text"
+                required
+                id="postcode"
+                placeholder="e.g. NE4 5TG"
+                ref={postcodeInputRef}
             />
           </div>
+
+          <p>
+
+            Please, check your emails after registering.
+
+          </p>
           <ErrorBox errorOccurred={props.errorOccurred} text={props.errorText}/>
           <div className="actions">
             <button className="submitButton">Submit</button>
