@@ -12,10 +12,7 @@
     width: 100%;
   }
 
-  .NavbarUnorderedList li a:hover{
-    color: black;
-    transition: 1.1s;
-  }
+  
   
 }
 
