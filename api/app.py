@@ -147,6 +147,13 @@ def register() -> json:
                             role='user')
             db.session.add(new_user)
             db.session.commit()
+
+            from mail import Mail
+
+            mail = Mail()
+            mail.send_2fa_email(new_user)
+            mail.exit()
+
             return jsonify({
                 'status': 0,
                 'message': "Account successfully registered"
