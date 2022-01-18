@@ -1,4 +1,6 @@
 .contactInfo {
+  background-color: rgb(133, 133, 133);
+  border-radius: 15px;
   padding: 10px;
   flex: 0 1 10%;
   display: flex;
@@ -8,4 +10,29 @@
   margin-bottom: 1rem;
   font-weight: 700;
   width: 50%;
+  z-index: 1;
+}
+.searchBar {
+  position: fixed;
+  border-radius: 50px;
+  top: 9.8%;
+  left: 70%;
+  z-index: 1;
+}
+.body-user {
+  background-size: contain;
+  z-index: 2;
+}
+h1 {
+  position: relative;
+  left: 20%;
+  color: white;
+}
+p {
+  position: relative;
+  left: 19%;
+  color: white;
+}
+input {
+  border-radius: 5px;
 }

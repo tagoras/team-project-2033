@@ -1,5 +1,6 @@
 import React, { useState,useCallback, useRef } from 'react';
 import { useForm } from 'react-hook-form';
+import backgroundImage from "../Components/Photos/x.jpg";
 import {GoogleMap,useLoadScript, Marker} from '@react-google-maps/api';
 import './User.style.css';
 import usePlacesAutocomplete, {
@@ -121,30 +122,27 @@ function UserPage(){
         
     }
  return(
+   <div>
+   <div className='body-user'>
+      <img src={backgroundImage} className="backgroundImage"></img>
     <form onSubmit={handleSubmit(onSubmit)}>
-        <h1>User page</h1>
+        <h1>Complaint submission</h1>
+        <p>Submit your complaint details and location here </p>
         <div className="contactInfo">
             <label>Name</label>
             <input type={'text'} {...register('name')}></input>
-        </div>
-        <div className="contactInfo">
             <label>Email</label>
             <input type={'text'} {...register('email')} ></input>
-        </div>
-        <div className="contactInfo">
             <label>Descripton</label>
             <input type={'textarea'} {...register('description')} ></input>
-        </div>   
-        <div className='picture'>
             <input type={'file'} {...register('picture')}/>
-        </div>
-        <div className='contactInfo'>
-          <label>Address</label>
+            <label>Address</label>
           {/*TODO: put the return of the function in to the input field*/}
             <input type={'text'} {...register('location')}/>
-            
         </div>
-      
+        <button>Submit</button>
+    </form>
+    </div>
         <Search goTo={goTo}></Search>
         <GoogleMap className='mapContainer'
         mapContainerStyle={mapContainerStyle} 
@@ -154,14 +152,10 @@ function UserPage(){
         options={options}
         onLoad={onMapLoad}
         onClick={onMapClick }
-       
         >  
             {<Marker position={marker} />}
-           
-            
         </GoogleMap>
-        <button>Submit</button>
-    </form>
+    </div>
 )  
 }
 function Search({goTo}){
@@ -172,14 +166,13 @@ function Search({goTo}){
         }
     });
         return (
-        <div className='contactInfo'>
-            <Combobox className='contactInfo'
+        <div className='searchBar'>
+            <Combobox 
             onSelect={async (address)=>{
                 setValue(address,false);
                 clearSuggestions();
                 try{
                     const results = await getGeocode({ address });
-                    console.log(results);
                     const { lat, lng } = await getLatLng(results[0]);
                     goTo({lat,lng});
                 }
@@ -192,7 +185,7 @@ function Search({goTo}){
                 value={value} 
                 onChange={(e)=>{setValue(e.target.value);}}
                 disabled={!ready}
-                placeholder='Enter Address here'
+                placeholder='Search address here'
                 />
                 <ComboboxList>
                     <ComboboxPopover>
