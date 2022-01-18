@@ -16,7 +16,6 @@ import usePlacesAutocomplete, {
   } from "@reach/combobox";
   import "@reach/combobox/styles.css"
   import "../GenericFunctions";
-  import { sentSyncrhonousAccessRequest } from '../GenericFunctions';
   import Geocode from "react-geocode";
   
 
@@ -29,11 +28,16 @@ function UserPage(){
          googleMapsApiKey: 'AIzaSyAi4NJSYk62SkXRXqDDwjaGAoo4e30rkjw',
          libraries,
      });
-  const {register, handleSubmit, reset} = useForm();
-
+  const {register, handleSubmit} = useForm();
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [description, setDescription] = useState();
+  const [selectedFile, setSelectedFile] = useState(null);
 //Sents user submission data to the database
   const onSubmit = (data) =>{
-        //console.log(data);
+        
+        data['location']=addressRef.current;
+        console.log(data);
         fetch("/submission", {
          method: "PUT",
          headers: {
@@ -42,6 +46,7 @@ function UserPage(){
              
          body: JSON.stringify(data),
        },
+        setName(""),setEmail(""),setDescription(""),
        ).then(
          (value) => {
            return value.json();
@@ -51,8 +56,10 @@ function UserPage(){
                console.log(result);
               },
        );
-       reset();
+      ;
     };
+   
+    const addressRef = useRef();
     //Marker coordinates
   const [marker, setMarker] = useState();
   const onMapClick = useCallback((event)=>{
@@ -104,23 +111,25 @@ function UserPage(){
         zoomControl: true,
     }
 
-    const address = (marker) =>{
-        if (marker===undefined){
-          return 'empty';
-        }
-        else{
-          Geocode.fromLatLng(marker.lat.toString(),marker.lng.toString()).then(
-            (response) => {
-              const address = response.results[0].formatted_address;
-              console.log(address);
-            },
-            (error) => {
-              console.error(error);
-            }
-          )
-        }
-        
-    }
+  const address = (marker) =>{
+      if (marker===undefined){
+        return addressRef.current;
+      }
+      else{
+        Geocode.fromLatLng(marker.lat.toString(),marker.lng.toString()).then(
+          (response) => {
+            const address = response.results[0].formatted_address;
+            addressRef.current=address;
+            //console.log(address);
+          },
+          (error) => {
+            console.error(error);
+          }
+        )
+        return addressRef.current
+      }
+      
+  }
  return(
    <div>
    <div className='body-user'>
@@ -130,15 +139,14 @@ function UserPage(){
         <p className='p-user'>Submit your complaint details and location here </p>
         <div className="contactInfo">
             <label>Name</label>
-            <input className="input-user" type={'text'} {...register('name')}></input>
+            <input className="input-user" type={'text'} value={name} onChange={(e) => setName(e.target.value)} {...register('name')}></input>
             <label>Email</label>
-            <input className="input-user" type={'text'} {...register('email')} ></input>
+            <input className="input-user" type={'text'} value={email} onChange={(e) => setEmail(e.target.value)} {...register('email')} ></input>
             <label>Descripton</label>
-            <input className="input-user" type={'textarea'} {...register('description')} ></input>
-            <input className="input-user" type={'file'} {...register('picture')}/>
+            <input className="input-user" type={'textarea'} value={description} onChange={(e) => setDescription(e.target.value)} {...register('description')} ></input>
+            <input className="input-user" type={'file'} value={selectedFile} onChange={(e) => setSelectedFile(e.target.files[0])} {...register('picture')}/>
             <label>Address</label>
-          {/*TODO: put the return of the function in to the input field*/}
-            <input className="input-user" type={'text'} {...register('location')}/>
+            <input className="input-user" type={'text'} value={address(marker)}/>
         </div>
         <button>Submit</button>
     </form>
