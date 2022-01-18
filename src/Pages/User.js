@@ -118,12 +118,12 @@ function UserPage(){
     }
  return(
    <div className='MainComplaintContainer'>
-   <div className='FormIntroduction'>
+   <div className='FormIntroduction selectedWidth'>
    <h1 className='h1-user'>Complaint submission</h1>
     <p className='p-user'>Here you can submit your infastructure complaint. <br/> Our team will contact you once the issue has been reviewed.</p>
     </div>
    <div className='ComplaintFormContainer'>
-    <form onSubmit={handleSubmit(onSubmit)} className='SubmitComplaintForm'>
+    <form onSubmit={handleSubmit(onSubmit)} className='SubmitComplaintForm selectedWidth'>
         
         <div className="contactInfo">
             <label>Name</label><br/>
@@ -139,7 +139,9 @@ function UserPage(){
         </div>
     </form>
     </div>
-    <div className='GoogleMapContainer'>
+    <hr className='SectionBreaker selectedWidth'/>
+    <h3 className='PleaseSelectPlace selectedWidth'>Please select the place from the map below</h3>
+    <div className='GoogleMapContainer selectedWidth'>
     <Search goTo={goTo}></Search>
         <GoogleMap className='mapContainer'
         mapContainerStyle={mapContainerStyle} 
@@ -153,7 +155,7 @@ function UserPage(){
             {<Marker position={marker} />}
         </GoogleMap>
     </div>
-    <button className='SubmitComplaintButton'>Submit</button>
+    <button className='SubmitComplaintButton selectedWidth'>Submit</button>
     </div>
 )  
 }

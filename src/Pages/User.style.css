@@ -1,51 +1,106 @@
-.MainComplaintContainer{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  padding: 4rem 0;
+@media screen {
+  .MainComplaintContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding: 4rem 0;
+  }
+
+  .selectedWidth{
+    width: 85vw;
+  }
+  
+  .h1-user{
+    text-align: center;
+    font-size: 1.8rem;
+    margin: 0.7rem;
+  }
+  
+  .p-user{
+    line-height: 2;
+    font-size: 0.85rem;
+  }
+  
+  .FormIntroduction{
+    text-align: center;
+    margin: 0 0 4rem;
+    padding: 1rem;
+  }
+  
+  .SubmitComplaintForm{
+    padding: 1rem;
+    color: black;
+    box-shadow: 2px 2px 5px 1px rgb(122, 122, 122);
+  }
+  
+  .input-user{
+    margin-bottom: 1rem;
+  }
+  
+  .contactInfo label{
+    margin-bottom: 0.3rem;
+  }
+  
+  .ComplaintFormContainer{
+    border: 1px solid black;
+    margin-bottom: 4rem;
+  }
+
+  .SectionBreaker{
+    margin: 2rem;
+    border: none;
+    border-top: 1px solid grey;
+  }
+  
+  .GoogleMapContainer{
+    margin: 2rem;
+    height: 40vh;
+  }
+  
+  .city-search-input{
+    
+  }
+  
+  .SubmitComplaintButton{
+    margin: 4rem 0 0;
+   
+  }
+
+  .PleaseSelectPlace{
+    font-size: 1.3rem;
+    text-align: center;
+  }
 }
 
-.h1-user{
-  font-size: 3rem;
-  margin: 0.7rem;
+@media screen and (min-width: 425px){
+  .h1-user{
+    font-size: 2.1rem;
+  }
+  
+  .p-user{
+    font-size: 0.9rem;
+  }
 }
 
-.p-user{
-  line-height: 2;
-  font-size: 1.1rem;
+@media screen and (min-width: 600px){
+  .h1-user{
+    font-size: 2.3rem;
+  }
+  
+  .p-user{
+    font-size: 1rem;
+  }
 }
 
-.FormIntroduction{
-  text-align: center;
-  margin: 0 0 4rem;
-  width: 30vw;
+@media screen and (min-width: 768px){
+  .selectedWidth{
+    width: 48vw;
+  }
 }
 
-.SubmitComplaintForm{
-  padding: 1rem;
-  color: white;
-  background-color: rgb(49, 49, 49);
-  width: 30vw;
-}
-
-.input-user{
-
-}
-
-.ComplaintFormContainer{
-  border: 1px solid black;
-  margin-bottom: 4rem;
-}
-
-.GoogleMapContainer{
-  border: 1px solid black;
-  margin: 2rem;
-  height: 40vh;
-  width: 30vw;
-}
-
-.SubmitComplaintButton{
-  margin: 4rem 0 0;
-  width: 30vw;
+@media screen and (min-width: 1440px){
+  .selectedWidth{
+    width: 37vw;
+  }
 }
