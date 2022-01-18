@@ -109,6 +109,7 @@
 @media screen and (min-width: 768px){
   .loginFormContainer {
     width: 30%;
+    height: 50%;
   }
 }
 
