@@ -1,41 +1,51 @@
-.contactInfo {
-  background-color: rgb(133, 133, 133);
-  border-radius: 15px;
-  padding: 10px;
-  flex: 0 1 10%;
+.MainComplaintContainer{
   display: flex;
   flex-direction: column;
-  margin-bottom: 0;
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  font-weight: 700;
-  width: 50%;
-  z-index: 1;
-}
-.searchBar {
-  position: fixed;
-  border-radius: 50px;
-  top: 9.8%;
-  left: 70%;
-  z-index: 1;
-}
-.body-user {
-  background-size: contain;
-  z-index: 2;
-}
-.h1-user {
-  position: relative;
-  left: 20%;
-  color: white;
-}
-.p-user {
-  position: relative;
-  left: 19%;
-  color: white;
-}
-/*
-input {
-  border-radius: 5px;
+  align-items: center;
+  justify-content: space-around;
+  padding: 4rem 0;
 }
 
-*/
+.h1-user{
+  font-size: 3rem;
+  margin: 0.7rem;
+}
+
+.p-user{
+  line-height: 2;
+  font-size: 1.1rem;
+}
+
+.FormIntroduction{
+  text-align: center;
+  margin: 0 0 4rem;
+  width: 30vw;
+}
+
+.SubmitComplaintForm{
+  padding: 1rem;
+  color: white;
+  background-color: rgb(49, 49, 49);
+  width: 30vw;
+}
+
+.input-user{
+
+}
+
+.ComplaintFormContainer{
+  border: 1px solid black;
+  margin-bottom: 4rem;
+}
+
+.GoogleMapContainer{
+  border: 1px solid black;
+  margin: 2rem;
+  height: 40vh;
+  width: 30vw;
+}
+
+.SubmitComplaintButton{
+  margin: 4rem 0 0;
+  width: 30vw;
+}

@@ -88,15 +88,10 @@ function UserPage(){
   if (loadError) return 'Error loading maps';
   if(!isLoaded) return 'Loading maps';
 
- //Google map styling
+//  Google map styling
   const mapContainerStyle = {
-        position: "absolute",
-        top: "70px",
-        left: "800px",
-        right: "200px",
-        bottom: "0px",
-        width:'700px',
-        height:'430px',  
+      width: "100%",
+      height: "100%"
   }
 
   const options={
@@ -122,28 +117,30 @@ function UserPage(){
         
     }
  return(
-   <div>
-   <div className='body-user'>
-      <img src={backgroundImage} className="backgroundImage"></img>
-    <form onSubmit={handleSubmit(onSubmit)}>
-        <h1 className='h1-user'>Complaint submission</h1>
-        <p className='p-user'>Submit your complaint details and location here </p>
+   <div className='MainComplaintContainer'>
+   <div className='FormIntroduction'>
+   <h1 className='h1-user'>Complaint submission</h1>
+    <p className='p-user'>Here you can submit your infastructure complaint. <br/> Our team will contact you once the issue has been reviewed.</p>
+    </div>
+   <div className='ComplaintFormContainer'>
+    <form onSubmit={handleSubmit(onSubmit)} className='SubmitComplaintForm'>
+        
         <div className="contactInfo">
-            <label>Name</label>
+            <label>Name</label><br/>
             <input className="input-user" type={'text'} {...register('name')}></input>
-            <label>Email</label>
+            <label>Email</label><br/>
             <input className="input-user" type={'text'} {...register('email')} ></input>
-            <label>Descripton</label>
+            <label>Descripton</label><br/>
             <input className="input-user" type={'textarea'} {...register('description')} ></input>
             <input className="input-user" type={'file'} {...register('picture')}/>
-            <label>Address</label>
+            <label>Address</label><br/>
           {/*TODO: put the return of the function in to the input field*/}
             <input className="input-user" type={'text'} {...register('location')}/>
         </div>
-        <button>Submit</button>
     </form>
     </div>
-        <Search goTo={goTo}></Search>
+    <div className='GoogleMapContainer'>
+    <Search goTo={goTo}></Search>
         <GoogleMap className='mapContainer'
         mapContainerStyle={mapContainerStyle} 
         zoom={15} 
@@ -155,6 +152,8 @@ function UserPage(){
         >  
             {<Marker position={marker} />}
         </GoogleMap>
+    </div>
+    <button className='SubmitComplaintButton'>Submit</button>
     </div>
 )  
 }
