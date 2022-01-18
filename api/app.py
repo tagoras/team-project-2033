@@ -353,8 +353,8 @@ def admin_view_all() -> json:
     json_complaints = []
     json_urls = []
 
-    # Used to search the database for the 20 biggest ids in complaint id
-    quick_search = db.session.query(Complaint.id).order_by(desc(Complaint.id)).limit(20)
+    # Used to search the database for the biggest ids in complaint id
+    quick_search = db.session.query(Complaint.id).order_by(desc(Complaint.id)).limit(100)
 
     # Puts all of the complaints into complaints list
     for recent_complaints_id in quick_search:
