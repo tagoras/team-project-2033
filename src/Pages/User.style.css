@@ -1,41 +1,106 @@
-.contactInfo {
-  background-color: rgb(133, 133, 133);
-  border-radius: 15px;
-  padding: 10px;
-  flex: 0 1 10%;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 0;
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  font-weight: 700;
-  width: 50%;
-  z-index: 1;
-}
-.searchBar {
-  position: fixed;
-  border-radius: 50px;
-  top: 9.8%;
-  left: 70%;
-  z-index: 1;
-}
-.body-user {
-  background-size: contain;
-  z-index: 2;
-}
-.h1-user {
-  position: relative;
-  left: 20%;
-  color: white;
-}
-.p-user {
-  position: relative;
-  left: 19%;
-  color: white;
-}
-/*
-input {
-  border-radius: 5px;
+@media screen {
+  .MainComplaintContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding: 4rem 0;
+  }
+
+  .selectedWidth{
+    width: 85vw;
+  }
+  
+  .h1-user{
+    text-align: center;
+    font-size: 1.8rem;
+    margin: 0.7rem;
+  }
+  
+  .p-user{
+    line-height: 2;
+    font-size: 0.85rem;
+  }
+  
+  .FormIntroduction{
+    text-align: center;
+    margin: 0 0 4rem;
+    padding: 1rem;
+  }
+  
+  .SubmitComplaintForm{
+    padding: 1rem;
+    color: black;
+    box-shadow: 2px 2px 5px 1px rgb(122, 122, 122);
+  }
+  
+  .input-user{
+    margin-bottom: 1rem;
+  }
+  
+  .contactInfo label{
+    margin-bottom: 0.3rem;
+  }
+  
+  .ComplaintFormContainer{
+    border: 1px solid black;
+    margin-bottom: 4rem;
+  }
+
+  .SectionBreaker{
+    margin: 2rem;
+    border: none;
+    border-top: 1px dashed grey;
+  }
+  
+  .GoogleMapContainer{
+    margin: 2rem;
+    height: 40vh;
+  }
+  
+  .city-search-input{
+    
+  }
+  
+  .SubmitComplaintButton{
+    margin: 4rem 0 0;
+   
+  }
+
+  .PleaseSelectPlace{
+    font-size: 1.3rem;
+    text-align: center;
+  }
 }
 
-*/
+@media screen and (min-width: 425px){
+  .h1-user{
+    font-size: 2.1rem;
+  }
+  
+  .p-user{
+    font-size: 0.9rem;
+  }
+}
+
+@media screen and (min-width: 600px){
+  .h1-user{
+    font-size: 2.3rem;
+  }
+  
+  .p-user{
+    font-size: 1rem;
+  }
+}
+
+@media screen and (min-width: 768px){
+  .selectedWidth{
+    width: 48vw;
+  }
+}
+
+@media screen and (min-width: 1440px){
+  .selectedWidth{
+    width: 37vw;
+  }
+}
