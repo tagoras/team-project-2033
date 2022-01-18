@@ -245,6 +245,8 @@ def submission() -> json:
         return jsonify({'status': -1,
                         'message': "Unauthorised access attempt"}), 403
 
+    user = User.query.filter_by(id=current_user[id]).first()
+
     # Checks if submission has passed in any empty fields, if so it will produce error message for front-end
     submission_json = request.get_json()
     print(request.json)
@@ -336,23 +338,13 @@ def admin_view_all() -> json:
 
     from sqlalchemy import desc
 
-    # Not in use yet but will be for checking the next page
-    '''
-    last_complaint_id = request.json['last_complaint']
-    if last_complaint_id is None:
-        search_id = db.session.query(func.max(Complaint.id))
-        search_id = search_id[0] + 1
-    else:
-        search_id = last_complaint_id
-    '''
-
     complaints = []
     urls = []
     json_complaints = []
     json_urls = []
 
-    # Used to search the database for the 20 biggest ids in complaint id
-    quick_search = db.session.query(Complaint.id).order_by(desc(Complaint.id)).limit(20)
+    # Used to search the database for the biggest ids in complaint id
+    quick_search = db.session.query(Complaint.id).order_by(desc(Complaint.id)).limit(100)
 
     # Puts all of the complaints into complaints list
     for recent_complaints_id in quick_search:
@@ -445,29 +437,6 @@ def get_single_file(_id, _filename):
     return send_from_directory(path=_id + '/' + _filename, directory="data")
 
 
-# Used to get the next set of results for admin_view_all function
-@app.route('/admin/search', methods=["GET", "POST"])
-@jwt_required()
-def admin_next_page() -> json:
-    current_user = get_jwt_identity()
-    # Checks if user is admin
-    if current_user["role"] != 'admin':
-        return jsonify({'status': -1,
-                        'message': "Unauthorised access attempt"}), 403
-
-    # Grabs the last id that was shown in front-end
-    complaint_id = request.json["complaint_id"]
-
-    # See if any more complaints could exists
-    if complaint_id - 1 <= 0:
-        return jsonify({'status': -1,
-                        'message': "End of Complaints"}), 200
-    else:
-        return jsonify({'status': 0,
-                        'last_complaint_id': complaint_id,
-                        'message': "Go to admin_view_all function"}), 200
-
-
 # Admin edits a submission's details
 @app.route('/admin/edit', methods=['GET', 'POST'])
 @jwt_required()
@@ -487,8 +456,8 @@ def admin_edit_submission() -> json:
         db.session.query(Complaint).filter_by(id=submission_id) \
             .update({Complaint.name: request.json["submission_name"],
                      Complaint.description: request.json["submission_description"],
-                     Complaint.x_coord: request.json["submission_x_coord"],
-                     Complaint.y_coord: request.json["submission_y_coord"],
+                     Complaint.lat: request.json["submission_lat"],
+                     Complaint.lng: request.json["submission_lng"],
                      Complaint.date: request.json["date"]})
         db.session.commit()
 

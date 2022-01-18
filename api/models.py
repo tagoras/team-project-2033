@@ -56,7 +56,7 @@ class Complaint(db.Model):
     img_path = db.Column(db.String(300), nullable=False)
 
     # Initialise Complaint Object
-    def __init__(self, user_id, name, description, x_coord, y_coord, date, img_path):
+    def __init__(self, user_id, name, description, lat, lng, date, img_path, user_key):
         self.user_id = user_id
         self.name = encrypt(data=name, key=user_key)
         self.description = encrypt(data=description, key=user_key)
