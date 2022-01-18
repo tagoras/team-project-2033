@@ -23,7 +23,7 @@ function GetInTouch(props){
 
     return(
         <div className="body" >
-            <img src={backgroundImage}></img>
+            <img src={backgroundImage} className="backgroundImage"></img>
             <h1 className="getintouch">Get In Touch</h1>
             <p>Our team is ready to hear from you</p>
             <div className='contact-container'>
