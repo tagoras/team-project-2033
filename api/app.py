@@ -245,6 +245,8 @@ def submission() -> json:
         return jsonify({'status': -1,
                         'message': "Unauthorised access attempt"}), 403
 
+    user = User.query.filter_by(id=current_user[id]).first()
+
     # Checks if submission has passed in any empty fields, if so it will produce error message for front-end
     submission_json = request.get_json()
     print(request.json)
@@ -487,8 +489,8 @@ def admin_edit_submission() -> json:
         db.session.query(Complaint).filter_by(id=submission_id) \
             .update({Complaint.name: request.json["submission_name"],
                      Complaint.description: request.json["submission_description"],
-                     Complaint.x_coord: request.json["submission_x_coord"],
-                     Complaint.y_coord: request.json["submission_y_coord"],
+                     Complaint.lat: request.json["submission_lat"],
+                     Complaint.lng: request.json["submission_lng"],
                      Complaint.date: request.json["date"]})
         db.session.commit()
 
