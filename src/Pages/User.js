@@ -126,19 +126,19 @@ function UserPage(){
    <div className='body-user'>
       <img src={backgroundImage} className="backgroundImage"></img>
     <form onSubmit={handleSubmit(onSubmit)}>
-        <h1>Complaint submission</h1>
-        <p>Submit your complaint details and location here </p>
+        <h1 className='h1-user'>Complaint submission</h1>
+        <p className='p-user'>Submit your complaint details and location here </p>
         <div className="contactInfo">
             <label>Name</label>
-            <input type={'text'} {...register('name')}></input>
+            <input className="input-user" type={'text'} {...register('name')}></input>
             <label>Email</label>
-            <input type={'text'} {...register('email')} ></input>
+            <input className="input-user" type={'text'} {...register('email')} ></input>
             <label>Descripton</label>
-            <input type={'textarea'} {...register('description')} ></input>
-            <input type={'file'} {...register('picture')}/>
+            <input className="input-user" type={'textarea'} {...register('description')} ></input>
+            <input className="input-user" type={'file'} {...register('picture')}/>
             <label>Address</label>
           {/*TODO: put the return of the function in to the input field*/}
-            <input type={'text'} {...register('location')}/>
+            <input className="input-user" type={'text'} {...register('location')}/>
         </div>
         <button>Submit</button>
     </form>

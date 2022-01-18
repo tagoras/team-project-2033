@@ -23,12 +23,12 @@
   background-size: contain;
   z-index: 2;
 }
-h1 {
+.h1-user {
   position: relative;
   left: 20%;
   color: white;
 }
-p {
+.p-user {
   position: relative;
   left: 19%;
   color: white;
