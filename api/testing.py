@@ -267,48 +267,6 @@ class FlaskApp(unittest.TestCase):
         self.assertEqual(201, r.status_code)
         self.assertEqual('admin', r.json()['role'])
 
-    # Tests if the admin can see the next 20 submissions
-    def test_admin_next_page(self):
-
-        url = 'http://localhost:5000/login'
-        user = {'username': 'Steve',
-                'password': 'Pass123!'}
-        r = requests.post(url=url, json=user)
-        self.assertEqual(202, r.status_code)
-        jwt = r.json()['JWT']
-        headers = {"Authorization": f"Bearer {jwt}",
-                   'Connection': 'close'}
-
-        url = 'http://localhost:5000/admin/search'
-        complaint_id = {'complaint_id': 2}
-        r = requests.post(url=url, headers=headers, json=complaint_id)
-
-        self.assertEqual(403, r.status_code)
-
-        url = 'http://localhost:5000/login'
-        admin = {'username': 'Joe',
-                 'password': 'Njdka3rq39h!'}
-        r = requests.post(url=url, json=admin)
-
-        self.assertEqual(202, r.status_code)
-        jwt = r.json()['JWT']
-        headers = {"Authorization": f"Bearer {jwt}",
-                   'Connection': 'close'}
-
-        url = 'http://localhost:5000/admin/search'
-        complaint_id = {'complaint_id': 2}
-        r = requests.post(url=url, headers=headers, json=complaint_id)
-
-        self.assertEqual(200, r.status_code)
-        self.assertEqual('Go to admin_view_all function', r.json()['message'])
-
-        url = 'http://localhost:5000/admin/search'
-        complaint_id = {'complaint_id': 1}
-        r = requests.post(url=url, headers=headers, json=complaint_id)
-
-        self.assertEqual(200, r.status_code)
-        self.assertEqual('End of Complaints', r.json()['message'])
-
     # Tests if the admin can edit a submission in the complaints table
     def test_admin_edit_submission(self):
 

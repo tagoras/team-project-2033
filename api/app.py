@@ -338,16 +338,6 @@ def admin_view_all() -> json:
 
     from sqlalchemy import desc
 
-    # Not in use yet but will be for checking the next page
-    '''
-    last_complaint_id = request.json['last_complaint']
-    if last_complaint_id is None:
-        search_id = db.session.query(func.max(Complaint.id))
-        search_id = search_id[0] + 1
-    else:
-        search_id = last_complaint_id
-    '''
-
     complaints = []
     urls = []
     json_complaints = []
@@ -445,29 +435,6 @@ def get_role() -> json:
 @app.route('/file/<string:_id>/<string:_filename>', methods=["GET"])
 def get_single_file(_id, _filename):
     return send_from_directory(path=_id + '/' + _filename, directory="data")
-
-
-# Used to get the next set of results for admin_view_all function
-@app.route('/admin/search', methods=["GET", "POST"])
-@jwt_required()
-def admin_next_page() -> json:
-    current_user = get_jwt_identity()
-    # Checks if user is admin
-    if current_user["role"] != 'admin':
-        return jsonify({'status': -1,
-                        'message': "Unauthorised access attempt"}), 403
-
-    # Grabs the last id that was shown in front-end
-    complaint_id = request.json["complaint_id"]
-
-    # See if any more complaints could exists
-    if complaint_id - 1 <= 0:
-        return jsonify({'status': -1,
-                        'message': "End of Complaints"}), 200
-    else:
-        return jsonify({'status': 0,
-                        'last_complaint_id': complaint_id,
-                        'message': "Go to admin_view_all function"}), 200
 
 
 # Admin edits a submission's details

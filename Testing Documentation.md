@@ -79,15 +79,6 @@ deletion of the complaint was successful, and then we try again to delete
 the same complaint which doesn't exist making the status code change to 500.
 #### (Screenshots and somehow labeled???)
 
-### Admin Next Page function
-The function tells front-end whether the next page exists. We test this
-by logging in the admin and sending the last complaint id viewed and then
-and then seeing the response of the server produce a status code of 200,
-and then the message to front-end saying 'Go to admin_view_all function'.
-Then we test it when the last complaint id viewed is 1. This test should
-produce a status code of 200 and a message saying 'End of Complaints'.
-#### (Screenshots and somehow labeled???)
-
 ### Admin Edit Submission function
 We test this function by logging-in as an admin account and then submit
 the complaint id and the details of the submission wanting to be changed.
