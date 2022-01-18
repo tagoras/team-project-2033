@@ -144,7 +144,9 @@ function UserPage(){
             <input className="input-user" type={'file'} value={selectedFile} onChange={(e) => setSelectedFile(e.target.files[0])} {...register('picture')}/>
             <label>Address</label>
             <input className="input-user" type={'text'} value={address(marker)}/>
+            
         </div>
+       
     </form>
     </div>
     <hr className='SectionBreaker selectedWidth'/>
@@ -163,7 +165,7 @@ function UserPage(){
             {<Marker position={marker} />}
         </GoogleMap>
     </div>
-    <button className='SubmitComplaintButton selectedWidth'>Submit</button>
+    <button onClick={handleSubmit(onSubmit)} className='SubmitComplaintButton selectedWidth'>Submit</button>    
     </div>
 )  
 }
