@@ -1,6 +1,5 @@
 @media screen {
   *{
-    font-size: 12px;
     box-sizing: border-box;
   }
 
@@ -23,7 +22,7 @@
   }
   
   .ShowcaseContainer h1 {
-    font-size: 3rem;
+    font-size: 2.5rem;
     text-align: center;
     z-index: 3;
     display: flex;
@@ -47,29 +46,25 @@
 
 @media screen and (min-width: 320px){
    .ShowcaseContainer {
-    
-    height: 90vh;
+     height: 90vh;
   }
-  
 }
 
 
 @media screen and (min-width: 768px){
   .ShowcaseContainer h1 {
-    font-size: 3.5rem;
-    
+    font-size: 3rem;
   }
 }
 
 @media screen and (min-width: 1024px){
   .ShowcaseContainer {
-    
     height: 93vh;
   }
 }
 
 @media screen and (min-width: 1440px){
   .ShowcaseContainer h1 {
-    font-size: 5rem;
+    font-size: 4rem;
   }
 }

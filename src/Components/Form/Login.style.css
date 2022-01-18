@@ -63,6 +63,7 @@
     display: inline-block;
     width: 100%;
     max-width: 94%;
+    overflow: hidden;
   }
   
   
@@ -92,7 +93,7 @@
 
 @media screen and (min-width: 420px){
   .loginFormContainer {
-    height: 30%;
+    height: 50%;
     width: 50%;
     max-width: 65%;
   }
