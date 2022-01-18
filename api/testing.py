@@ -9,6 +9,7 @@ import app
 
 class FlaskApp(unittest.TestCase):
 
+    # Tests if has_empty_value function works
     def test_has_empty_value(self):
         d1 = {1: ""}
         d2 = {1: " "}
@@ -19,6 +20,7 @@ class FlaskApp(unittest.TestCase):
         self.assertTrue(app.has_empty_value(d3))
         self.assertFalse(app.has_empty_value(d4))
 
+    # Tests if hello_world function works
     def test_hello_world(self):
         r = requests.get('http://localhost:5000/hello_world')
         json_content = r.json()
@@ -27,6 +29,7 @@ class FlaskApp(unittest.TestCase):
         self.assertEqual(200, r.status_code, )
         self.assertEqual('http://localhost:5000/hello_world', r.url, )
 
+    # Tests the logging out of the user
     def test_logout(self):
         url = 'http://localhost:5000/login'
 
@@ -64,6 +67,7 @@ class FlaskApp(unittest.TestCase):
         r = requests.get(url=url, headers=headers)
         self.assertEqual(200, r.status_code)
 
+    # Tests the registering of a user
     def test_register(self):
         url = 'http://localhost:5000/register'
 
@@ -95,6 +99,7 @@ class FlaskApp(unittest.TestCase):
         r = requests.post(url=url, json=data)
         self.assertEqual(201, r.status_code)
 
+    # Tests the logging in of a user
     def test_login(self):
         url = 'http://localhost:5000/login'
 
@@ -132,6 +137,7 @@ class FlaskApp(unittest.TestCase):
         # print(admin_jwt)
         ADMIN_JWT = admin_jwt
 
+    # Tests the getting a single file
     def test_get_single_file(self):
         import webbrowser
 
@@ -147,7 +153,7 @@ class FlaskApp(unittest.TestCase):
         status_code = requests.get(url=url2).status_code
         self.assertEqual(200, status_code)
 
-    @unittest.skip("Problem with the Requests package")
+    # Tests the adding of submissions from a user
     def test_submission(self):
         url = 'http://localhost:5000/login'
         login_data = {'username': 'Test',
@@ -182,6 +188,7 @@ class FlaskApp(unittest.TestCase):
         # print(r2.request.headers)
         self.assertEqual(201, r2.status_code)
 
+    # Tests if the admin can see 20 of the largest ids
     def test_admin_view_all(self):
         url = 'http://localhost:5000/login'
 
@@ -201,6 +208,7 @@ class FlaskApp(unittest.TestCase):
         r = requests.post(url=url, headers=headers)
         self.assertEqual(200, r.status_code)
 
+    # Tests if the admin can delete a users submission
     def test_admin_delete_submission(self):
         url = 'http://localhost:5000/login'
 
@@ -223,6 +231,119 @@ class FlaskApp(unittest.TestCase):
         r = requests.delete(url=url, headers=headers, json=body)
 
         self.assertEqual(500, r.status_code)
+
+    # Tests if front-end can get the role of the current user
+    def test_get_role(self):
+
+        url = 'http://localhost:5000/login'
+        user = {'username': 'Steve',
+                'password': 'Pass123!'}
+        r = requests.post(url=url, json=user)
+
+        self.assertEqual(202, r.status_code)
+        jwt = r.json()['JWT']
+
+        url = 'http://localhost:5000/get_role'
+        header = {"Authorization": f"Bearer {jwt}",
+                  'Connection': 'close'}
+        r = requests.get(url=url, headers=header)
+
+        self.assertEqual(201, r.status_code)
+        self.assertEqual('user', r.json()['role'])
+
+        url = 'http://localhost:5000/login'
+        user = {'username': 'Joe',
+                'password': 'Njdka3rq39h!'}
+        r = requests.post(url=url, json=user)
+
+        self.assertEqual(202, r.status_code)
+        jwt = r.json()['JWT']
+
+        url = 'http://localhost:5000/get_role'
+        header = {"Authorization": f"Bearer {jwt}",
+                  'Connection': 'close'}
+        r = requests.get(url=url, headers=header)
+
+        self.assertEqual(201, r.status_code)
+        self.assertEqual('admin', r.json()['role'])
+
+    # Tests if the admin can see the next 20 submissions
+    def test_admin_next_page(self):
+
+        url = 'http://localhost:5000/login'
+        user = {'username': 'Steve',
+                'password': 'Pass123!'}
+        r = requests.post(url=url, json=user)
+        self.assertEqual(202, r.status_code)
+        jwt = r.json()['JWT']
+        headers = {"Authorization": f"Bearer {jwt}",
+                   'Connection': 'close'}
+
+        url = 'http://localhost:5000/admin/search'
+        complaint_id = {'complaint_id': 2}
+        r = requests.post(url=url, headers=headers, json=complaint_id)
+
+        self.assertEqual(403, r.status_code)
+
+        url = 'http://localhost:5000/login'
+        admin = {'username': 'Joe',
+                 'password': 'Njdka3rq39h!'}
+        r = requests.post(url=url, json=admin)
+
+        self.assertEqual(202, r.status_code)
+        jwt = r.json()['JWT']
+        headers = {"Authorization": f"Bearer {jwt}",
+                   'Connection': 'close'}
+
+        url = 'http://localhost:5000/admin/search'
+        complaint_id = {'complaint_id': 2}
+        r = requests.post(url=url, headers=headers, json=complaint_id)
+
+        self.assertEqual(200, r.status_code)
+        self.assertEqual('Go to admin_view_all function', r.json()['message'])
+
+        url = 'http://localhost:5000/admin/search'
+        complaint_id = {'complaint_id': 1}
+        r = requests.post(url=url, headers=headers, json=complaint_id)
+
+        self.assertEqual(200, r.status_code)
+        self.assertEqual('End of Complaints', r.json()['message'])
+
+    # Tests if the admin can edit a submission in the complaints table
+    def test_admin_edit_submission(self):
+
+        url = 'http://localhost:5000/login'
+        login_admin = {'username': 'Joe',
+                       'password': 'Njdka3rq39h!'}
+        r = requests.post(url=url, json=login_admin)
+
+        self.assertEqual(202, r.status_code)
+        jwt = r.json()['JWT']
+        headers = {"Authorization": f"Bearer {jwt}",
+                   'Connection': 'close'}
+
+        url = 'http://localhost:5000/admin/edit'
+        complaint_id = {'submission_id': 1,
+                        'submission_name': 'Checkpoint 1',
+                        'submission_description': 'Checkpoint 2',
+                        'submission_x_coord': 3,
+                        'submission_y_coord': 4,
+                        'date': '01/13/2022'}
+        r = requests.post(url=url, headers=headers, json=complaint_id)
+
+        self.assertEqual(201, r.status_code)
+        self.assertEqual('Submission edited', r.json()['message'])
+
+        complaint_id = {'submission_id': 102,
+                        'submission_name': 'Checkpoint 5',
+                        'submission_description': 'Checkpoint 6',
+                        'submission_x_coord': 7,
+                        'submission_y_coord': 8,
+                        'date': '01/13/2022'}
+        r = requests.post(url=url, headers=headers, json=complaint_id)
+
+        self.assertEqual(406, r.status_code)
+        self.assertEqual('ID Incorrect, try again', r.json()['message'])
 
 
 if __name__ == '__main__':

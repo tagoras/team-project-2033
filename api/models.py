@@ -55,16 +55,8 @@ class Complaint(db.Model):
     date = db.Column(db.String(15), nullable=False)
     img_path = db.Column(db.String(300), nullable=False)
 
-    def __init__(self, user_id, name, description, lat, lng, date, img_path, user_key):
-        self.user_id = user_id
-        self.name = encrypt(data=name, key=user_key)
-        self.description = encrypt(data=description, key=user_key)
-        self.lat = encrypt(data=lat, key=user_key)
-        self.lng = encrypt(data=lng, key=user_key)
-        self.date = encrypt(data=date, key=user_key)
-        self.img_path = encrypt(data=img_path, key=user_key)
-
-    def update_complaint(self, user_id, name, description, lat, lng, date, img_path, user_key):
+    # Initialise Complaint Object
+    def __init__(self, user_id, name, description, x_coord, y_coord, date, img_path):
         self.user_id = user_id
         self.name = encrypt(data=name, key=user_key)
         self.description = encrypt(data=description, key=user_key)
@@ -123,14 +115,17 @@ def init_db():
 
     import requests
     import shutil
-    # os.system("mkdir data/cats")
-    os.mkdir("data/cats")
-    url1 = "https://2.bp.blogspot.com/-i5JOdegCL2k/UIUR2YDLauI/AAAAAAAAHwg/yLoHtvi3qKM/s1600/close-up_cats_cat_desktop_1920x1200_hd-wallpaper-834709.jpg"
+    # Creates a folder in data called cats
+    os.system("mkdir data/cats")
+    # Downloads an image from the internet
+    url1 = "https://2.bp.blogspot.com/-i5JOdegCL2k/UIUR2YDLauI/AAAAAAAAHwg/yLoHtvi3qKM/\
+            s1600/close-up_cats_cat_desktop_1920x1200_hd-wallpaper-834709.jpg"
     res1 = requests.get(url=url1, stream=True)
     if res1.status_code == 200:
         with open("data/cats/cat.jpg", 'wb') as f:
             shutil.copyfileobj(res1.raw, f)
 
+    # Downloads a gif from the internet
     url2 = "https://welovecatsandkittens.com/wp-content/uploads/2017/01/wiggle.gif"
     res2 = requests.get(url=url2, stream=True)
     if res2.status_code == 200:
