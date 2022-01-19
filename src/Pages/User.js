@@ -63,8 +63,8 @@ function UserPage() {
       let resultInJSON = result.then((result) => result.json());
       resultInJSON.then((result) => console.log(result));
 
-    //   let sendRawImage = fetch("/submission_file/2", {
-    //       method: "PUT",
+    //   let sendRawImage = fetch(`/submission_file/{resultInJSON.submission_id}`, {
+      //       method: "PUT",
     //       headers: {
     //           'Content-Type': 'application/json;charset=utf-8',
     //           'Authorization': `Bearer ${document.cookie.substring(10)}`,

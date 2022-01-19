@@ -270,26 +270,16 @@ def submission() -> json:
         year = dt.year
         date = "{}/{}/{}".format(month, day, year)
 
-        '''
-        Checks if an image file has been sent through
-        if 'picture' not in request.files or has_empty_value(request.files):
-            return jsonify({
-                'status': -1,
-                'message': "Submission failed: Image is missing! "}), 406
-
-        img = request.files['image']
         import uuid
-        import pathlib
+
         import os
         # See if given file is an image and then saves it to a file and records image path
         # If image isn't allowed produces error
-        if img and allowed_file(img.filename):
-            img_name = str(uuid.uuid4()) + pathlib.Path(img.filename).suffix
-            img_path = current_user['id'] + "/" + img_name
-            os.system('mkdir ' + 'data/' + current_user['id'])
-            img.save(img_path)
-        '''
-        img_path = "haha"
+
+        img_name = str(uuid.uuid4())
+        img_path = current_user['id'] + "/" + img_name
+        os.system('mkdir ' + 'data/' + current_user['id'])
+
         # Saves the user submission to database into the complaint table
         complaint = Complaint(name=submission_json.get("name"),
                               description=submission_json.get('description'),
@@ -334,9 +324,10 @@ def submission_file(__id) -> json:
             file.write(img)
             extension = filetype.guess_extension(complaint.img_path)
             if filetype.is_image(file):
-                os.rename(complaint.img_path, complaint.img_path + extension)
+                img_path = complaint.img_path + str(extension)
+                os.rename(complaint.img_path, img_path)
 
-                complaint.update({Complaint.img_path: complaint.img_path + extension})
+                complaint.update({Complaint.img_path: img_path})
                 db.session.commit()
         # See if given file is an image and then saves it to a file and records image path
         # If image isn't allowed produces error
@@ -381,9 +372,9 @@ def admin_view_all() -> json:
     from sqlalchemy import desc
 
     complaints = []
-    # urls = [] Images feature didn't make it into the final cut.
+    urls = []
     json_complaints = []
-    # json_urls = [] Images feature didn't make it into the final cut.
+    json_urls = []
 
     # Used to search the database for the biggest ids in complaint id
     quick_search = db.session.query(Complaint.id).order_by(desc(Complaint.id)).limit(100)
@@ -393,13 +384,11 @@ def admin_view_all() -> json:
         complaint = db.session.query(Complaint).filter_by(id=recent_complaints_id[0]).first()
         complaints.append(complaint)
 
-    '''
-    Images feature didn't make it into the final cut.
-    Grabs the image urls for each complaint and adds them to the urls list
+    # Images feature didn't make it into the final cut.
+    # Grabs the image urls for each complaint and adds them to the urls list
     for complaint in complaints:
-        url = str(my_host + ':5000/file/' + complaint.img_path)
+        url = f'http://{my_host}:5000/file/{complaint.img_path}'
         urls.append(url)
-    '''
 
     # Turns all complaints in complaints list to a dictionary and adds them to json complaints list
     for complaint in complaints:
@@ -407,19 +396,18 @@ def admin_view_all() -> json:
         json_complaint = complaint.view_json_complaint(user_key=user.user_key)
         json_complaints.append(json_complaint)
 
-    '''
-    Images feature didn't make it into the final cut.
-    Turns all urls in urls list into a dictionary and adds them to json urls list
+    # Images feature didn't make it into the final cut.
+    # Turns all urls in urls list into a dictionary and adds them to json urls list
     for url in urls:
         json_url = {'url': url}
         json_urls.append(json_url)
-    '''
+
     print(json_complaints)
     print(complaints)
     # Sends the list of complaints and urls to front-end
     return jsonify({'status': 0,
                     'list of complaints': json_complaints,
-                    # 'list of urls': json_urls Images feature didn't make it into the final cut.
+                    'list of urls': json_urls,
                     }), 200
 
 
@@ -427,6 +415,7 @@ def admin_view_all() -> json:
 @app.route("/admin/delete", methods=["DELETE"])
 @jwt_required()
 def admin_delete_submission() -> json:
+    # TODO: ADD PICTURES
     if request.is_json and ("id" in request.json):
         # Checks if the user is an admin
         current_user = get_jwt_identity()
