@@ -4,6 +4,7 @@ import '../Navbar/Navbar.css';
 import {Link, useNavigationType} from 'react-router-dom';
 import {sentSyncrhonousAccessRequest} from "../../GenericFunctions";
 import {useState} from "react/cjs/react.development";
+import { Logout } from "../../Pages/Logout/Logout";
 
 export function Navbar() {
     const [admin, setAdmin] = useState("user");
@@ -20,6 +21,9 @@ export function Navbar() {
                 <li><Link to='/register'>Register</Link></li>
                 {
                     admin == 'admin' ? <li><Link to='/Admin'>Admin</Link></li> : <li><Link to='/login'>Login</Link></li>
+                }
+                {
+                    admin == 'user' || admin == 'admin' ? <li><Link to='/Logout'>Logout</Link></li> : null
                 }
             </ul>
             </nav>
