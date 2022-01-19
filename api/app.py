@@ -289,14 +289,14 @@ def submission() -> json:
             os.system('mkdir ' + 'data/' + current_user['id'])
             img.save(img_path)
         '''
-
+        img_path = "haha"
         # Saves the user submission to database into the complaint table
         complaint = Complaint(name=submission_json.get("name"),
                               description=submission_json.get('description'),
                               location=submission_json.get('location'),
                               date=date,
-                              user_id=current_user[id],
-                              # img_path=img_path, Images feature didn't make it into the final cut.
+                              user_id=current_user['id'],
+                              img_path=img_path,
                               user_key=user.user_key)
 
         db.session.add(complaint)

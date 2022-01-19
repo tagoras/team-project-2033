@@ -35,35 +35,30 @@ function UserPage(){
   const [selectedFile, setSelectedFile] = useState(null);
 //Sents user submission data to the database
   const onSubmit = (data) =>{
-      let id;
-      let success;
       data['location'] = addressRef.current;
       console.log(data);
       // console.log(JSON.stringify(data.location, data.email, data.name, data.desc),);
+      let json_body = {
+          'name': data.name,
+          'description': data.name,
+          'location': data.name,
+          'date': data.date,
+
+      }
+
       let result = fetch("/submission", {
               method: "PUT",
               headers: {
                   'Content-Type': 'application/json;charset=utf-8',
                   'Authorization': `Bearer ${document.cookie.substring(10)}`,
               },
-              
-              body: JSON.stringify(data),
+
+              body: JSON.stringify(json_body)
           },
           // setName(""), setEmail(""), setDescription(""),
       );
       let resultInJSON = result.then((result) => result.json());
       resultInJSON.then((result) => console.log(result));
-
-      let sendRawImage = fetch("/submission_file/2", {
-        method: "PUT",
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-            'Authorization': `Bearer ${document.cookie.substring(10)}`,
-        },
-        
-        body: data.picture[0],
-      })
-      sendRawImage.then((result) => result.json()).then((resultInJSON) => console.log(resultInJSON));
 
   };
    
