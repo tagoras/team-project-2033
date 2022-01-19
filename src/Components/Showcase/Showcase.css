@@ -65,6 +65,12 @@
 
 @media screen and (min-width: 1440px){
   .ShowcaseContainer h1 {
-    font-size: 4rem;
+    font-size: 3.5rem;
+  }
+}
+
+@media screen and (min-width: 1800px){
+  .ShowcaseContainer h1 {
+    font-size: 6rem;
   }
 }

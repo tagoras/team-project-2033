@@ -33,9 +33,12 @@
         transition: 1.5s;
         display: inline-block;
         margin-top: 2rem;
-        padding: 20px 30px;
         background-color: black;
         color: white;
+    }
+
+    .Button-1{
+        padding: 1.5rem 2rem;
     }
     
     .Button-1:hover{
@@ -60,6 +63,10 @@
 
     .contentHolder a{
         font-size: 0.8rem;
+    }
+
+    .Button-1{
+       padding: 1rem;
     }
 }
 
@@ -88,6 +95,10 @@
     .Button-1{
         margin-top: 4rem;
     }
+
+    .Button-1{
+        padding: 1.3rem;
+     }
 }
 
 @media screen  and (min-width: 900px){
@@ -112,15 +123,33 @@
 
 @media screen and (min-width: 1440px){
     .contentHolder h1{
-        font-size: 3rem;
+        font-size: 2.5rem;
     }
 
     .contentHolder p{
-        font-size: 1.3rem;
+        font-size: 1.1rem;
         width: 30%;
     }
 
     .contentHolder a{
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
+}
+
+@media screen and (min-width: 1800px){
+    .contentHolder h1{
+        font-size: 4rem;
+    }
+
+    .contentHolder p{
+        font-size: 1.7rem;
+        width: 30%;
+    }
+
+    .contentHolder a{
+        font-size: 1.3rem;
+        padding: 1.5rem;
+    }
+
+    
 }

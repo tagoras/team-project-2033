@@ -27,7 +27,6 @@ function App() {
         <Route path='/login' element={<LoginPage/>}/>
         <Route path='/Admin' element={<AdminPage/>}></Route>
         <Route path='/User' element={<UserPage/>}></Route>
-        <Route path='/get-in-touch' element={<GetInTouch/>}/>
         {/* TODO 
           Add Default Routing If Page Does not exist!!!
         */}

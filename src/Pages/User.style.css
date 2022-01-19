@@ -36,6 +36,7 @@
   
   .input-user{
     margin-bottom: 1rem;
+    font-size: 1rem;
   }
   
   .contactInfo label{
@@ -97,10 +98,30 @@
   .selectedWidth{
     width: 48vw;
   }
+
+  .h1-user{
+    font-size: 2.3rem;
+  }
+  
+  .p-user{
+    font-size: 1rem;
+  }
 }
 
 @media screen and (min-width: 1440px){
   .selectedWidth{
     width: 37vw;
+  }
+
+  .h1-user{
+    font-size: 3rem;
+  }
+  
+  .p-user{
+    font-size: 1.2rem;
+  }
+
+  .input-user{
+    font-size: 1.3rem;
   }
 }

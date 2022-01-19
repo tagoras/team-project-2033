@@ -34,6 +34,7 @@
     height: 100%;
     display: inline-block;
     padding: 0rem 1rem;
+    font-size: 1rem;
     color: white;
     display: flex;
     flex-direction: column;
@@ -56,5 +57,18 @@
 
   .NavbarUnorderedList li a {
     padding: 1rem 3rem;
+    font-size: 1rem;
+  }
+}
+
+@media screen and (min-width: 1800px){
+  .NavbarUnorderedList li {
+    margin-right: 4rem;
+    padding: 0;
+  }
+
+  .NavbarUnorderedList li a {
+    padding: 1rem 3rem;
+    font-size: 1.4rem;
   }
 }
