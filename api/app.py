@@ -261,8 +261,7 @@ def submission() -> json:
         }), 406
 
     # Sees if these fields are given by front-end
-    if "name" and "description" and "email" in submission_json:
-
+    if "name" and "description" and "email" and "location" in submission_json:
         # Gets date of when submission is handed in
         import datetime
         dt = datetime.datetime.today()
@@ -271,7 +270,8 @@ def submission() -> json:
         year = dt.year
         date = "{}/{}/{}".format(month, day, year)
 
-        # Checks if an image file has been sent through
+        '''
+        Checks if an image file has been sent through
         if 'picture' not in request.files or has_empty_value(request.files):
             return jsonify({
                 'status': -1,
@@ -288,27 +288,30 @@ def submission() -> json:
             img_path = current_user['id'] + "/" + img_name
             os.system('mkdir ' + 'data/' + current_user['id'])
             img.save(img_path)
+        '''
 
-            # Saves the user submission to database into the complaint table
-            complaint = Complaint(name=submission_json.get("name"),
-                                  description=submission_json.get('description'),
-                                  location=submission_json.get('location'),
-                                  date=date,
-                                  user_id=current_user[id],
-                                  img_path=img_path,
-                                  user_key=user.user_key)
+        # Saves the user submission to database into the complaint table
+        complaint = Complaint(name=submission_json.get("name"),
+                              description=submission_json.get('description'),
+                              location=submission_json.get('location'),
+                              date=date,
+                              user_id=current_user[id],
+                              # img_path=img_path, Images feature didn't make it into the final cut.
+                              user_key=user.user_key)
 
-            db.session.add(complaint)
-            db.session.commit()
-            return jsonify({
-                'status': 0,
-                'message': "Submission successful",
-                'submission_id': complaint.id, }), 201
+        db.session.add(complaint)
+        db.session.commit()
         return jsonify({
-            'status': -1,
-            'message': "Submission failed: Try again!"}), 406
+            'status': 0,
+            'message': "Submission successful",
+            'submission_id': complaint.id, }), 201
+    return jsonify({
+        'status': -1,
+        'message': "Submission failed: Try again!"}), 406
 
 
+'''
+Images feature didn't make it into the final cut.
 @app.route('/submission_file/<int:__id>', methods=['PUT', 'POST'])
 @jwt_required()
 def submission_file(__id) -> json:
@@ -364,6 +367,7 @@ def logout() -> json:
                    'status': -1,
                    'message': "Logout failed: check console."
                }, 500
+'''
 
 
 # The admin page used to manage complaints
@@ -379,9 +383,9 @@ def admin_view_all() -> json:
     from sqlalchemy import desc
 
     complaints = []
-    urls = []
+    # urls = [] Images feature didn't make it into the final cut.
     json_complaints = []
-    json_urls = []
+    # json_urls = [] Images feature didn't make it into the final cut.
 
     # Used to search the database for the biggest ids in complaint id
     quick_search = db.session.query(Complaint.id).order_by(desc(Complaint.id)).limit(100)
@@ -391,10 +395,13 @@ def admin_view_all() -> json:
         complaint = db.session.query(Complaint).filter_by(id=recent_complaints_id[0]).first()
         complaints.append(complaint)
 
-    # Grabs the image urls for each complaint and adds them to the urls list
+    '''
+    Images feature didn't make it into the final cut.
+    Grabs the image urls for each complaint and adds them to the urls list
     for complaint in complaints:
         url = str(my_host + ':5000/file/' + complaint.img_path)
         urls.append(url)
+    '''
 
     # Turns all complaints in complaints list to a dictionary and adds them to json complaints list
     for complaint in complaints:
@@ -404,15 +411,18 @@ def admin_view_all() -> json:
                           'date': complaint.date}
         json_complaints.append(json_complaint)
 
-    # Turns all urls in urls list into a dictionary and adds them to json urls list
+    '''
+    Images feature didn't make it into the final cut.
+    Turns all urls in urls list into a dictionary and adds them to json urls list
     for url in urls:
         json_url = {'url': url}
         json_urls.append(json_url)
+    '''
 
     # Sends the list of complaints and urls to front-end
     return jsonify({'status': 0,
                     'list of complaints': json_complaints,
-                    'list of urls': json_urls
+                    # 'list of urls': json_urls Images feature didn't make it into the final cut.
                     }), 200
 
 
@@ -436,15 +446,18 @@ def admin_delete_submission() -> json:
 
             # Finds the id in the complaints table
             complaint = db.session.query(Complaint).filter_by(id=_id).first()
-            img_path = complaint.img_path
+            # img_path = complaint.img_path Images feature didn't make it into the final cut.
             db.session.delete(complaint)
 
-            # Attempts to find image and delete it
+            '''
+            Images feature didn't make it into the final cut.
+            Attempts to find image and delete it
             if os.path.exists(img_path):
                 os.system('rm ' + 'data/' + img_path)
                 # os.remove('data/'+complaint_image)
             else:
                 print("Image and/or path not found")
+            '''
 
             db.session.commit()
             return jsonify({
@@ -494,6 +507,7 @@ def admin_edit_submission() -> json:
         db.session.query(Complaint).filter_by(id=submission_id) \
             .update({Complaint.name: request.json["submission_name"],
                      Complaint.description: request.json["submission_description"],
+                     Complaint.location: request.json["submission_location"],
                      Complaint.date: request.json["date"]})
         db.session.commit()
 
