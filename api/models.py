@@ -61,7 +61,7 @@ class Complaint(db.Model):
         self.description = encrypt(data=description, key=user_key)
         self.location = encrypt(data=location, key=user_key)
         self.date = encrypt(data=date, key=user_key)
-        self.img_path = encrypt(data=img_path, key=user_key)
+        self.img_path = img_path
         db.session.commit()
 
     def view_json_complaint(self, user_key):
@@ -76,7 +76,7 @@ class Complaint(db.Model):
             'date': decrypt(data=self.date, key=user_key),
             'id': self.id,
             'user_id': self.user_id,
-            'img_path': decrypt(data=self.img_path, key=user_key)
+            'img_path': self.img_path
 
         }
         # self.img_path = decrypt(data=self.img_path, key=user_key) Images feature didn't make it into the final cut.
