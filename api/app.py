@@ -245,7 +245,7 @@ def submission() -> json:
         return jsonify({'status': -1,
                         'message': "Unauthorised access attempt"}), 403
 
-    user = User.query.filter_by(id=current_user[id]).first()
+    user = User.query.filter_by(id=current_user['id']).first()
 
     # Checks if submission has passed in any empty fields, if so it will produce error message for front-end
     submission_json = request.get_json()
