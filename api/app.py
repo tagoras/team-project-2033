@@ -278,7 +278,7 @@ def submission() -> json:
 
         img_name = str(uuid.uuid4())
         img_path = f'{current_user["id"]}/{img_name}'
-        os.system('mkdir ' + 'data/' + current_user['id'])
+        os.system(f'mkdir data/{current_user["id"]}')
 
         # Saves the user submission to database into the complaint table
         complaint = Complaint(name=submission_json.get("name"),
@@ -463,7 +463,7 @@ def admin_delete_submission() -> json:
 @app.route("/get_role", methods=["GET"])
 @jwt_required()
 def get_role() -> json:
-    # Grabs the logged in user info
+    # Grabs the logged-in user info
     current_user = get_jwt_identity()
     return jsonify(role=current_user["role"]), 201
 
@@ -471,7 +471,7 @@ def get_role() -> json:
 # Gets a single file
 @app.route('/file/<string:_id>/<string:_filename>', methods=["GET"])
 def get_single_file(_id, _filename):
-    return send_from_directory(path=_id + '/' + _filename, directory="data")
+    return send_from_directory(path=f'{_id}/{_filename}', directory="data")
 
 
 # Admin edits a submission's details
