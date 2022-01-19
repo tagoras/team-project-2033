@@ -112,7 +112,7 @@ def init_db():
     import requests
     import shutil
     # Creates a folder in data called cats
-    os.system("mkdir data/cats")
+    os.makedirs("data/cats")
     # Downloads an image from the internet
     url1 = "https://amolife.com/image/Pictures_of_Cute_Cats_7.jpg"
     res1 = requests.get(url=url1, stream=True)

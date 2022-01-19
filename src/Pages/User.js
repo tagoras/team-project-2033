@@ -35,60 +35,35 @@ function UserPage(){
   const [selectedFile, setSelectedFile] = useState(null);
 //Sents user submission data to the database
   const onSubmit = (data) =>{
-      let id
-      let success
+      let id;
+      let success;
       data['location'] = addressRef.current;
       console.log(data);
-      fetch("/submission", {
+      // console.log(JSON.stringify(data.location, data.email, data.name, data.desc),);
+      let result = fetch("/submission", {
               method: "PUT",
               headers: {
                   'Content-Type': 'multipart/form-data;charset=utf-8',
                   'Authorization': `Bearer ${document.cookie.substring(10)}`,
               },
-
-              body: JSON.stringify(data.location, data.email, data.name, data.desc),
+              
+              body: JSON.stringify(data),
           },
-          setName(""), setEmail(""), setDescription(""),
-      ).then(
-          (value) => {
-              return value.json();
-          }
-      ).then(
-          (result) => {
-              console.log(result);
-          },
-      ).then((response) => {
-          console.log(response);
-          return response.json();
-      }).then(responseInJSON => {
-          console.log(responseInJSON)
-          id = responseInJSON.submission_id;
-          success = responseInJSON.status
-      }).then(secondResponseInJson => {
-          if ((id != undefined && success != undefined) && success == 0) {
-              fetch(`/submission_file/${id}`, {
-                      method: "PUT",
-                      headers: {
-                          'Content-Type': 'multipart/form-data;charset=utf-8',
-                          'Authorization': `Bearer ${document.cookie.substring(10)}`,
-                      },
+          // setName(""), setEmail(""), setDescription(""),
+      );
+      let resultInJSON = result.then((result) => result.json());
+      resultInJSON.then((result) => console.log(result));
 
-                      body: data.picture[0],
-                  },
-                  setName(""), setEmail(""), setDescription(""),
-              ).then(
-                  (value) => {
-                      return value.json();
-                  }
-              ).then(
-                  (result) => {
-                      console.log(result);
-                      console.log(secondResponseInJson)
-                  },
-              );
-
-          }
+      let sendRawImage = fetch("/submission_file/2", {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'multipart/form-data;charset=utf-8',
+            'Authorization': `Bearer ${document.cookie.substring(10)}`,
+        },
+        
+        body: data.picture[0],
       })
+      sendRawImage.then((result) => result.json()).then((resultInJSON) => console.log(resultInJSON));
 
   };
    
