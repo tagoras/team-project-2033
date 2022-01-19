@@ -69,7 +69,7 @@ class Complaint(db.Model):
         self.description = decrypt(data=self.description, key=user_key)
         self.location = decrypt(data=self.location, key=user_key)
         self.date = decrypt(data=self.date, key=user_key)
-        self.img_path = decrypt(data=self.img_path, key=user_key)
+        # self.img_path = decrypt(data=self.img_path, key=user_key) Images feature didn't make it into the final cut.
 
 
 # Initialising the database
@@ -92,7 +92,7 @@ def init_db():
     test_user = User(username='Steve',
                      email='Steve@test.com',
                      password=generate_password_hash('Pass123!'),
-                     # postcode=generate_password_hash("NE6 9RU"),
+                     # postcode=generate_password_hash("NE6 9RU"), Images feature didn't make it into the final cut.
                      postcode="NE1 2AA",
                      role='user')
 
@@ -101,7 +101,7 @@ def init_db():
                                 description='To use for testing',
                                 location='21, North but south of Haymarket but not like, right right there',
                                 date='1/5/2022',
-                                img_path='data/cats/cat.jpg',
+                                # img_path='data/cats/cat.jpg', Images feature didn't make it into the final cut.
                                 user_key=test_user.user_key)
 
     db.session.add(test_admin)
@@ -109,6 +109,7 @@ def init_db():
     db.session.add(test_submission)
     db.session.commit()
 
+    ''' These are image downloads, images feature didn't make it into the final cut.
     import requests
     import shutil
     # Creates a folder in data called cats
@@ -126,5 +127,6 @@ def init_db():
     if res2.status_code == 200:
         with open("data/cats/cat.gif", 'wb') as f:
             shutil.copyfileobj(res2.raw, f)
+    '''
 
     print("init_db successful")
