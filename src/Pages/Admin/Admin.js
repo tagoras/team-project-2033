@@ -58,14 +58,17 @@ function AdminPage() {
       console.log(data);
       setPageRefreshedTimes(++pageRefreshedTimes);
     }
-    
+    console.log(data);
 
     return(
         <div className="AdminMainContainer">
+          <div className="CardMainContainer">
           {data.map((item, index, array) => {
             return <ComplaintCard key={index} id={index} complaint={item} handleDelete={deleteComplaint}/>
           })}
+          </div>
         </div>
+        
     )
     
 }

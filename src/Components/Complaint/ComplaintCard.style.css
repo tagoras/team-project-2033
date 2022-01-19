@@ -1,9 +1,16 @@
+.CardMainContainer{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
 .ComplaintContainer{
     width: 15vw;
     padding: 1rem;
-    box-shadow: 2px 2px 5px black;
+    box-shadow: 5px 5px 10px rgb(42, 42, 42);
     transition: 1.5s;
     margin: 1rem;
+    background-color: white;
 }
 
 .ComplaintContainer{

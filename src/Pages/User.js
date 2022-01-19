@@ -63,16 +63,16 @@ function UserPage() {
       let resultInJSON = result.then((result) => result.json());
       resultInJSON.then((result) => console.log(result));
 
-      let sendRawImage = fetch("/submission_file/2", {
-          method: "PUT",
-          headers: {
-              'Content-Type': 'application/json;charset=utf-8',
-              'Authorization': `Bearer ${document.cookie.substring(10)}`,
-          },
+    //   let sendRawImage = fetch("/submission_file/2", {
+    //       method: "PUT",
+    //       headers: {
+    //           'Content-Type': 'application/json;charset=utf-8',
+    //           'Authorization': `Bearer ${document.cookie.substring(10)}`,
+    //       },
 
-          body: data.picture[0],
-      })
-      sendRawImage.then((result) => result.json()).then((resultInJSON) => console.log(resultInJSON));
+    //       body: data.picture[0],
+    //   })
+    //   sendRawImage.then((result) => result.json()).then((resultInJSON) => console.log(resultInJSON));
 
   };
 

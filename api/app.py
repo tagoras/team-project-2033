@@ -414,7 +414,8 @@ def admin_view_all() -> json:
         json_url = {'url': url}
         json_urls.append(json_url)
     '''
-
+    print(json_complaints)
+    print(complaints)
     # Sends the list of complaints and urls to front-end
     return jsonify({'status': 0,
                     'list of complaints': json_complaints,
