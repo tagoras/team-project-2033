@@ -23,19 +23,20 @@ function LoginPage() {
       console.log(response);
       return response.json();
     }).then(responseInJSON => {
-      
+
       console.log(responseInJSON);
-      if(responseInJSON.status == -1){
+      if (responseInJSON.status == -1) {
         setErrorStatus(true);
         setErrorMessage(responseInJSON.message);
       }
 
-      
-      document.cookie = `SessionID=${responseInJSON.JWT}; path=/`;
+
+      document.cookie = `SessionID=${responseInJSON.JWT};max-age=300; path=/`;
+      console.log(document.cookie);
       let access = sentSyncrhonousAccessRequest("/get_role", "GET");
       access.then((response) => {
-        if(response.role == 'user') navigate("/User");
-        else if(response.role == 'admin') navigate("/admin");
+        if (response.role == 'user') navigate("/User");
+        else if (response.role == 'admin') navigate("/admin");
       });
     });
   }

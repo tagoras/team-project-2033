@@ -3,31 +3,34 @@ import { useForm } from 'react-hook-form';
 import backgroundImage from "../Components/Photos/x.jpg";
 import {GoogleMap,useLoadScript, Marker} from '@react-google-maps/api';
 import './User.style.css';
+import {useNavigate} from 'react-router-dom';
 import usePlacesAutocomplete, {
     getGeocode,
     getLatLng,
-  } from "use-places-autocomplete";
-  import {
+} from "use-places-autocomplete";
+import {
     Combobox,
     ComboboxInput,
     ComboboxPopover,
     ComboboxList,
     ComboboxOption,
-  } from "@reach/combobox";
-  import "@reach/combobox/styles.css"
-  import "../GenericFunctions";
-  import Geocode from "react-geocode";
-  
+} from "@reach/combobox";
+import "@reach/combobox/styles.css"
+import "../GenericFunctions";
+import Geocode from "react-geocode";
+import {sentSyncrhonousAccessRequest} from '../GenericFunctions';
+import {navigate} from 'react-router-dom';
 
 
 const libraries = ['places'];
 Geocode.setApiKey("AIzaSyAi4NJSYk62SkXRXqDDwjaGAoo4e30rkjw");
-function UserPage(){
+
+function UserPage() {
     //Sets up Google scripts
-  const {isLoaded,loadError} = useLoadScript({
-         googleMapsApiKey: 'AIzaSyAi4NJSYk62SkXRXqDDwjaGAoo4e30rkjw',
-         libraries,
-     });
+    const {isLoaded, loadError} = useLoadScript({
+        googleMapsApiKey: 'AIzaSyAi4NJSYk62SkXRXqDDwjaGAoo4e30rkjw',
+        libraries,
+    });
   const {register, handleSubmit} = useForm();
   const [name, setName] = useState();
   const [email, setEmail] = useState();
@@ -60,17 +63,44 @@ function UserPage(){
       let resultInJSON = result.then((result) => result.json());
       resultInJSON.then((result) => console.log(result));
 
+      let sendRawImage = fetch("/submission_file/2", {
+          method: "PUT",
+          headers: {
+              'Content-Type': 'application/json;charset=utf-8',
+              'Authorization': `Bearer ${document.cookie.substring(10)}`,
+          },
+
+          body: data.picture[0],
+      })
+      sendRawImage.then((result) => result.json()).then((resultInJSON) => console.log(resultInJSON));
+
   };
-   
+
+    // if(!access) return null;
+    // let result = sentSyncrhonousAccessRequest('/get_role', 'GET');
+    // result.then((value) => {
+    //   console.log(value);
+    //   if(value.role != 'user'){
+    //     setAccess(false);
+    //   }else setAccess(true);
+    // });
+    let navigate = useNavigate();
+    let result = sentSyncrhonousAccessRequest('/get_role', 'GET').then((jsonResult) => {
+        if (jsonResult.role != 'user') {
+            console.log(jsonResult.role);
+            navigate('/login');
+        }
+    })
+
     const addressRef = useRef();
     //Marker coordinates
-  const [marker, setMarker] = useState();
-  const onMapClick = useCallback((event)=>{
-           setMarker({
-            lat: event.latLng.lat(),
-            lng: event.latLng.lng(),
-           },
-           );
+    const [marker, setMarker] = useState();
+    const onMapClick = useCallback((event) => {
+        setMarker({
+                lat: event.latLng.lat(),
+                lng: event.latLng.lng(),
+            },
+        );
            
   },[])
   const [center, setCenter] = useState({

@@ -5,24 +5,33 @@ import ComplaintCard from "../../Components/Complaint/ComplaintCard";
 import "../../GenericFunctions";
 import { sentSyncrhonousAccessRequest } from "../../GenericFunctions";
 import {navigate} from 'react-router-dom';
-import {useState}  from 'react';
+import {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 
-function AdminPage(){
+function AdminPage() {
 
-  let [pageRefreshedTimes, setPageRefreshedTimes] = useState(0);
-  let [data, setData] = useState([]);
+    let [pageRefreshedTimes, setPageRefreshedTimes] = useState(0);
+    let [data, setData] = useState([]);
 
-  console.log(data);
+    console.log(data);
 
-  //This function executes properly
-  function deleteComplaint(id){
-    console.log("Deleting complaint with id of " + id);
-    fetch(`/admin/delete`, {
-          method: `DELETE`,
-          headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-            'Authorization': `Bearer ${document.cookie.substring(10)}`
-          },
+    let navigate = useNavigate();
+    let result = sentSyncrhonousAccessRequest('/get_role', 'GET').then((jsonResult) => {
+        if (jsonResult.role != 'admin') {
+            console.log(jsonResult.role);
+            navigate('/login');
+        }
+    })
+
+    //This function executes properly
+    function deleteComplaint(id) {
+        console.log("Deleting complaint with id of " + id);
+        fetch(`/admin/delete`, {
+            method: `DELETE`,
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${document.cookie.substring(10)}`
+            },
           body: JSON.stringify({id: id + 1})
     }).then((value) => value.json()).then((jsonRes) => console.log(jsonRes));
 
