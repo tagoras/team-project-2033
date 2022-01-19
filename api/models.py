@@ -50,14 +50,16 @@ class Complaint(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(200), nullable=False)
+    location = db.Column(db.String(200), nullable=False)
     date = db.Column(db.String(15), nullable=False)
     img_path = db.Column(db.String(300), nullable=False)
 
     # Initialise Complaint Object
-    def __init__(self, user_id, name, description, date, img_path, user_key):
+    def __init__(self, user_id, name, description, location, date, img_path, user_key):
         self.user_id = user_id
         self.name = encrypt(data=name, key=user_key)
         self.description = encrypt(data=description, key=user_key)
+        self.location = encrypt(data=location, key=user_key)
         self.date = encrypt(data=date, key=user_key)
         self.img_path = encrypt(data=img_path, key=user_key)
         db.session.commit()
@@ -65,6 +67,7 @@ class Complaint(db.Model):
     def view_complaint(self, user_key):
         self.name = decrypt(data=self.name, key=user_key)
         self.description = decrypt(data=self.description, key=user_key)
+        self.location = decrypt(data=self.location, key=user_key)
         self.date = decrypt(data=self.date, key=user_key)
         self.img_path = decrypt(data=self.img_path, key=user_key)
 
@@ -96,6 +99,7 @@ def init_db():
     test_submission = Complaint(user_id=2,
                                 name='Test Submission',
                                 description='To use for testing',
+                                location='21, North but south of Haymarket but not like, right right there',
                                 date='1/5/2022',
                                 img_path='data/cats/cat.jpg',
                                 user_key=test_user.user_key)
@@ -110,8 +114,7 @@ def init_db():
     # Creates a folder in data called cats
     os.system("mkdir data/cats")
     # Downloads an image from the internet
-    url1 = "https://2.bp.blogspot.com/-i5JOdegCL2k/UIUR2YDLauI/AAAAAAAAHwg/yLoHtvi3qKM/\
-            s1600/close-up_cats_cat_desktop_1920x1200_hd-wallpaper-834709.jpg"
+    url1 = "https://amolife.com/image/Pictures_of_Cute_Cats_7.jpg"
     res1 = requests.get(url=url1, stream=True)
     if res1.status_code == 200:
         with open("data/cats/cat.jpg", 'wb') as f:

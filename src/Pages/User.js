@@ -36,6 +36,7 @@ function UserPage(){
 //Sents user submission data to the database
   const onSubmit = (data) =>{
       let id
+      let success
       data['location'] = addressRef.current;
       console.log(data);
       fetch("/submission", {
@@ -60,28 +61,34 @@ function UserPage(){
           console.log(response);
           return response.json();
       }).then(responseInJSON => {
+          console.log(responseInJSON)
           id = responseInJSON.submission_id;
-      })
+          success = responseInJSON.status
+      }).then(secondResponseInJson => {
+          if ((id != undefined && success != undefined) && success == 0) {
+              fetch(`/submission_file/${id}`, {
+                      method: "PUT",
+                      headers: {
+                          'Content-Type': 'multipart/form-data;charset=utf-8',
+                          'Authorization': `Bearer ${document.cookie.substring(10)}`,
+                      },
 
-      fetch(`/submission_file/${id}`, {
-              method: "PUT",
-              headers: {
-                  'Content-Type': 'multipart/form-data;charset=utf-8',
-                  'Authorization': `Bearer ${document.cookie.substring(10)}`,
-              },
+                      body: data.picture[0],
+                  },
+                  setName(""), setEmail(""), setDescription(""),
+              ).then(
+                  (value) => {
+                      return value.json();
+                  }
+              ).then(
+                  (result) => {
+                      console.log(result);
+                      console.log(secondResponseInJson)
+                  },
+              );
 
-              body: data.picture[0],
-          },
-          setName(""), setEmail(""), setDescription(""),
-      ).then(
-          (value) => {
-              return value.json();
           }
-      ).then(
-           (result)=>{
-               console.log(result);
-              },
-       );
+      })
 
   };
    

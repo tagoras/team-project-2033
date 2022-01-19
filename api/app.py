@@ -195,6 +195,9 @@ def login() -> json:
             }), 406
 
         if not pyotp.TOTP(user.otp_key).verify(login_form['otp']):
+            print(login_form['otp'])
+            print(pyotp.TOTP(user.otp_key).now())
+            print(pyotp.TOTP(user.otp_key).verify(login_form['otp']))
             return jsonify({
                 'status': -1,
                 'message': "Login failed: One Time Password is incorrect!"
