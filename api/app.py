@@ -278,7 +278,8 @@ def submission() -> json:
 
         img_name = str(uuid.uuid4())
         img_path = f'{current_user["id"]}/{img_name}'
-        os.system(f'mkdir data/{current_user["id"]}')
+        # os.system(f'mkdir data/{current_user["id"]}')
+        os.mkdir(f'data/{current_user["id"]}')
 
         # Saves the user submission to database into the complaint table
         complaint = Complaint(name=submission_json.get("name"),
