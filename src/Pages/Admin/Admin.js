@@ -6,6 +6,7 @@ import "../../GenericFunctions";
 import { sentSyncrhonousAccessRequest } from "../../GenericFunctions";
 import {navigate} from 'react-router-dom';
 import {useState}  from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function AdminPage(){
 
@@ -13,6 +14,14 @@ function AdminPage(){
   let [data, setData] = useState([]);
 
   console.log(data);
+
+  let navigate = useNavigate();
+  let result = sentSyncrhonousAccessRequest('/get_role', 'GET').then((jsonResult) => {
+    if(jsonResult.role != 'admin') {
+      console.log(jsonResult.role);
+      navigate('/login');
+    }
+  })
 
   //This function executes properly
   function deleteComplaint(id){

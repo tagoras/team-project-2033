@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import backgroundImage from "../Components/Photos/x.jpg";
 import {GoogleMap,useLoadScript, Marker} from '@react-google-maps/api';
 import './User.style.css';
+import { useNavigate } from 'react-router-dom';
 import usePlacesAutocomplete, {
     getGeocode,
     getLatLng,
@@ -17,8 +18,9 @@ import usePlacesAutocomplete, {
   import "@reach/combobox/styles.css"
   import "../GenericFunctions";
   import Geocode from "react-geocode";
+import { sentSyncrhonousAccessRequest } from '../GenericFunctions';
+import { navigate } from 'react-router-dom';
   
-
 
 const libraries = ['places'];
 Geocode.setApiKey("AIzaSyAi4NJSYk62SkXRXqDDwjaGAoo4e30rkjw");
@@ -45,7 +47,7 @@ function UserPage(){
               headers: {
                   'Content-Type': 'multipart/form-data;charset=utf-8',
                   'Authorization': `Bearer ${document.cookie.substring(10)}`,
-              },
+              }, 
               
               body: JSON.stringify(data),
           },
@@ -66,6 +68,22 @@ function UserPage(){
       sendRawImage.then((result) => result.json()).then((resultInJSON) => console.log(resultInJSON));
 
   };
+  
+  // if(!access) return null;
+  // let result = sentSyncrhonousAccessRequest('/get_role', 'GET');
+  // result.then((value) => {
+  //   console.log(value);
+  //   if(value.role != 'user'){
+  //     setAccess(false);
+  //   }else setAccess(true);
+  // });
+  let navigate = useNavigate();
+  let result = sentSyncrhonousAccessRequest('/get_role', 'GET').then((jsonResult) => {
+    if(jsonResult.role != 'user') {
+      console.log(jsonResult.role);
+      navigate('/login');
+    }
+  })
    
     const addressRef = useRef();
     //Marker coordinates
