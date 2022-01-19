@@ -63,7 +63,7 @@ function UserPage() {
       let resultInJSON = result.then((result) => result.json()).then((resultInJSON) => {
         fetch(`/submission_file/${resultInJSON.submission_id}`, {
           method: "PUT",
-        headers: {
+          headers: {
             'Content-Type': 'application/json;charset=utf-8',
             'Authorization': `Bearer ${document.cookie.substring(10)}`,
         },
