@@ -12,6 +12,7 @@ import UserPage from './Pages/User';
 
 import AdminPage from './Pages/Admin/Admin';
 import GetInTouch from './Pages/GetInTouch/GetInTouch';
+import { Logout } from './Pages/Logout/Logout';
 
 
 
@@ -27,6 +28,7 @@ function App() {
         <Route path='/login' element={<LoginPage/>}/>
         <Route path='/Admin' element={<AdminPage/>}></Route>
         <Route path='/User' element={<UserPage/>}></Route>
+        <Route path='/Logout' element={<Logout/>}></Route>
         {/* TODO 
           Add Default Routing If Page Does not exist!!!
         */}
