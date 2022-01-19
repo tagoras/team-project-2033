@@ -322,6 +322,7 @@ def submission_file(__id, __filename) -> json:
     img = request.get_data()
     import os
     import pathlib
+    import filetype
     if img:
         with open("data/" + complaint.img_path, "wb") as file:
             file.write(img)
