@@ -177,11 +177,14 @@ class FlaskApp(unittest.TestCase):
             "Authorization": f"Bearer {jwt}",
             'Connection': 'close'
         }
+        '''
+        Images feature didn't make it into the final cut.
         files = {
             "image": open("data/cats/cat.jpg", "rb")
         }
+        '''
 
-        r2 = requests.put(url=url2, json=submission, headers=headers, stream=True, files=files)
+        r2 = requests.put(url=url2, json=submission, headers=headers, stream=True)
 
         # print(r2.text)
         # print(submission)
@@ -284,8 +287,7 @@ class FlaskApp(unittest.TestCase):
         complaint_id = {'submission_id': 1,
                         'submission_name': 'Checkpoint 1',
                         'submission_description': 'Checkpoint 2',
-                        'submission_x_coord': 3,
-                        'submission_y_coord': 4,
+                        'submission_location': 'Here???',
                         'date': '01/13/2022'}
         r = requests.post(url=url, headers=headers, json=complaint_id)
 
@@ -295,8 +297,7 @@ class FlaskApp(unittest.TestCase):
         complaint_id = {'submission_id': 102,
                         'submission_name': 'Checkpoint 5',
                         'submission_description': 'Checkpoint 6',
-                        'submission_x_coord': 7,
-                        'submission_y_coord': 8,
+                        'submission_location': 'Not Here???',
                         'date': '01/13/2022'}
         r = requests.post(url=url, headers=headers, json=complaint_id)
 
