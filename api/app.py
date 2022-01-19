@@ -277,7 +277,7 @@ def submission() -> json:
         # If image isn't allowed produces error
 
         img_name = str(uuid.uuid4())
-        img_path = current_user['id'] + "/" + img_name
+        img_path = f'{current_user["id"]}/{img_name}'
         os.system('mkdir ' + 'data/' + current_user['id'])
 
         # Saves the user submission to database into the complaint table

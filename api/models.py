@@ -111,7 +111,7 @@ def init_db():
                                 description='To use for testing',
                                 location='21, North but south of Haymarket but not like, right right there',
                                 date='1/5/2022',
-                                img_path='data/cats/cat.jpg',
+                                img_path='cats/cat.jpg',
                                 user_key=test_user.user_key)
 
     db.session.add(test_admin)
