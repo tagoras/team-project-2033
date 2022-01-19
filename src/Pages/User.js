@@ -60,19 +60,28 @@ function UserPage() {
           },
           // setName(""), setEmail(""), setDescription(""),
       );
-      let resultInJSON = result.then((result) => result.json());
-      resultInJSON.then((result) => console.log(result));
+      let resultInJSON = result.then((result) => result.json()).then((resultInJSON) => {
+        fetch(`/submission_file/${resultInJSON.submission_id}`, {
+          method: "PUT",
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            'Authorization': `Bearer ${document.cookie.substring(10)}`,
+        },
 
-    //   let sendRawImage = fetch(`/submission_file/{resultInJSON.submission_id}`, {
+        body: data.picture[0],
+    })}).then((result) => result.json()).then((resultInJSON) => console.log(resultInJSON));
+      
+      
+      // let sendRawImage = fetch(`/submission_file/${resultInJSON.submission_id}`, {
       //       method: "PUT",
-    //       headers: {
-    //           'Content-Type': 'application/json;charset=utf-8',
-    //           'Authorization': `Bearer ${document.cookie.substring(10)}`,
-    //       },
+      //     headers: {
+      //         'Content-Type': 'application/json;charset=utf-8',
+      //         'Authorization': `Bearer ${document.cookie.substring(10)}`,
+      //     },
 
-    //       body: data.picture[0],
-    //   })
-    //   sendRawImage.then((result) => result.json()).then((resultInJSON) => console.log(resultInJSON));
+      //     body: data.picture[0],
+      // })
+      //sendRawImage
 
   };
 
