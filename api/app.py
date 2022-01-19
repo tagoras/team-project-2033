@@ -1,7 +1,7 @@
 # IMPORTS
 import json
 import re
-from copy import deepcopy
+import filetype
 
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
@@ -235,7 +235,7 @@ def allowed_file(filename):
                                                   '.pjpeg', '.pjp', '.jpeg', '.gif', '.apng'}
 
 
-# Allows an logged in user to submit a complaint which then gets stored in the database
+# Allows a logged-in user to submit a complaint which then gets stored in the database
 @app.route('/submission', methods=['PUT', 'POST'])
 @jwt_required()
 def submission() -> json:
@@ -245,7 +245,7 @@ def submission() -> json:
         return jsonify({'status': -1,
                         'message': "Unauthorised access attempt"}), 403
 
-    user = User.query.filter_by(id=current_user[id]).first()
+    user = User.query.filter_by(id=current_user["id"]).first()
 
     # Checks if submission has passed in any empty fields, if so it will produce error message for front-end
     submission_json = request.get_json()
@@ -258,7 +258,7 @@ def submission() -> json:
         }), 406
 
     # Sees if these fields are given by front-end
-    if "name" and "description" and "email" and "x_coords" and "y_coords" in submission_json:
+    if "name" and "description" and "email" in submission_json:
 
         # Gets date of when submission is handed in
         import datetime
@@ -282,13 +282,13 @@ def submission() -> json:
         # If image isn't allowed produces error
         if img and allowed_file(img.filename):
             img_name = str(uuid.uuid4()) + pathlib.Path(img.filename).suffix
-            img_path = current_user[id] + "/" + img_name
-            os.system('mkdir ' + 'data/' + current_user[id])
+            img_path = current_user['id'] + "/" + img_name
+            os.system('mkdir ' + 'data/' + current_user['id'])
             img.save(img_path)
 
             # Saves the user submission to database into the complaint table
-            complaint = Complaint(name=submission_form.get("name"),
-                                  description=submission_form.get('description'),
+            complaint = Complaint(name=submission_json.get("name"),
+                                  description=submission_json.get('description'),
                                   date=date,
                                   user_id=current_user[id],
                                   img_path=img_path,
@@ -298,10 +298,48 @@ def submission() -> json:
             db.session.commit()
             return jsonify({
                 'status': 0,
-                'message': "Submission successful"}), 201
+                'message': "Submission successful",
+                'submission_id': complaint.id, }), 201
         return jsonify({
             'status': -1,
             'message': "Submission failed: Try again!"}), 406
+
+
+@app.route('/submission_file/<int:__id>', methods=['PUT', 'POST'])
+@jwt_required()
+def submission_file(__id) -> json:
+    # Grabs the user information and see if they have the role of a user
+    current_user = get_jwt_identity()
+    if current_user["role"] != 'user':
+        return jsonify({'status': -1,
+                        'message': "Unauthorised access attempt"}), 403
+
+    # user = User.query.filter_by(id=current_user["id"]).first()
+    complaint = Complaint.query.filter_by(id=__id).first()
+    if not complaint:
+        return jsonify({
+            'status': -1,
+            'message': "What is this?"}), 400
+    # Checks if submission has passed in any empty fields, if so it will produce error message for front-end
+    img = request.get_data()
+    import os
+    if img:
+        with open(complaint.img_path, "wb") as file:
+            file.write(img)
+            extension = filetype.guess_extension(complaint.img_path)
+            if filetype.is_image(file):
+                os.rename(complaint.img_path, complaint.img_path + extension)
+
+                complaint.update({Complaint.img_path: complaint.img_path + extension})
+                db.session.commit()
+        # See if given file is an image and then saves it to a file and records image path
+        # If image isn't allowed produces error
+        return jsonify({
+            'status': 0,
+            'message': "Submission successful"}), 201
+    return jsonify({
+        'status': -1,
+        'message': "Submission failed: Choose another file"}), 406
 
 
 # Logs the user out of the website
@@ -386,7 +424,7 @@ def admin_delete_submission() -> json:
             return jsonify({'status': -1,
                             'message': "Unauthorised access attempt"}), 403
 
-        # Grabs the the id to search for from front-end
+        # Grabs the id to search for from front-end
         _id = request.json["id"]
 
         try:

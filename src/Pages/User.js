@@ -35,29 +35,55 @@ function UserPage(){
   const [selectedFile, setSelectedFile] = useState(null);
 //Sents user submission data to the database
   const onSubmit = (data) =>{
-        
-        data['location']=addressRef.current;
-        console.log(data);
-        fetch("/submission", {
-         method: "PUT",
-         headers: {
-             'Content-Type': 'application/json;charset=utf-8',
-             'Authorization': `Bearer ${document.cookie.substring(10)}`,},
-             
-         body: JSON.stringify(data),
-       },
-        setName(""),setEmail(""),setDescription(""),
-       ).then(
-         (value) => {
-           return value.json();
-         }
-       ).then(
+      let id
+      data['location'] = addressRef.current;
+      console.log(data);
+      fetch("/submission", {
+              method: "PUT",
+              headers: {
+                  'Content-Type': 'multipart/form-data;charset=utf-8',
+                  'Authorization': `Bearer ${document.cookie.substring(10)}`,
+              },
+
+              body: JSON.stringify(data.location, data.email, data.name, data.desc),
+          },
+          setName(""), setEmail(""), setDescription(""),
+      ).then(
+          (value) => {
+              return value.json();
+          }
+      ).then(
+          (result) => {
+              console.log(result);
+          },
+      ).then((response) => {
+          console.log(response);
+          return response.json();
+      }).then(responseInJSON => {
+          id = responseInJSON.submission_id;
+      })
+
+      fetch(`/submission_file/${id}`, {
+              method: "PUT",
+              headers: {
+                  'Content-Type': 'multipart/form-data;charset=utf-8',
+                  'Authorization': `Bearer ${document.cookie.substring(10)}`,
+              },
+
+              body: data.picture[0],
+          },
+          setName(""), setEmail(""), setDescription(""),
+      ).then(
+          (value) => {
+              return value.json();
+          }
+      ).then(
            (result)=>{
                console.log(result);
               },
        );
-      ;
-    };
+
+  };
    
     const addressRef = useRef();
     //Marker coordinates
