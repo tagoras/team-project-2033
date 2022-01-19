@@ -50,18 +50,14 @@ class Complaint(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(200), nullable=False)
-    lng = db.Column(db.String(100), nullable=False)
-    lat = db.Column(db.String(100), nullable=False)
     date = db.Column(db.String(15), nullable=False)
     img_path = db.Column(db.String(300), nullable=False)
 
     # Initialise Complaint Object
-    def __init__(self, user_id, name, description, lat, lng, date, img_path, user_key):
+    def __init__(self, user_id, name, description, date, img_path, user_key):
         self.user_id = user_id
         self.name = encrypt(data=name, key=user_key)
         self.description = encrypt(data=description, key=user_key)
-        self.lat = encrypt(data=lat, key=user_key)
-        self.lng = encrypt(data=lng, key=user_key)
         self.date = encrypt(data=date, key=user_key)
         self.img_path = encrypt(data=img_path, key=user_key)
         db.session.commit()
@@ -69,8 +65,6 @@ class Complaint(db.Model):
     def view_complaint(self, user_key):
         self.name = decrypt(data=self.name, key=user_key)
         self.description = decrypt(data=self.description, key=user_key)
-        self.lat = decrypt(data=self.lat, key=user_key)
-        self.lng = decrypt(data=self.lng, key=user_key)
         self.date = decrypt(data=self.date, key=user_key)
         self.img_path = decrypt(data=self.img_path, key=user_key)
 
@@ -102,8 +96,6 @@ def init_db():
     test_submission = Complaint(user_id=2,
                                 name='Test Submission',
                                 description='To use for testing',
-                                lat='50',
-                                lng='50',
                                 date='1/5/2022',
                                 img_path='data/cats/cat.jpg',
                                 user_key=test_user.user_key)

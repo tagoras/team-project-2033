@@ -287,10 +287,8 @@ def submission() -> json:
             img.save(img_path)
 
             # Saves the user submission to database into the complaint table
-            complaint = Complaint(name=submission_json["name"],
-                                  description=submission_json["description"],
-                                  lng=submission_json["lng"],
-                                  lat=submission_json["lat"],
+            complaint = Complaint(name=submission_form.get("name"),
+                                  description=submission_form.get('description'),
                                   date=date,
                                   user_id=current_user[id],
                                   img_path=img_path,
@@ -361,8 +359,6 @@ def admin_view_all() -> json:
         json_complaint = {'id': complaint.id,
                           'title': complaint.name,
                           'description': complaint.description,
-                          'lng': complaint.lng,
-                          'lat': complaint.lat,
                           'date': complaint.date}
         json_complaints.append(json_complaint)
 
@@ -456,8 +452,6 @@ def admin_edit_submission() -> json:
         db.session.query(Complaint).filter_by(id=submission_id) \
             .update({Complaint.name: request.json["submission_name"],
                      Complaint.description: request.json["submission_description"],
-                     Complaint.lat: request.json["submission_lat"],
-                     Complaint.lng: request.json["submission_lng"],
                      Complaint.date: request.json["date"]})
         db.session.commit()
 
