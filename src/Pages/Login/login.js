@@ -31,7 +31,7 @@ function LoginPage() {
       }
 
       
-      document.cookie = `SessionID=${responseInJSON.JWT}; path=/`;
+      document.cookie = `SessionID=${responseInJSON.JWT};max-age=10; path=/`;
       console.log(document.cookie);
       let access = sentSyncrhonousAccessRequest("/get_role", "GET");
       access.then((response) => {
