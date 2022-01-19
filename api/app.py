@@ -310,8 +310,7 @@ def submission() -> json:
         'message': "Submission failed: Try again!"}), 406
 
 
-'''
-Images feature didn't make it into the final cut.
+# Images feature didn't make it into the final cut.
 @app.route('/submission_file/<int:__id>', methods=['PUT', 'POST'])
 @jwt_required()
 def submission_file(__id) -> json:
@@ -367,7 +366,6 @@ def logout() -> json:
                    'status': -1,
                    'message': "Logout failed: check console."
                }, 500
-'''
 
 
 # The admin page used to manage complaints
