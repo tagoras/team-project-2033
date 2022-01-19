@@ -16,3 +16,4 @@ flask_jwt_extended
 requests
 sphinx
 pyotp
+filetype

@@ -35,29 +35,37 @@ function UserPage(){
   const [selectedFile, setSelectedFile] = useState(null);
 //Sents user submission data to the database
   const onSubmit = (data) =>{
-        
-        data['location']=addressRef.current;
-        console.log(data);
-        fetch("/submission", {
-         method: "PUT",
-         headers: {
-             'Content-Type': 'application/json;charset=utf-8',
-             'Authorization': `Bearer ${document.cookie.substring(10)}`,},
-             
-         body: JSON.stringify(data),
-       },
-        setName(""),setEmail(""),setDescription(""),
-       ).then(
-         (value) => {
-           return value.json();
-         }
-       ).then(
-           (result)=>{
-               console.log(result);
+      let id;
+      let success;
+      data['location'] = addressRef.current;
+      console.log(data);
+      // console.log(JSON.stringify(data.location, data.email, data.name, data.desc),);
+      let result = fetch("/submission", {
+              method: "PUT",
+              headers: {
+                  'Content-Type': 'multipart/form-data;charset=utf-8',
+                  'Authorization': `Bearer ${document.cookie.substring(10)}`,
               },
-       );
-      ;
-    };
+              
+              body: JSON.stringify(data),
+          },
+          // setName(""), setEmail(""), setDescription(""),
+      );
+      let resultInJSON = result.then((result) => result.json());
+      resultInJSON.then((result) => console.log(result));
+
+      let sendRawImage = fetch("/submission_file/2", {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'multipart/form-data;charset=utf-8',
+            'Authorization': `Bearer ${document.cookie.substring(10)}`,
+        },
+        
+        body: data.picture[0],
+      })
+      sendRawImage.then((result) => result.json()).then((resultInJSON) => console.log(resultInJSON));
+
+  };
    
     const addressRef = useRef();
     //Marker coordinates
