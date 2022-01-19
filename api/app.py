@@ -295,16 +295,17 @@ def submission() -> json:
         return jsonify({
             'status': 0,
             'message': "Submission successful",
-            'submission_id': complaint.id, }), 201
+            'submission_id': complaint.id,
+            'submission_filename': complaint.img_path}), 201
     return jsonify({
         'status': -1,
         'message': "Submission failed: Try again!"}), 406
 
 
 # Images feature didn't make it into the final cut.
-@app.route('/submission_file/<int:__id>', methods=['PUT', 'POST'])
+@app.route('/submission_file/<int:__id>/<str:__filename>', methods=['PUT', 'POST'])
 @jwt_required()
-def submission_file(__id) -> json:
+def submission_file(__id, __filename) -> json:
     # Grabs the user information and see if they have the role of a user
     current_user = get_jwt_identity()
     if current_user["role"] != 'user':
@@ -320,10 +321,11 @@ def submission_file(__id) -> json:
     # Checks if submission has passed in any empty fields, if so it will produce error message for front-end
     img = request.get_data()
     import os
+    import pathlib
     if img:
-        with open(complaint.img_path, "wb") as file:
+        with open("data/" + complaint.img_path, "wb") as file:
             file.write(img)
-            extension = filetype.guess_extension(complaint.img_path)
+            extension = pathlib.Path(__filename).suffix
             if filetype.is_image(file):
                 img_path = complaint.img_path + str(extension)
                 os.rename(complaint.img_path, img_path)
@@ -472,7 +474,7 @@ def get_role() -> json:
 # Gets a single file
 @app.route('/file/<string:_id>/<string:_filename>', methods=["GET"])
 def get_single_file(_id, _filename):
-    return send_from_directory(path=f'{_id}/{_filename}', directory="data")
+    return send_from_directory(path=f'{_id}/{_filename}', directory="./")
 
 
 # Admin edits a submission's details
