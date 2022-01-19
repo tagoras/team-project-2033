@@ -405,10 +405,8 @@ def admin_view_all() -> json:
 
     # Turns all complaints in complaints list to a dictionary and adds them to json complaints list
     for complaint in complaints:
-        json_complaint = {'id': complaint.id,
-                          'title': complaint.name,
-                          'description': complaint.description,
-                          'date': complaint.date}
+        user = User.query.filter_by(id=complaint.user_id).first()
+        json_complaint = complaint.view_json_complaint(user_key=user.user_key)
         json_complaints.append(json_complaint)
 
     '''

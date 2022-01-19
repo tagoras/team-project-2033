@@ -64,11 +64,21 @@ class Complaint(db.Model):
         self.img_path = encrypt(data=img_path, key=user_key)
         db.session.commit()
 
-    def view_complaint(self, user_key):
-        self.name = decrypt(data=self.name, key=user_key)
-        self.description = decrypt(data=self.description, key=user_key)
-        self.location = decrypt(data=self.location, key=user_key)
-        self.date = decrypt(data=self.date, key=user_key)
+    def view_json_complaint(self, user_key):
+        # self.name = decrypt(data=self.name, key=user_key)
+        # self.description = decrypt(data=self.description, key=user_key)
+        # self.location = decrypt(data=self.location, key=user_key)
+        # self.date = decrypt(data=self.date, key=user_key)
+        return {
+            'name': decrypt(data=self.name, key=user_key),
+            'description': decrypt(data=self.description, key=user_key),
+            'location': decrypt(data=self.name, key=user_key),
+            'date': decrypt(data=self.date, key=user_key),
+            'id': self.id,
+            'user_id': self.user_id,
+            'img_path': decrypt(data=self.img_path, key=user_key)
+
+        }
         # self.img_path = decrypt(data=self.img_path, key=user_key) Images feature didn't make it into the final cut.
 
 
@@ -101,7 +111,7 @@ def init_db():
                                 description='To use for testing',
                                 location='21, North but south of Haymarket but not like, right right there',
                                 date='1/5/2022',
-                                # img_path='data/cats/cat.jpg', Images feature didn't make it into the final cut.
+                                img_path='data/cats/cat.jpg',
                                 user_key=test_user.user_key)
 
     db.session.add(test_admin)
