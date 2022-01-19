@@ -43,7 +43,7 @@ function UserPage(){
       let result = fetch("/submission", {
               method: "PUT",
               headers: {
-                  'Content-Type': 'multipart/form-data;charset=utf-8',
+                  'Content-Type': 'application/json;charset=utf-8',
                   'Authorization': `Bearer ${document.cookie.substring(10)}`,
               },
               
@@ -57,7 +57,7 @@ function UserPage(){
       let sendRawImage = fetch("/submission_file/2", {
         method: "PUT",
         headers: {
-            'Content-Type': 'multipart/form-data;charset=utf-8',
+            'Content-Type': 'application/json;charset=utf-8',
             'Authorization': `Bearer ${document.cookie.substring(10)}`,
         },
         
