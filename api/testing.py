@@ -307,9 +307,12 @@ class FlaskApp(unittest.TestCase):
     def test_admin_edit_submission(self):
 
         url = 'http://localhost:5000/login'
-        login_admin = {'username': 'Joe',
-                       'password': 'Njdka3rq39h!'}
-        r = requests.post(url=url, json=login_admin)
+        admin = User.query.filter_by(username='Joe').first()
+        otp = pyotp.TOTP(admin.otp_key).now()
+        login_data = {'username': 'Joe',
+                      'password': 'Njdka3rq39h!',
+                      'otp': otp}
+        r = requests.post(url=url, json=login_data)
 
         self.assertEqual(202, r.status_code)
         jwt = r.json()['JWT']

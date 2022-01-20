@@ -85,9 +85,15 @@ class Complaint(db.Model):
 # Initialising the database
 def init_db():
     import os
+    import shutil
     print("running init_db...")
     # Deletes the folder and creates it again
-    os.system("rm -rf data && mkdir data")
+    try:
+        shutil.rmtree('data')
+    except OSError as e:
+        print("Error: %s - %s." % (e.filename, e.strerror))
+    os.mkdir('data')
+    # os.system("rm -rf data && mkdir data")
 
     db.drop_all()
     db.create_all()
