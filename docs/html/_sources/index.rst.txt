@@ -5,6 +5,10 @@ Welcome to Team 32's project documentation!
     :members:
 .. automodule:: models
     :members:
+.. automodule:: testing
+    :members:
+.. automodule:: mail
+    :members:
 .. automodule:: __init__
     :members:
 .. toctree::

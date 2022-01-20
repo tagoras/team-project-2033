@@ -46,6 +46,22 @@
                     <span id="welcome-to-team-32-s-project-documentation"></span>
                     <h1>Welcome to Team 32’s project documentation!<a class="headerlink" href="#module-app"
                                                                       title="Permalink to this headline">¶</a></h1>
+                    <dl class="py function">
+                        <dt class="sig sig-object py" id="app.has_empty_value">
+                            <span class="sig-prename descclassname"><span class="pre">app.</span></span><span
+                                class="sig-name descname"><span class="pre">has_empty_value</span></span><span
+                                class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                                class="pre">obj</span></span></em><span class="sig-paren">)</span> <span
+                                class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span
+                                class="sig-return-typehint"><span class="pre">bool</span></span></span><a
+                                class="headerlink" href="#app.has_empty_value"
+                                title="Permalink to this definition">¶</a></dt>
+                        <dd><p>THis does this
+                            :param obj:
+                            :return: bool</p>
+                        </dd>
+                    </dl>
+
                     <span class="target" id="module-models"></span>
                     <dl class="py class">
                         <dt class="sig sig-object py" id="models.Complaint">
@@ -55,6 +71,7 @@
                                 class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em>,
                             <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em
                                 class="sig-param"><span class="n"><span class="pre">description</span></span></em>, <em
+                                class="sig-param"><span class="n"><span class="pre">location</span></span></em>, <em
                                 class="sig-param"><span class="n"><span class="pre">date</span></span></em>, <em
                                 class="sig-param"><span class="n"><span class="pre">img_path</span></span></em>, <em
                                 class="sig-param"><span class="n"><span class="pre">user_key</span></span></em><span
@@ -76,6 +93,38 @@
                                 class="sig-paren">)</span><a class="headerlink" href="#models.User"
                                                              title="Permalink to this definition">¶</a></dt>
                         <dd></dd>
+                    </dl>
+
+                    <span class="target" id="module-testing"></span>
+                    <dl class="py class">
+                        <dt class="sig sig-object py" id="testing.FlaskApp">
+                            <em class="property"><span class="pre">class</span><span class="w"> </span></em><span
+                                class="sig-prename descclassname"><span class="pre">testing.</span></span><span
+                                class="sig-name descname"><span class="pre">FlaskApp</span></span><span
+                                class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span
+                                class="o"><span class="pre">=</span></span><span class="default_value"><span
+                                class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a
+                                class="headerlink" href="#testing.FlaskApp" title="Permalink to this definition">¶</a>
+                        </dt>
+                        <dd></dd>
+                    </dl>
+
+                    <span class="target" id="module-mail"></span>
+                    <dl class="py class">
+                        <dt class="sig sig-object py" id="mail.Mail">
+                            <em class="property"><span class="pre">class</span><span class="w"> </span></em><span
+                                class="sig-prename descclassname"><span class="pre">mail.</span></span><span
+                                class="sig-name descname"><span class="pre">Mail</span></span><a class="headerlink"
+                                                                                                 href="#mail.Mail"
+                                                                                                 title="Permalink to this definition">¶</a>
+                        </dt>
+                        <dd><p>This document provides details on how we tested the back-end system
+                            handling inputs from front-end. We do this by testing each function
+                            on what it should receive and what it should send back as a response.
+                            We tested glue-code whenever the front-end page and back-end functionality
+                            was completed. We do not put glue code in this document as any glue-code
+                            errors that do occur will cause fatal errors.</p>
+                        </dd>
                     </dl>
 
                     <span class="target" id="module-__init__"></span>
