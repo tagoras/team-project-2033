@@ -170,10 +170,10 @@ class FlaskApp(unittest.TestCase):
     # Tests the adding of submissions from a user
     def test_submission(self):
         url = 'http://localhost:5000/login'
-        admin = User.query.filter_by(username='Test').first()
-        otp = pyotp.TOTP(admin.otp_key).now()
-        login_data = {'username': 'Test',
-                      'password': 'He110 w0r1d£',
+        user = User.query.filter_by(username='Steve').first()
+        otp = pyotp.TOTP(user.otp_key).now()
+        login_data = {'username': 'Steve',
+                      'password': 'Pass123!',
                       'otp': str(otp)}
         r = requests.post(url=url, json=login_data)
         self.assertEqual(202, r.status_code)
@@ -193,7 +193,7 @@ class FlaskApp(unittest.TestCase):
         r2 = requests.put(url=url, json=submission, headers=headers, stream=True)
         self.assertEqual(201, r2.status_code)
 
-    # Tests the storing of an image from a user (image sending issue in this side)
+    # Tests the storing of an image from a user
     def test_submission_file(self):
 
         url = 'http://localhost:5000/login'
