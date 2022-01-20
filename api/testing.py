@@ -156,10 +156,10 @@ class FlaskApp(unittest.TestCase):
         webbrowser.open_new_tab(url2)
 
         status_code = requests.get(url=url1).status_code
-        self.assertEqual(200, status_code)
+        self.assertEqual(201, status_code)
 
         status_code = requests.get(url=url2).status_code
-        self.assertEqual(200, status_code)
+        self.assertEqual(201, status_code)
 
     # Tests the adding of submissions from a user
     def test_submission(self):
