@@ -1,4 +1,6 @@
 import unittest
+from models import User
+import pyotp
 # import json
 # import os
 
@@ -119,8 +121,6 @@ class FlaskApp(unittest.TestCase):
         r = requests.post(url=url, json=login_data)
         self.assertEqual(406, r.status_code)
 
-        from models import User
-        import pyotp
         user = User.query.filter_by(username='Steve').first()
         otp = pyotp.TOTP(user.otp_key).now()
         login_data = {'username': 'Steve',
@@ -164,39 +164,27 @@ class FlaskApp(unittest.TestCase):
     # Tests the adding of submissions from a user
     def test_submission(self):
         url = 'http://localhost:5000/login'
+        admin = User.query.filter_by(username='Test').first()
+        otp = pyotp.TOTP(admin.otp_key).now()
         login_data = {'username': 'Test',
-                      'password': 'He110 w0r1d£'}
+                      'password': 'He110 w0r1d£',
+                      'otp': str(otp)}
         r = requests.post(url=url, json=login_data)
         self.assertEqual(202, r.status_code)
 
         jwt = r.json()['JWT']
 
-        url2 = "http://localhost:5000/submission"
+        url = "http://localhost:5000/submission"
         submission = {
-            "title": "This is a title",
+            "name": "This is a name",
             "description": "This is a very good description",
-            "postcode": "NE6 6BA",
-            "lat": 51,
-            "lng": 49,
-            "date": "02/12/02",
-
-        }
+            "location": 'Good location',
+            "date": "02/12/02"}
         headers = {
             "Authorization": f"Bearer {jwt}",
-            'Connection': 'close'
-        }
-        '''
-        Images feature didn't make it into the final cut.
-        files = {
-            "image": open("data/cats/cat.jpg", "rb")
-        }
-        '''
+            'Connection': 'close'}
 
-        r2 = requests.put(url=url2, json=submission, headers=headers, stream=True)
-
-        # print(r2.text)
-        # print(submission)
-        # print(r2.request.headers)
+        r2 = requests.put(url=url, json=submission, headers=headers, stream=True)
         self.assertEqual(201, r2.status_code)
 
     # Tests if the admin can see 20 of the largest ids
