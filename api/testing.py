@@ -35,8 +35,11 @@ class FlaskApp(unittest.TestCase):
     def test_logout(self):
         url = 'http://localhost:5000/login'
 
+        user = User.query.filter_by(username='Steve').first()
+        otp = pyotp.TOTP(user.otp_key).now()
         login_data = {'username': 'Steve',
-                      'password': 'Pass123!'}
+                      'password': 'Pass123!',
+                      'otp': str(otp)}
         r = requests.post(url=url, json=login_data)
         self.assertEqual(202, r.status_code)
 
@@ -53,8 +56,11 @@ class FlaskApp(unittest.TestCase):
 
         url = 'http://localhost:5000/login'
 
+        admin = User.query.filter_by(username='Joe').first()
+        otp = pyotp.TOTP(admin.otp_key).now()
         login_data = {'username': 'Joe',
-                      'password': 'Njdka3rq39h!'}
+                      'password': 'Njdka3rq39h!',
+                      'otp': str(otp)}
         r = requests.post(url=url, json=login_data)
         self.assertEqual(202, r.status_code)
 
@@ -187,7 +193,7 @@ class FlaskApp(unittest.TestCase):
         r2 = requests.put(url=url, json=submission, headers=headers, stream=True)
         self.assertEqual(201, r2.status_code)
 
-    # Tests the storing of an image from a user
+    # Tests the storing of an image from a user (image sending issue in this side)
     def test_submission_file(self):
 
         url = 'http://localhost:5000/login'
@@ -213,8 +219,11 @@ class FlaskApp(unittest.TestCase):
     def test_admin_view_all(self):
         url = 'http://localhost:5000/login'
 
+        admin = User.query.filter_by(username='Joe').first()
+        otp = pyotp.TOTP(admin.otp_key).now()
         login_data = {'username': 'Joe',
-                      'password': 'Njdka3rq39h!'}
+                      'password': 'Njdka3rq39h!',
+                      'otp': str(otp)}
         r = requests.post(url=url, json=login_data)
 
         self.assertEqual(202, r.status_code)
