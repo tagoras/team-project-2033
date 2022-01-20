@@ -72,7 +72,7 @@ class Complaint(db.Model):
         return {
             'name': decrypt(data=self.name, key=user_key),
             'description': decrypt(data=self.description, key=user_key),
-            'location': decrypt(data=self.name, key=user_key),
+            'location': decrypt(data=self.location, key=user_key),
             'date': decrypt(data=self.date, key=user_key),
             'id': self.id,
             'user_id': self.user_id,
