@@ -467,7 +467,7 @@ def get_role() -> json:
 # Gets a single file
 @app.route('/file/<string:_id>/<string:_filename>', methods=["GET"])
 def get_single_file(_id, _filename):
-    return send_from_directory(path=f'{_id}/{_filename}', directory="./")
+    return send_from_directory(path=f'{_id}/{_filename}', directory="data")
 
 
 # Admin edits a submission's details
