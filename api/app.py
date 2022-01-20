@@ -384,20 +384,16 @@ def admin_view_all() -> json:
 
     # Puts all the complaints into complaints list
     json_complaints = []
-    x = 1
-    while x <= len(quick_search):
+
+    for complaint in quick_search:
         # Images feature didn't make it into the final cut.
         # Grabs the image urls for each complaint and adds them to the urls list
-        complaint = db.session.query(Complaint).filter_by(id=x).first()
-        if complaint is not None:
-            url = f'http://{my_host}:5000/file/{complaint.img_path}'
-            # Turns all complaints in complaints list to a dictionary and adds them to json complaints list
-            user = User.query.filter_by(id=complaint.user_id).first()
-            json_complaint = complaint.view_complaint_card(user_key=user.user_key, url=url)
-            json_complaints.append(json_complaint)
-        else:
-            continue
-        x += 1
+        url = f'http://{my_host}:5000/file/{complaint.img_path}'
+        # Turns all complaints in complaints list to a dictionary and adds them to json complaints list
+        user = User.query.filter_by(id=complaint.user_id).first()
+        json_complaint = complaint.view_complaint_card(user_key=user.user_key, url=url)
+        json_complaints.append(json_complaint)
+
     # Images feature didn't make it into the final cut.
     # Turns all urls in urls list into a dictionary and adds them to json urls list
 
