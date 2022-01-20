@@ -1,4 +1,6 @@
 import unittest
+from models import User
+import pyotp
 # import json
 # import os
 
@@ -33,8 +35,11 @@ class FlaskApp(unittest.TestCase):
     def test_logout(self):
         url = 'http://localhost:5000/login'
 
+        user = User.query.filter_by(username='Steve').first()
+        otp = pyotp.TOTP(user.otp_key).now()
         login_data = {'username': 'Steve',
-                      'password': 'Pass123!'}
+                      'password': 'Pass123!',
+                      'otp': str(otp)}
         r = requests.post(url=url, json=login_data)
         self.assertEqual(202, r.status_code)
 
@@ -51,8 +56,11 @@ class FlaskApp(unittest.TestCase):
 
         url = 'http://localhost:5000/login'
 
+        admin = User.query.filter_by(username='Joe').first()
+        otp = pyotp.TOTP(admin.otp_key).now()
         login_data = {'username': 'Joe',
-                      'password': 'Njdka3rq39h!'}
+                      'password': 'Njdka3rq39h!',
+                      'otp': str(otp)}
         r = requests.post(url=url, json=login_data)
         self.assertEqual(202, r.status_code)
 
@@ -67,7 +75,7 @@ class FlaskApp(unittest.TestCase):
         r = requests.get(url=url, headers=headers)
         self.assertEqual(200, r.status_code)
 
-    # Tests the registering of a user
+    # Tests the registering of a user (fails @ line 100)
     def test_register(self):
         url = 'http://localhost:5000/register'
 
@@ -119,8 +127,11 @@ class FlaskApp(unittest.TestCase):
         r = requests.post(url=url, json=login_data)
         self.assertEqual(406, r.status_code)
 
+        user = User.query.filter_by(username='Steve').first()
+        otp = pyotp.TOTP(user.otp_key).now()
         login_data = {'username': 'Steve',
-                      'password': 'Pass123!'}
+                      'password': 'Pass123!',
+                      'otp': str(otp)}
         r = requests.post(url=url, json=login_data)
         self.assertEqual(202, r.status_code)
 
@@ -128,8 +139,11 @@ class FlaskApp(unittest.TestCase):
         # print(jwt)
         JWT = jwt
 
+        admin = User.query.filter_by(username='Joe').first()
+        otp = pyotp.TOTP(admin.otp_key).now()
         login_data = {'username': 'Joe',
-                      'password': 'Njdka3rq39h!'}
+                      'password': 'Njdka3rq39h!',
+                      'otp': str(otp)}
         r = requests.post(url=url, json=login_data)
         self.assertEqual(202, r.status_code)
 
@@ -148,55 +162,68 @@ class FlaskApp(unittest.TestCase):
         webbrowser.open_new_tab(url2)
 
         status_code = requests.get(url=url1).status_code
-        self.assertEqual(200, status_code)
+        self.assertEqual(201, status_code)
 
         status_code = requests.get(url=url2).status_code
-        self.assertEqual(200, status_code)
+        self.assertEqual(201, status_code)
 
     # Tests the adding of submissions from a user
     def test_submission(self):
         url = 'http://localhost:5000/login'
+        admin = User.query.filter_by(username='Test').first()
+        otp = pyotp.TOTP(admin.otp_key).now()
         login_data = {'username': 'Test',
-                      'password': 'He110 w0r1d£'}
+                      'password': 'He110 w0r1d£',
+                      'otp': str(otp)}
         r = requests.post(url=url, json=login_data)
         self.assertEqual(202, r.status_code)
 
         jwt = r.json()['JWT']
 
-        url2 = "http://localhost:5000/submission"
+        url = "http://localhost:5000/submission"
         submission = {
-            "title": "This is a title",
+            "name": "This is a name",
             "description": "This is a very good description",
-            "postcode": "NE6 6BA",
-            "lat": 51,
-            "lng": 49,
-            "date": "02/12/02",
-
-        }
+            "location": 'Good location',
+            "date": "02/12/02"}
         headers = {
             "Authorization": f"Bearer {jwt}",
-            'Connection': 'close'
-        }
-        '''
-        Images feature didn't make it into the final cut.
-        files = {
-            "image": open("data/cats/cat.jpg", "rb")
-        }
-        '''
+            'Connection': 'close'}
 
-        r2 = requests.put(url=url2, json=submission, headers=headers, stream=True)
-
-        # print(r2.text)
-        # print(submission)
-        # print(r2.request.headers)
+        r2 = requests.put(url=url, json=submission, headers=headers, stream=True)
         self.assertEqual(201, r2.status_code)
+
+    # Tests the storing of an image from a user (image sending issue in this side)
+    def test_submission_file(self):
+
+        url = 'http://localhost:5000/login'
+        admin = User.query.filter_by(username='Test').first()
+        otp = pyotp.TOTP(admin.otp_key).now()
+        login_data = {'username': 'Test',
+                      'password': 'He110 w0r1d£',
+                      'otp': str(otp)}
+
+        r = requests.post(url=url, json=login_data)
+        self.assertEqual(202, r.status_code)
+        jwt = r.json()['JWT']
+
+        url = 'http://localhost:5000/submission_file/2/cat.jpg'
+        image = open("data/cats/cat.jpg")
+        headers = {"Authorization": f"Bearer {jwt}",
+                   'Connection': 'close'}
+
+        r = requests.put(url=url, headers=headers, data=image)
+        self.assertEqual(201, r.status_code)
 
     # Tests if the admin can see 20 of the largest ids
     def test_admin_view_all(self):
         url = 'http://localhost:5000/login'
 
+        admin = User.query.filter_by(username='Joe').first()
+        otp = pyotp.TOTP(admin.otp_key).now()
         login_data = {'username': 'Joe',
-                      'password': 'Njdka3rq39h!'}
+                      'password': 'Njdka3rq39h!',
+                      'otp': str(otp)}
         r = requests.post(url=url, json=login_data)
 
         self.assertEqual(202, r.status_code)
@@ -239,9 +266,12 @@ class FlaskApp(unittest.TestCase):
     def test_get_role(self):
 
         url = 'http://localhost:5000/login'
-        user = {'username': 'Steve',
-                'password': 'Pass123!'}
-        r = requests.post(url=url, json=user)
+        user = User.query.filter_by(username='Steve').first()
+        otp = pyotp.TOTP(user.otp_key).now()
+        login_data = {'username': 'Steve',
+                      'password': 'Pass123!',
+                      'otp': str(otp)}
+        r = requests.post(url=url, json=login_data)
 
         self.assertEqual(202, r.status_code)
         jwt = r.json()['JWT']
@@ -255,9 +285,12 @@ class FlaskApp(unittest.TestCase):
         self.assertEqual('user', r.json()['role'])
 
         url = 'http://localhost:5000/login'
-        user = {'username': 'Joe',
-                'password': 'Njdka3rq39h!'}
-        r = requests.post(url=url, json=user)
+        admin = User.query.filter_by(username='Joe').first()
+        otp = pyotp.TOTP(admin.otp_key).now()
+        login_data = {'username': 'Joe',
+                      'password': 'Njdka3rq39h!',
+                      'otp': otp}
+        r = requests.post(url=url, json=login_data)
 
         self.assertEqual(202, r.status_code)
         jwt = r.json()['JWT']
@@ -274,9 +307,12 @@ class FlaskApp(unittest.TestCase):
     def test_admin_edit_submission(self):
 
         url = 'http://localhost:5000/login'
-        login_admin = {'username': 'Joe',
-                       'password': 'Njdka3rq39h!'}
-        r = requests.post(url=url, json=login_admin)
+        admin = User.query.filter_by(username='Joe').first()
+        otp = pyotp.TOTP(admin.otp_key).now()
+        login_data = {'username': 'Joe',
+                      'password': 'Njdka3rq39h!',
+                      'otp': otp}
+        r = requests.post(url=url, json=login_data)
 
         self.assertEqual(202, r.status_code)
         jwt = r.json()['JWT']
