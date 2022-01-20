@@ -12,9 +12,10 @@ export function ComplaintCard(props){
             <h3 className="ComplaintInfo">#{props.complaint.id}</h3>
             <p className="ComplaintInfo ComplaintText">{props.complaint.name}</p>
             <p className="ComplaintInfo">{props.complaint.date}</p>
+            <p className="Location">{props.complaint.location}</p>
             <p>{props.complaint.description}</p>
             <div className="ComplaintIconHolder">
-                <i className="fas fa-trash ComplaintInfo fa-2x" onClick={() => props.handleDelete(props.id)}></i>
+                <i className="fas fa-trash ComplaintInfo fa-2x" onClick={() => props.handleDelete(props.complaint.id)}></i>
             </div>
         </div>
     )
