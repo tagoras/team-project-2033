@@ -43,8 +43,8 @@ function UserPage() {
       // console.log(JSON.stringify(data.location, data.email, data.name, data.desc),);
       let json_body = {
           'name': data.name,
-          'description': data.name,
-          'location': data.name,
+          'description': data.description,
+          'location': data.location,
           'date': data.date,
 
       }
