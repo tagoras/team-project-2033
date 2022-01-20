@@ -266,9 +266,12 @@ class FlaskApp(unittest.TestCase):
     def test_get_role(self):
 
         url = 'http://localhost:5000/login'
-        user = {'username': 'Steve',
-                'password': 'Pass123!'}
-        r = requests.post(url=url, json=user)
+        user = User.query.filter_by(username='Steve').first()
+        otp = pyotp.TOTP(user.otp_key).now()
+        login_data = {'username': 'Steve',
+                      'password': 'Pass123!',
+                      'otp': str(otp)}
+        r = requests.post(url=url, json=login_data)
 
         self.assertEqual(202, r.status_code)
         jwt = r.json()['JWT']
@@ -282,9 +285,12 @@ class FlaskApp(unittest.TestCase):
         self.assertEqual('user', r.json()['role'])
 
         url = 'http://localhost:5000/login'
-        user = {'username': 'Joe',
-                'password': 'Njdka3rq39h!'}
-        r = requests.post(url=url, json=user)
+        admin = User.query.filter_by(username='Joe').first()
+        otp = pyotp.TOTP(admin.otp_key).now()
+        login_data = {'username': 'Joe',
+                      'password': 'Njdka3rq39h!',
+                      'otp': otp}
+        r = requests.post(url=url, json=login_data)
 
         self.assertEqual(202, r.status_code)
         jwt = r.json()['JWT']
