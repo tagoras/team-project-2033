@@ -51,7 +51,6 @@ function AdminPage() {
       complaints.then((resultInJSON) => {
         console.log(resultInJSON);
         array = resultInJSON['list of complaints'];
-        urls = resultInJSON['list of urls'];
         setData(array);
       })
   
