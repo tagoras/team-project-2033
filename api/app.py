@@ -334,7 +334,8 @@ def submission_file(__id, __filename) -> json:
             img_path = complaint.img_path + str(extension)
             os.rename("data/" + complaint.img_path, "data/" + img_path)
 
-            complaint.update({Complaint.img_path: img_path})
+            db.session.query(Complaint).filter_by(id=complaint.id) \
+                .update({Complaint.img_path: img_path})
             db.session.commit()
         # See if given file is an image and then saves it to a file and records image path
         # If image isn't allowed produces error
@@ -502,6 +503,7 @@ def admin_edit_submission() -> json:
                      Complaint.description: request.json["submission_description"],
                      Complaint.location: request.json["submission_location"],
                      Complaint.date: request.json["date"]})
+
         db.session.commit()
 
         return jsonify({'status': 0,
