@@ -279,7 +279,6 @@ def submission() -> json:
         img_name = str(uuid.uuid4())
         img_path = f'{current_user["id"]}/{img_name}'
         # os.system(f'mkdir data/{current_user["id"]}')
-        
 
         # Saves the user submission to database into the complaint table
         complaint = Complaint(name=submission_json.get("name"),
@@ -380,43 +379,33 @@ def admin_view_all() -> json:
 
     from sqlalchemy import desc
 
-    complaints = []
-    urls = []
-    json_complaints = []
-    json_urls = []
-
     # Used to search the database for the biggest ids in complaint id
     quick_search = db.session.query(Complaint.id).order_by(desc(Complaint.id)).limit(100)
 
-    # Puts all of the complaints into complaints list
-    for recent_complaints_id in quick_search:
-        complaint = db.session.query(Complaint).filter_by(id=recent_complaints_id[0]).first()
-        complaints.append(complaint)
-
-    # Images feature didn't make it into the final cut.
-    # Grabs the image urls for each complaint and adds them to the urls list
-    for complaint in complaints:
-        url = f'http://{my_host}:5000/file/{complaint.img_path}'
-        urls.append(url)
-
-    # Turns all complaints in complaints list to a dictionary and adds them to json complaints list
-    for complaint in complaints:
-        user = User.query.filter_by(id=complaint.user_id).first()
-        json_complaint = complaint.view_json_complaint(user_key=user.user_key)
-        json_complaints.append(json_complaint)
-
+    # Puts all the complaints into complaints list
+    json_complaints = []
+    x = 1
+    while x <= len(quick_search):
+        # Images feature didn't make it into the final cut.
+        # Grabs the image urls for each complaint and adds them to the urls list
+        complaint = db.session.query(Complaint).filter_by(id=x).first()
+        if complaint is not None:
+            url = f'http://{my_host}:5000/file/{complaint.img_path}'
+            # Turns all complaints in complaints list to a dictionary and adds them to json complaints list
+            user = User.query.filter_by(id=complaint.user_id).first()
+            json_complaint = complaint.view_complaint_card(user_key=user.user_key, url=url)
+            json_complaints.append(json_complaint)
+        else:
+            continue
+        x += 1
     # Images feature didn't make it into the final cut.
     # Turns all urls in urls list into a dictionary and adds them to json urls list
-    for url in urls:
-        json_url = {'url': url}
-        json_urls.append(json_url)
 
     print(json_complaints)
-    print(complaints)
+
     # Sends the list of complaints and urls to front-end
     return jsonify({'status': 0,
                     'list of complaints': json_complaints,
-                    'list of urls': json_urls,
                     }), 200
 
 
