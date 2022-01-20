@@ -279,7 +279,7 @@ def submission() -> json:
         img_name = str(uuid.uuid4())
         img_path = f'{current_user["id"]}/{img_name}'
         # os.system(f'mkdir data/{current_user["id"]}')
-        os.mkdir(f'data/{current_user["id"]}')
+        
 
         # Saves the user submission to database into the complaint table
         complaint = Complaint(name=submission_json.get("name"),
@@ -295,15 +295,14 @@ def submission() -> json:
         return jsonify({
             'status': 0,
             'message': "Submission successful",
-            'submission_id': complaint.id,
-            'submission_filename': complaint.img_path}), 201
+            'submission_id': complaint.id}), 201
     return jsonify({
         'status': -1,
         'message': "Submission failed: Try again!"}), 406
 
 
 # Images feature didn't make it into the final cut.
-@app.route('/submission_file/<int:__id>/<str:__filename>', methods=['PUT', 'POST'])
+@app.route('/submission_file/<int:__id>/<string:__filename>', methods=['PUT', 'POST'])
 @jwt_required()
 def submission_file(__id, __filename) -> json:
     # Grabs the user information and see if they have the role of a user
@@ -324,15 +323,19 @@ def submission_file(__id, __filename) -> json:
     import pathlib
     import filetype
     if img:
-        with open("data/" + complaint.img_path, "wb") as file:
-            file.write(img)
-            extension = pathlib.Path(__filename).suffix
-            if filetype.is_image(file):
-                img_path = complaint.img_path + str(extension)
-                os.rename(complaint.img_path, img_path)
+        try:
+            os.mkdir(f'data/{current_user["id"]}')
+        except (FileNotFoundError, FileExistsError) as e:
+            print(e)
+        file = open("data/" + complaint.img_path, "wb")
+        file.write(img)
+        extension = pathlib.Path(__filename).suffix
+        if filetype.is_image("data/" + complaint.img_path):
+            img_path = complaint.img_path + str(extension)
+            os.rename( "data/" + complaint.img_path, "data/" + img_path)
 
-                complaint.update({Complaint.img_path: img_path})
-                db.session.commit()
+            complaint.update({Complaint.img_path: img_path})
+            db.session.commit()
         # See if given file is an image and then saves it to a file and records image path
         # If image isn't allowed produces error
         return jsonify({

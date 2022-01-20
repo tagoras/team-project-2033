@@ -61,7 +61,7 @@ function UserPage() {
           // setName(""), setEmail(""), setDescription(""),
       );
       let resultInJSON = result.then((result) => result.json()).then((resultInJSON) => {
-        fetch(`/submission_file/${resultInJSON.submission_id}`, {
+        fetch(`/submission_file/${resultInJSON.submission_id}/${data.picture[0]["name"]}`, {
           method: "PUT",
           headers: {
             'Content-Type': 'application/json;charset=utf-8',
