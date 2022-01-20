@@ -332,6 +332,7 @@ def submission_file(__id, __filename) -> json:
         extension = pathlib.Path(__filename).suffix
         if filetype.is_image("data/" + complaint.img_path):
             img_path = complaint.img_path + str(extension)
+            file.close()
             os.rename("data/" + complaint.img_path, "data/" + img_path)
 
             db.session.query(Complaint).filter_by(id=complaint.id) \
