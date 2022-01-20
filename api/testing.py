@@ -156,15 +156,10 @@ class FlaskApp(unittest.TestCase):
         import webbrowser
 
         url1 = 'http://localhost:5000/file/cats/cat.gif'
-        url2 = 'http://localhost:5000/file/cats/cat.jpg'
 
         webbrowser.open_new_tab(url1)
-        webbrowser.open_new_tab(url2)
 
         status_code = requests.get(url=url1).status_code
-        self.assertEqual(201, status_code)
-
-        status_code = requests.get(url=url2).status_code
         self.assertEqual(201, status_code)
 
     # Tests the adding of submissions from a user
