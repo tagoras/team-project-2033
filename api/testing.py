@@ -29,7 +29,7 @@ class FlaskApp(unittest.TestCase):
         self.assertEqual(200, r.status_code, )
         self.assertEqual('http://localhost:5000/hello_world', r.url, )
 
-    # Tests the logging out of the user
+    # Tests the logging out of the user (fails login)
     def test_logout(self):
         url = 'http://localhost:5000/login'
 
@@ -67,7 +67,7 @@ class FlaskApp(unittest.TestCase):
         r = requests.get(url=url, headers=headers)
         self.assertEqual(200, r.status_code)
 
-    # Tests the registering of a user
+    # Tests the registering of a user (fails @ line 100)
     def test_register(self):
         url = 'http://localhost:5000/register'
 
@@ -119,8 +119,13 @@ class FlaskApp(unittest.TestCase):
         r = requests.post(url=url, json=login_data)
         self.assertEqual(406, r.status_code)
 
+        from models import User
+        import pyotp
+        user = User.query.filter_by(username='Steve').first()
+        otp = pyotp.TOTP(user.otp_key).now()
         login_data = {'username': 'Steve',
-                      'password': 'Pass123!'}
+                      'password': 'Pass123!',
+                      'otp': str(otp)}
         r = requests.post(url=url, json=login_data)
         self.assertEqual(202, r.status_code)
 
@@ -128,8 +133,11 @@ class FlaskApp(unittest.TestCase):
         # print(jwt)
         JWT = jwt
 
+        admin = User.query.filter_by(username='Joe').first()
+        otp = pyotp.TOTP(admin.otp_key).now()
         login_data = {'username': 'Joe',
-                      'password': 'Njdka3rq39h!'}
+                      'password': 'Njdka3rq39h!',
+                      'otp': str(otp)}
         r = requests.post(url=url, json=login_data)
         self.assertEqual(202, r.status_code)
 
