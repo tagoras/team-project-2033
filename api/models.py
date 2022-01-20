@@ -119,7 +119,6 @@ def init_db():
     db.session.add(test_submission)
     db.session.commit()
 
-    ''' These are image downloads, images feature didn't make it into the final cut.
     import requests
     import shutil
     # Creates a folder in data called cats
@@ -137,6 +136,5 @@ def init_db():
     if res2.status_code == 200:
         with open("data/cats/cat.gif", 'wb') as f:
             shutil.copyfileobj(res2.raw, f)
-    '''
 
     print("init_db successful")
