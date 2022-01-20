@@ -75,7 +75,7 @@ class FlaskApp(unittest.TestCase):
         r = requests.get(url=url, headers=headers)
         self.assertEqual(200, r.status_code)
 
-    # Tests the registering of a user (fails @ line 100)
+    # Tests the registering of a user
     def test_register(self):
         url = 'http://localhost:5000/register'
 
@@ -101,7 +101,7 @@ class FlaskApp(unittest.TestCase):
         self.assertEqual(406, r.status_code)
 
         data = {'username': 'Test',
-                'email': 'Test@example.com',
+                'email': 'Team32IsTheBest@hotmail.com',
                 'postcode': 'NE2 5RE',
                 'password': 'He110 w0r1d£'}
         r = requests.post(url=url, json=data)
@@ -242,8 +242,11 @@ class FlaskApp(unittest.TestCase):
     def test_admin_delete_submission(self):
         url = 'http://localhost:5000/login'
 
+        admin = User.query.filter_by(username='Joe').first()
+        otp = pyotp.TOTP(admin.otp_key).now()
         login_data = {'username': 'Joe',
-                      'password': 'Njdka3rq39h!'}
+                      'password': 'Njdka3rq39h!',
+                      'otp': str(otp)}
         r = requests.post(url=url, json=login_data)
 
         self.assertEqual(202, r.status_code)
@@ -260,7 +263,7 @@ class FlaskApp(unittest.TestCase):
 
         r = requests.delete(url=url, headers=headers, json=body)
 
-        self.assertEqual(500, r.status_code)
+        self.assertEqual(406, r.status_code)
 
     # Tests if front-end can get the role of the current user
     def test_get_role(self):
