@@ -88,12 +88,7 @@ def init_db():
     import shutil
     print("running init_db...")
     # Deletes the folder and creates it again
-    try:
-        shutil.rmtree('data')
-    except OSError as e:
-        print("Error: %s - %s." % (e.filename, e.strerror))
-    os.mkdir('data')
-    # os.system("rm -rf data && mkdir data")
+    os.system("rm -rf data && mkdir data")
 
     db.drop_all()
     db.create_all()
