@@ -1,3 +1,115 @@
+@media screen {
+    .CardMainContainer{
+        display: flex;
+        flex-wrap: wrap;
+        height: 100%;
+        justify-content: center;
+    }
+    
+    .ComplaintContainer{
+        width: 80vw;
+        height: 40vh;
+        border-radius: 13px;
+        padding: 1rem;
+        margin: 2rem 2.5rem;
+        background-color: rgb(36, 36, 36);
+        box-shadow: 3px 3px 4px rgb(2, 2, 2);
+        color: white;
+    }
+    
+    .ComplaintContainer{
+        font-size: 0.7rem;
+        height: 45vh;
+    }
+    
+    .ComplaintContainer:hover{
+        background-color: rgb(2, 2, 2);
+        cursor: pointer;
+        transition: 1.5s;
+    }
+    
+    .ComplaintCardImage{
+        display: inline-block;
+        height: 60%;
+        width: 100%;
+        object-fit: cover;
+    }
+    
+    .ComplaintInfo{
+        padding: 0.2rem;
+    }
+    
+    .ComplaintText{
+        font-weight: bold;
+    }
+    
+    .ComplaintIconHolder{
+        display: flex;
+    }
+    
+    .ComplaintIconHolder i{
+        margin-top: 1rem;
+    }
+    
+    .ComplaintIconHolder i:hover{
+        margin-top: 1rem;
+        cursor: pointer;
+    }  
+}
+
+@media screen and (min-width: 360px) {
+    .ComplaintContainer{
+        width: 65vw;
+        font-size: 0.7rem;
+    }
+    
+}
+
+@media screen and (min-width: 360px) {
+    .ComplaintContainer{
+        width: 55vw;
+    }
+}
+
+@media screen and (min-width: 550px) {
+    .ComplaintContainer{
+        width: 45vw;
+        height: 50vh;
+        font-size: 0.75rem;
+    }
+    
+}
+
+@media screen and (min-width: 700px) {
+    .ComplaintContainer{
+        width: 50vw;
+        height: 60vh;
+        font-size: 0.9rem;
+    }
+}
+
+@media screen and (min-width: 1024px){
+    .ComplaintContainer{
+        width: 20vw;
+        height: 35vh;
+    }
+
+    .CardMainContainer{
+        display: flex;
+        flex-wrap: wrap;
+        height: 100%;
+        justify-content: center;
+    }
+}
+
+@media screen and (min-width: 1700px){
+    .ComplaintContainer{
+        width: 15vw;
+        height: 45vh;
+    }
+}
+
+/*
 .CardMainContainer{
     display: flex;
     flex-wrap: wrap;
@@ -6,13 +118,13 @@
 }
 
 .ComplaintContainer{
-    border-radius: 15px;
+    border-radius: 23px;
     width: 15vw;
     padding: 1rem;
     box-shadow: 5px 5px 5px rgb(20, 20, 20);
     transition: 1.5s;
     margin: 2rem 2.5rem;
-    background-color: rgb(63, 63, 63);
+    background-color: rgb(36, 36, 36);
     color: white;
 }
 
@@ -22,7 +134,7 @@
 }
 
 .ComplaintContainer:hover{
-    background-color: rgb(12, 12, 12);
+    background-color: rgb(2, 2, 2);
     cursor: pointer;
     transition: 1.5s;
 }
@@ -53,7 +165,5 @@
 .ComplaintIconHolder i:hover{
     margin-top: 1rem;
     cursor: pointer;
-}
-
-
-
+} 
+*/ 
