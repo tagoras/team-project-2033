@@ -411,7 +411,6 @@ def admin_view_all() -> json:
 @app.route("/admin/delete", methods=["DELETE"])
 @jwt_required()
 def admin_delete_submission() -> json:
-    # TODO: ADD PICTURES
     if request.is_json and ("id" in request.json):
         # Checks if the user is an admin
         current_user = get_jwt_identity()
@@ -428,18 +427,21 @@ def admin_delete_submission() -> json:
 
             # Finds the id in the complaints table
             complaint = db.session.query(Complaint).filter_by(id=_id).first()
+            if not complaint or complaint is None:
+                return jsonify({
+                    'status': -1,
+                    'message': "Database operation failed: Wrong id"
+                }), 406
+
             # img_path = complaint.img_path Images feature didn't make it into the final cut.
             db.session.delete(complaint)
 
-            '''
-            Images feature didn't make it into the final cut.
-            Attempts to find image and delete it
-            if os.path.exists(img_path):
-                os.system('rm ' + 'data/' + img_path)
-                # os.remove('data/'+complaint_image)
-            else:
-                print("Image and/or path not found")
-            '''
+            # Images feature didn't make it into the final cut.
+            # Attempts to find image and delete it
+            try:
+                os.remove(f'data/{complaint.img_path}')
+            except Exception as e:
+                print(e)
 
             db.session.commit()
             return jsonify({
