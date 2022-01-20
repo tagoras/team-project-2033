@@ -31,7 +31,7 @@ class FlaskApp(unittest.TestCase):
         self.assertEqual(200, r.status_code, )
         self.assertEqual('http://localhost:5000/hello_world', r.url, )
 
-    # Tests the logging out of the user (fails login)
+    # Tests the logging out of the user
     def test_logout(self):
         url = 'http://localhost:5000/login'
 
