@@ -31,7 +31,7 @@ function AdminPage() {
                 'Content-Type': 'application/json;charset=utf-8',
                 'Authorization': `Bearer ${document.cookie.substring(10)}`
             },
-          body: JSON.stringify({id: id + 1})
+          body: JSON.stringify({id: id})
     }).then((value) => value.json()).then((jsonRes) => console.log(jsonRes));
 
     //setPageRefreshedTimes(0);

@@ -69,7 +69,7 @@ function UserPage() {
         },
 
         body: data.picture[0],
-    })}).then((result) => result.json()).then((resultInJSON) => console.log(resultInJSON));
+    })});
       
       
       // let sendRawImage = fetch(`/submission_file/${resultInJSON.submission_id}`, {
