@@ -13,7 +13,7 @@ function AdminPage() {
     let [pageRefreshedTimes, setPageRefreshedTimes] = useState(0);
     let [data, setData] = useState([]);
 
-    console.log(data);
+   
 
     let navigate = useNavigate();
     let result = sentSyncrhonousAccessRequest('/get_role', 'GET').then((jsonResult) => {
@@ -25,7 +25,6 @@ function AdminPage() {
 
     //This function executes properly
     function deleteComplaint(id) {
-        console.log("Deleting complaint with id of " + id);
         fetch(`/admin/delete`, {
             method: `DELETE`,
             headers: {
@@ -43,22 +42,22 @@ function AdminPage() {
     // complaints.then((text) => console.log(text));
 
    
-
+    let urls;
     if(pageRefreshedTimes == 0){
       let complaints = sentSyncrhonousAccessRequest("/admin/view_all", "POST");
 
       let array = [];
-  
+       urls = [];
       complaints.then((resultInJSON) => {
+        console.log(resultInJSON);
         array = resultInJSON['list of complaints'];
-        console.log(array);
+        urls = resultInJSON['list of urls'];
         setData(array);
       })
   
-      console.log(data);
+
       setPageRefreshedTimes(++pageRefreshedTimes);
     }
-    console.log(data);
 
     return(
         <div className="AdminMainContainer">
