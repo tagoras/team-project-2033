@@ -5,13 +5,11 @@ This file outlines the coding conventions used by both the front-end and the bac
 
 ## Front End
 
-Variable Names:
+See [CMS Docs -- JavaScript Coding Conventions](https://docs.silverstripe.org/en/4/contributing/javascript_coding_conventions/)
 
 
 
 ## Back End
-
-Variable Names:
 
 See [PEP 8 -- Style Guide for Python Code ](https://www.python.org/dev/peps/pep-0008/)
 
