@@ -26,8 +26,6 @@ if errorlevel 9009 (
 )
 
 %SPHINXBUILD% -M %1 %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
-rmdir /f /s ../docs
-mkdir ../docs
 copy /y /build/* ../docs/
 goto end
 
