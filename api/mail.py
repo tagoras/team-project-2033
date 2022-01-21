@@ -30,7 +30,7 @@ class Mail:
 
     def send_2fa_email(self, user):
         """
-        Sends a 2-Factor Authentication token for the newly-registered user to set up their authenticator
+         Sends a 2-Factor Authentication token for the newly-registered user to set up their authenticator
         :param user: The User object with all the user's attribute
         :return: Nothing
 
@@ -96,7 +96,7 @@ class Mail:
 
     def exit(self):
         """
-        kills the mail session and clears attributes
+         kills the mail session and clears attributes
         :return:
         """
         self.server.quit()
