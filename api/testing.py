@@ -13,6 +13,9 @@ class FlaskApp(unittest.TestCase):
 
     # Tests if has_empty_value function works
     def test_has_empty_value(self):
+        """
+        Tests if has_empty_value function works
+        """
         d1 = {1: ""}
         d2 = {1: " "}
         d3 = {1: "Hello World", 2: "   "}
@@ -24,6 +27,9 @@ class FlaskApp(unittest.TestCase):
 
     # Tests if hello_world function works
     def test_hello_world(self):
+        """
+        Tests if hello_world function works
+        """
         r = requests.get('http://localhost:5000/hello_world')
         json_content = r.json()
         self.assertEqual({'title': "Hello!", 'content': "Hello World"}, json_content[0])
@@ -33,6 +39,9 @@ class FlaskApp(unittest.TestCase):
 
     # Tests the logging out of the user
     def test_logout(self):
+        """
+        Tests the logging out of the user
+        """
         url = 'http://localhost:5000/login'
 
         user = User.query.filter_by(username='Steve').first()
@@ -77,6 +86,9 @@ class FlaskApp(unittest.TestCase):
 
     # Tests the registering of a user
     def test_register(self):
+        """
+        Tests the registering of a user
+        """
         url = 'http://localhost:5000/register'
 
         data = {'username': 'Test',
@@ -109,6 +121,9 @@ class FlaskApp(unittest.TestCase):
 
     # Tests the logging in of a user
     def test_login(self):
+        """
+        Tests the logging in of a user
+        """
         url = 'http://localhost:5000/login'
 
         login_data = {'username': 'An incorrect username',
@@ -153,6 +168,9 @@ class FlaskApp(unittest.TestCase):
 
     # Tests the getting a single file
     def test_get_single_file(self):
+        """
+        Tests the getting a single file
+        """
         import webbrowser
 
         url1 = 'http://localhost:5000/file/cats/cat.gif'
@@ -164,6 +182,9 @@ class FlaskApp(unittest.TestCase):
 
     # Tests the adding of submissions from a user
     def test_submission(self):
+        """
+        Tests the adding of submissions from a user
+        """
         url = 'http://localhost:5000/login'
         user = User.query.filter_by(username='Steve').first()
         otp = pyotp.TOTP(user.otp_key).now()
@@ -190,7 +211,9 @@ class FlaskApp(unittest.TestCase):
 
     # Tests the storing of an image from a user
     def test_submission_file(self):
-
+        """
+        Tests the storing of an image from a user
+        """
         url = 'http://localhost:5000/login'
         user = User.query.filter_by(id=2).first()
         otp = pyotp.TOTP(user.otp_key).now()
@@ -210,8 +233,11 @@ class FlaskApp(unittest.TestCase):
         r = requests.post(url=url, headers=headers, data=image)
         self.assertEqual(201, r.status_code)
 
-    # Tests if the admin can see 20 of the largest ids
+    # Tests if the admin can see 100 of the largest ids
     def test_admin_view_all(self):
+        """
+        Tests if the admin can see 100 of the largest ids
+        """
         url = 'http://localhost:5000/login'
 
         admin = User.query.filter_by(username='Joe').first()
@@ -235,6 +261,9 @@ class FlaskApp(unittest.TestCase):
 
     # Tests if the admin can delete a users submission
     def test_admin_delete_submission(self):
+        """
+        Tests if the admin can delete a users submission
+        """
         url = 'http://localhost:5000/login'
 
         admin = User.query.filter_by(username='Joe').first()
@@ -262,7 +291,9 @@ class FlaskApp(unittest.TestCase):
 
     # Tests if front-end can get the role of the current user
     def test_get_role(self):
-
+        """
+        Tests if front-end can get the role of the current user
+        """
         url = 'http://localhost:5000/login'
         user = User.query.filter_by(username='Steve').first()
         otp = pyotp.TOTP(user.otp_key).now()
@@ -303,7 +334,9 @@ class FlaskApp(unittest.TestCase):
 
     # Tests if the admin can edit a submission in the complaints table
     def test_admin_edit_submission(self):
-
+        """
+        Tests if the admin can edit a submission in the complaints table
+        """
         url = 'http://localhost:5000/login'
         admin = User.query.filter_by(username='Joe').first()
         otp = pyotp.TOTP(admin.otp_key).now()
