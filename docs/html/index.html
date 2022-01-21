@@ -56,18 +56,25 @@
                                 class="pre">'json'</span> <span class="pre">from</span> <span class="pre">'/usr/lib/python3.10/json/__init__.py'&gt;</span></span></span><a
                                 class="headerlink" href="#app.admin_edit_submission"
                                 title="Permalink to this definition">¶</a></dt>
-                        <dd>
-                            <dl class="simple">
-                                <dt>Lets the admin user edit a submission.</dt>
-                                <dd>
-                                    <dl class="field-list simple">
-                                        <dt class="field-odd">return</dt>
-                                        <dd class="field-odd"><p><code class="docutils literal notranslate"><span
-                                                class="pre">Status</span></code> and</p>
-                                        </dd>
-                                    </dl>
-                                </dd>
-                            </dl>
+                        <dd><p>Lets the admin user edit a submission.
+                            :return: <code class="docutils literal notranslate"><span class="pre">status</span></code>
+                            and <code class="docutils literal notranslate"><span class="pre">message</span></code> in
+                            <cite>JSON</cite></p>
+                        </dd>
+                    </dl>
+
+                    <dl class="py function">
+                        <dt class="sig sig-object py" id="app.get_role">
+                            <span class="sig-prename descclassname"><span class="pre">app.</span></span><span
+                                class="sig-name descname"><span class="pre">get_role</span></span><span
+                                class="sig-paren">(</span><span class="sig-paren">)</span> <span
+                                class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span
+                                class="sig-return-typehint"><span class="pre">&lt;module</span> <span
+                                class="pre">'json'</span> <span class="pre">from</span> <span class="pre">'/usr/lib/python3.10/json/__init__.py'&gt;</span></span></span><a
+                                class="headerlink" href="#app.get_role" title="Permalink to this definition">¶</a></dt>
+                        <dd><p>Gets the current user’s role
+                            :return: <code class="docutils literal notranslate"><span
+                                    class="pre">user.role</span></code></p>
                         </dd>
                     </dl>
 
@@ -81,6 +88,11 @@
                                 class="headerlink" href="#app.get_single_file"
                                 title="Permalink to this definition">¶</a></dt>
                         <dd>
+                            <blockquote>
+                                <div><p>Retrieves a single file.
+                                    Static file.</p>
+                                </div>
+                            </blockquote>
                             <dl class="field-list simple">
                                 <dt class="field-odd">Parameters</dt>
                                 <dd class="field-odd">
@@ -160,13 +172,35 @@
                                 title="Permalink to this definition">¶</a></dt>
                         <dd>
                             <blockquote>
-                                <div><p>Checks for a valid JWT, returns a Hello World! in JSON format</p>
+                                <div><p>Checks for a valid JWT, returns a Hello World! in JSON format.</p>
                                 </div>
                             </blockquote>
                             <dl class="field-list simple">
                                 <dt class="field-odd">Returns</dt>
                                 <dd class="field-odd"><p>{‘title’: “Hello!”,
                                     ‘content’: “Hello World”}</p>
+                                </dd>
+                            </dl>
+                        </dd>
+                    </dl>
+
+                    <dl class="py function">
+                        <dt class="sig sig-object py" id="app.register">
+                            <span class="sig-prename descclassname"><span class="pre">app.</span></span><span
+                                class="sig-name descname"><span class="pre">register</span></span><span
+                                class="sig-paren">(</span><span class="sig-paren">)</span> <span
+                                class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span
+                                class="sig-return-typehint"><span class="pre">&lt;module</span> <span
+                                class="pre">'json'</span> <span class="pre">from</span> <span class="pre">'/usr/lib/python3.10/json/__init__.py'&gt;</span></span></span><a
+                                class="headerlink" href="#app.register" title="Permalink to this definition">¶</a></dt>
+                        <dd>
+                            <blockquote>
+                                <div><p>Registers a user.</p>
+                                </div>
+                            </blockquote>
+                            <dl class="field-list simple">
+                                <dt class="field-odd">Returns</dt>
+                                <dd class="field-odd"><p></p>
                                 </dd>
                             </dl>
                         </dd>
@@ -187,7 +221,7 @@
                                 class="sig-param"><span class="n"><span class="pre">user_key</span></span></em><span
                                 class="sig-paren">)</span><a class="headerlink" href="#models.Complaint"
                                                              title="Permalink to this definition">¶</a></dt>
-                        <dd><p>Complaints Table</p>
+                        <dd><p>Complaints Table.</p>
                             <dl class="py method">
                                 <dt class="sig sig-object py" id="models.Complaint.view_complaint_card">
                                     <span class="sig-name descname"><span
@@ -198,10 +232,10 @@
                                         class="sig-paren">)</span><a class="headerlink"
                                                                      href="#models.Complaint.view_complaint_card"
                                                                      title="Permalink to this definition">¶</a></dt>
-                                <dd><p>Used to view all of the details in complaint
-                                    :param user_key: The data to decrypt and encrypt data
-                                    :param url: The website link to access image
-                                    :return: All details of the complaint including image url</p>
+                                <dd><p>Used to view all of the details in complaint.
+                                    :param user_key: The data to decrypt and encrypt data.
+                                    :param url: The website link to access image.
+                                    :return: All details of the complaint including image url.</p>
                                 </dd>
                             </dl>
 
@@ -234,10 +268,10 @@
                                                                                                      href="#models.decrypt"
                                                                                                      title="Permalink to this definition">¶</a>
                         </dt>
-                        <dd><p>Used to decrypted encrypted data
-                            :param data: Encrypted information needing to be decrypted
-                            :param key: Used to decrypt
-                            :return: Decrypted Info</p>
+                        <dd><p>Used to decrypted encrypted data.
+                            :param data: Encrypted information needing to be decrypted.
+                            :param key: Used to decrypt.
+                            :return: Decrypted Info.</p>
                         </dd>
                     </dl>
 
@@ -266,7 +300,7 @@
                                                                                              href="#models.init_db"
                                                                                              title="Permalink to this definition">¶</a>
                         </dt>
-                        <dd><p>To initialise the database</p>
+                        <dd><p>To initialise the database.</p>
                         </dd>
                     </dl>
 
@@ -290,7 +324,7 @@
                                                                                                      href="#testing.FlaskApp.test_admin_delete_submission"
                                                                                                      title="Permalink to this definition">¶</a>
                                 </dt>
-                                <dd><p>Tests if the admin can delete a users submission</p>
+                                <dd><p>Tests if the admin can delete a users submission.</p>
                                 </dd>
                             </dl>
 
@@ -301,7 +335,7 @@
                                                                                                      href="#testing.FlaskApp.test_admin_edit_submission"
                                                                                                      title="Permalink to this definition">¶</a>
                                 </dt>
-                                <dd><p>Tests if the admin can edit a submission in the complaints table</p>
+                                <dd><p>Tests if the admin can edit a submission in the complaints table.</p>
                                 </dd>
                             </dl>
 
@@ -313,7 +347,7 @@
                                                                                                      href="#testing.FlaskApp.test_admin_view_all"
                                                                                                      title="Permalink to this definition">¶</a>
                                 </dt>
-                                <dd><p>Tests if the admin can see 100 of the largest ids</p>
+                                <dd><p>Tests if the admin can see 100 of the largest ids.</p>
                                 </dd>
                             </dl>
 
@@ -324,7 +358,7 @@
                                                                                                      href="#testing.FlaskApp.test_get_role"
                                                                                                      title="Permalink to this definition">¶</a>
                                 </dt>
-                                <dd><p>Tests if front-end can get the role of the current user</p>
+                                <dd><p>Tests if front-end can get the role of the current user.</p>
                                 </dd>
                             </dl>
 
@@ -335,7 +369,7 @@
                                                                                                      href="#testing.FlaskApp.test_get_single_file"
                                                                                                      title="Permalink to this definition">¶</a>
                                 </dt>
-                                <dd><p>Tests the getting a single file</p>
+                                <dd><p>Tests the getting a single file.</p>
                                 </dd>
                             </dl>
 
@@ -346,7 +380,7 @@
                                                                                                      href="#testing.FlaskApp.test_has_empty_value"
                                                                                                      title="Permalink to this definition">¶</a>
                                 </dt>
-                                <dd><p>Tests if has_empty_value function works</p>
+                                <dd><p>Tests if has_empty_value function works.</p>
                                 </dd>
                             </dl>
 
@@ -358,7 +392,7 @@
                                                                                                      href="#testing.FlaskApp.test_hello_world"
                                                                                                      title="Permalink to this definition">¶</a>
                                 </dt>
-                                <dd><p>Tests if hello_world function works</p>
+                                <dd><p>Tests if hello_world function works.</p>
                                 </dd>
                             </dl>
 
@@ -369,7 +403,7 @@
                                                                                                      href="#testing.FlaskApp.test_login"
                                                                                                      title="Permalink to this definition">¶</a>
                                 </dt>
-                                <dd><p>Tests the logging in of a user</p>
+                                <dd><p>Tests the logging in of a user.</p>
                                 </dd>
                             </dl>
 
@@ -380,7 +414,7 @@
                                                                                                      href="#testing.FlaskApp.test_logout"
                                                                                                      title="Permalink to this definition">¶</a>
                                 </dt>
-                                <dd><p>Tests the logging out of the user</p>
+                                <dd><p>Tests the logging out of the user.</p>
                                 </dd>
                             </dl>
 
@@ -391,7 +425,7 @@
                                                                                                      href="#testing.FlaskApp.test_register"
                                                                                                      title="Permalink to this definition">¶</a>
                                 </dt>
-                                <dd><p>Tests the registering of a user</p>
+                                <dd><p>Tests the registering of a user.</p>
                                 </dd>
                             </dl>
 
@@ -402,7 +436,7 @@
                                                                                                      href="#testing.FlaskApp.test_submission"
                                                                                                      title="Permalink to this definition">¶</a>
                                 </dt>
-                                <dd><p>Tests the adding of submissions from a user</p>
+                                <dd><p>Tests the adding of submissions from a user.</p>
                                 </dd>
                             </dl>
 
@@ -413,7 +447,7 @@
                                                                                                      href="#testing.FlaskApp.test_submission_file"
                                                                                                      title="Permalink to this definition">¶</a>
                                 </dt>
-                                <dd><p>Tests the storing of an image from a user</p>
+                                <dd><p>Tests the storing of an image from a user.</p>
                                 </dd>
                             </dl>
 
