@@ -27,6 +27,12 @@ jwt = JWTManager(app)
 # Searches through a dictionary containing a string to see if any key has an empty string
 
 def has_empty_value(obj) -> bool:
+    """
+     Check for empty fields in a dictionary
+     Used for JSON Data validation
+    :param obj:  Dictionary object
+    :return: bool: Whether the
+    """
     if obj is None:
         return True
     for k in obj:
@@ -46,6 +52,11 @@ def has_empty_value(obj) -> bool:
 # just for testing : return a hello world json object, for debugging api calls
 @app.route('/hello_world')
 def hello_world() -> json:
+    """
+     Returns a Hello World! in JSON format.
+    :return: {'title': "Hello!",
+                    'content': "Hello World"}
+    """
     return jsonify({'title': "Hello!",
                     'content': "Hello World"},
                    request.json), 200
@@ -55,6 +66,11 @@ def hello_world() -> json:
 @app.route('/hello_world/jwt')
 @jwt_required()
 def hello_world_jwt() -> json:
+    """
+     Checks for a valid JWT, returns a Hello World! in JSON format
+    :return: {'title': "Hello!",
+                    'content': "Hello World"}
+    """
     current_user = get_jwt_identity()
     return jsonify({'title': "Hello!",
                     'content': "Hello World, I am logged in, amazing!"},
