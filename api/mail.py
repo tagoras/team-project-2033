@@ -5,8 +5,16 @@ from email.mime.text import MIMEText
 
 
 class Mail:
+    """
+    Mail Class system responsible for the mailing system.
+    Used to send emails to user from the back-end.
+    Can be used for verification purposes as well as general communication
+    """
 
     def __init__(self):
+        """
+        Initialises the Mailing system with its parameters
+        """
         context = ssl.create_default_context()
         __password = 0
         self.port = 0
@@ -21,7 +29,12 @@ class Mail:
         self.server.login(self.sender_email, self.__password)
 
     def send_2fa_email(self, user):
+        """
+        Sends a 2-Factor Authentication token for the newly-registered user to set up their authenticator
+        :param user: The User object with all the user's attribute
+        :return: Nothing
 
+        """
         message = MIMEMultipart("alternative")
         message["Subject"] = "2FA Authentication Setup for your account necessary"
         message["From"] = self.sender_email
@@ -82,6 +95,10 @@ class Mail:
         '''
 
     def exit(self):
+        """
+        kills the mail session and clears attributes
+        :return:
+        """
         self.server.quit()
 
         # Clear attributes
