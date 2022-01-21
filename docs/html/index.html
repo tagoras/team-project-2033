@@ -47,6 +47,31 @@
                     <h1>Welcome to Team 32’s project documentation!<a class="headerlink" href="#module-app"
                                                                       title="Permalink to this headline">¶</a></h1>
                     <dl class="py function">
+                        <dt class="sig sig-object py" id="app.admin_delete_submission">
+                            <span class="sig-prename descclassname"><span class="pre">app.</span></span><span
+                                class="sig-name descname"><span class="pre">admin_delete_submission</span></span><span
+                                class="sig-paren">(</span><span class="sig-paren">)</span> <span
+                                class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span
+                                class="sig-return-typehint"><span class="pre">&lt;module</span> <span
+                                class="pre">'json'</span> <span class="pre">from</span> <span class="pre">'/usr/lib/python3.10/json/__init__.py'&gt;</span></span></span><a
+                                class="headerlink" href="#app.admin_delete_submission"
+                                title="Permalink to this definition">¶</a></dt>
+                        <dd>
+                            <blockquote>
+                                <div><p>For admin to delete a submission.</p>
+                                </div>
+                            </blockquote>
+                            <dl class="field-list simple">
+                                <dt class="field-odd">Returns</dt>
+                                <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">status</span></code>
+                                    and <code class="docutils literal notranslate"><span
+                                            class="pre">message</span></code></p>
+                                </dd>
+                            </dl>
+                        </dd>
+                    </dl>
+
+                    <dl class="py function">
                         <dt class="sig sig-object py" id="app.admin_edit_submission">
                             <span class="sig-prename descclassname"><span class="pre">app.</span></span><span
                                 class="sig-name descname"><span class="pre">admin_edit_submission</span></span><span
@@ -64,6 +89,59 @@
                     </dl>
 
                     <dl class="py function">
+                        <dt class="sig sig-object py" id="app.admin_view_all">
+                            <span class="sig-prename descclassname"><span class="pre">app.</span></span><span
+                                class="sig-name descname"><span class="pre">admin_view_all</span></span><span
+                                class="sig-paren">(</span><span class="sig-paren">)</span> <span
+                                class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span
+                                class="sig-return-typehint"><span class="pre">&lt;module</span> <span
+                                class="pre">'json'</span> <span class="pre">from</span> <span class="pre">'/usr/lib/python3.10/json/__init__.py'&gt;</span></span></span><a
+                                class="headerlink" href="#app.admin_view_all" title="Permalink to this definition">¶</a>
+                        </dt>
+                        <dd>
+                            <blockquote>
+                                <div><p>Retrieves all the submissions from the database</p>
+                                </div>
+                            </blockquote>
+                            <dl class="field-list simple">
+                                <dt class="field-odd">Returns</dt>
+                                <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">array</span></code>
+                                    contains all the submissions, with <code class="docutils literal notranslate"><span
+                                            class="pre">status</span></code> and <code
+                                            class="docutils literal notranslate"><span class="pre">message</span></code>
+                                    encoded in JSON.</p>
+                                </dd>
+                            </dl>
+                        </dd>
+                    </dl>
+
+                    <dl class="py function">
+                        <dt class="sig sig-object py" id="app.allowed_file">
+                            <span class="sig-prename descclassname"><span class="pre">app.</span></span><span
+                                class="sig-name descname"><span class="pre">allowed_file</span></span><span
+                                class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span
+                                class="sig-paren">)</span><a class="headerlink" href="#app.allowed_file"
+                                                             title="Permalink to this definition">¶</a></dt>
+                        <dd>
+                            <blockquote>
+                                <div><p>Checks if a file is in a valid format to be stored in the database after a
+                                    submission.</p>
+                                </div>
+                            </blockquote>
+                            <dl class="field-list simple">
+                                <dt class="field-odd">Parameters</dt>
+                                <dd class="field-odd"><p><strong>filename</strong> – Name of the file with its file
+                                    extension</p>
+                                </dd>
+                                <dt class="field-even">Returns</dt>
+                                <dd class="field-even"><p><cite>True|False</cite>:
+                                    Whether file extension is valid or not for storing.</p>
+                                </dd>
+                            </dl>
+                        </dd>
+                    </dl>
+
+                    <dl class="py function">
                         <dt class="sig sig-object py" id="app.get_role">
                             <span class="sig-prename descclassname"><span class="pre">app.</span></span><span
                                 class="sig-name descname"><span class="pre">get_role</span></span><span
@@ -72,9 +150,17 @@
                                 class="sig-return-typehint"><span class="pre">&lt;module</span> <span
                                 class="pre">'json'</span> <span class="pre">from</span> <span class="pre">'/usr/lib/python3.10/json/__init__.py'&gt;</span></span></span><a
                                 class="headerlink" href="#app.get_role" title="Permalink to this definition">¶</a></dt>
-                        <dd><p>Gets the current user’s role
-                            :return: <code class="docutils literal notranslate"><span
-                                    class="pre">user.role</span></code></p>
+                        <dd>
+                            <blockquote>
+                                <div><p>Gets the current user’s role</p>
+                                </div>
+                            </blockquote>
+                            <dl class="field-list simple">
+                                <dt class="field-odd">Returns</dt>
+                                <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user.role</span></code>
+                                </p>
+                                </dd>
+                            </dl>
                         </dd>
                     </dl>
 
@@ -185,6 +271,20 @@
                     </dl>
 
                     <dl class="py function">
+                        <dt class="sig sig-object py" id="app.logout">
+                            <span class="sig-prename descclassname"><span class="pre">app.</span></span><span
+                                class="sig-name descname"><span class="pre">logout</span></span><span class="sig-paren">(</span><span
+                                class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span
+                                class="sig-return-typehint"><span class="pre">&lt;module</span> <span
+                                class="pre">'json'</span> <span class="pre">from</span> <span class="pre">'/usr/lib/python3.10/json/__init__.py'&gt;</span></span></span><a
+                                class="headerlink" href="#app.logout" title="Permalink to this definition">¶</a></dt>
+                        <dd><p>Placeholder for a logout function
+                            :return: <code class="docutils literal notranslate"><span class="pre">status</span></code>
+                            and <code class="docutils literal notranslate"><span class="pre">message</span></code></p>
+                        </dd>
+                    </dl>
+
+                    <dl class="py function">
                         <dt class="sig sig-object py" id="app.register">
                             <span class="sig-prename descclassname"><span class="pre">app.</span></span><span
                                 class="sig-name descname"><span class="pre">register</span></span><span
@@ -201,6 +301,68 @@
                             <dl class="field-list simple">
                                 <dt class="field-odd">Returns</dt>
                                 <dd class="field-odd"><p></p>
+                                </dd>
+                            </dl>
+                        </dd>
+                    </dl>
+
+                    <dl class="py function">
+                        <dt class="sig sig-object py" id="app.submission">
+                            <span class="sig-prename descclassname"><span class="pre">app.</span></span><span
+                                class="sig-name descname"><span class="pre">submission</span></span><span
+                                class="sig-paren">(</span><span class="sig-paren">)</span> <span
+                                class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span
+                                class="sig-return-typehint"><span class="pre">&lt;module</span> <span
+                                class="pre">'json'</span> <span class="pre">from</span> <span class="pre">'/usr/lib/python3.10/json/__init__.py'&gt;</span></span></span><a
+                                class="headerlink" href="#app.submission" title="Permalink to this definition">¶</a>
+                        </dt>
+                        <dd>
+                            <blockquote>
+                                <div><p>Handles user submissions.</p>
+                                </div>
+                            </blockquote>
+                            <dl class="field-list simple">
+                                <dt class="field-odd">Returns</dt>
+                                <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">status</span></code>,
+                                    <code class="docutils literal notranslate"><span class="pre">message</span></code>,
+                                    <code class="docutils literal notranslate"><span
+                                            class="pre">complaint.id</span></code> for file submissions.</p>
+                                </dd>
+                            </dl>
+                        </dd>
+                    </dl>
+
+                    <dl class="py function">
+                        <dt class="sig sig-object py" id="app.submission_file">
+                            <span class="sig-prename descclassname"><span class="pre">app.</span></span><span
+                                class="sig-name descname"><span class="pre">submission_file</span></span><span
+                                class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                                class="pre">__id</span></span></em>, <em class="sig-param"><span class="n"><span
+                                class="pre">__filename</span></span></em><span class="sig-paren">)</span> <span
+                                class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span
+                                class="sig-return-typehint"><span class="pre">&lt;module</span> <span
+                                class="pre">'json'</span> <span class="pre">from</span> <span class="pre">'/usr/lib/python3.10/json/__init__.py'&gt;</span></span></span><a
+                                class="headerlink" href="#app.submission_file"
+                                title="Permalink to this definition">¶</a></dt>
+                        <dd>
+                            <blockquote>
+                                <div><p>Responsible for file submitting to the database.</p>
+                                </div>
+                            </blockquote>
+                            <dl class="field-list simple">
+                                <dt class="field-odd">Parameters</dt>
+                                <dd class="field-odd">
+                                    <ul class="simple">
+                                        <li><p><strong>__id</strong> – user.id - Used to retrieve user’s folder.</p>
+                                        </li>
+                                        <li><p><strong>__filename</strong> – filename used to know the extension.</p>
+                                        </li>
+                                    </ul>
+                                </dd>
+                                <dt class="field-even">Returns</dt>
+                                <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">status</span></code>
+                                    and <code class="docutils literal notranslate"><span
+                                            class="pre">message</span></code></p>
                                 </dd>
                             </dl>
                         </dd>

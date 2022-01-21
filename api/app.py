@@ -193,6 +193,10 @@ def register() -> json:
 # Logs the user in to the website
 @app.route('/login', methods=['POST'])
 def login() -> json:
+    """
+     Handles user login
+    :return: ``status``, ``message`` and ``JWT`` encoded in JSON.
+    """
     if request.is_json and ("username" and "password" and "otp" in request.json):
         login_form = request.json
 
@@ -252,6 +256,14 @@ def login() -> json:
 
 # Checks the file type and allow certain ones in
 def allowed_file(filename):
+    """
+     Checks if a file is in a valid format to be stored in the database after a submission.
+    :param filename:
+        Name of the file with its file extension
+    :return: `True|False`:
+        Whether file extension is valid or not for storing.
+    """
+
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in {'.png', '.webp', '.jpg', '.jfif',
                                                   '.pjpeg', '.pjp', '.jpeg', '.gif', '.apng'}
@@ -261,6 +273,10 @@ def allowed_file(filename):
 @app.route('/submission', methods=['PUT', 'POST'])
 @jwt_required()
 def submission() -> json:
+    """
+     Handles user submissions.
+    :return: ``status``, ``message``, ``complaint.id`` for file submissions.
+    """
     # Grabs the user information and see if they have the role of a user
     current_user = get_jwt_identity()
     if current_user["role"] != 'user':
@@ -323,6 +339,14 @@ def submission() -> json:
 @app.route('/submission_file/<int:__id>/<string:__filename>', methods=['PUT', 'POST'])
 @jwt_required()
 def submission_file(__id, __filename) -> json:
+    """
+     Responsible for file submitting to the database.
+
+    :param __id: user.id - Used to retrieve user's folder.
+    :param __filename:  filename used to know the extension.
+    :return: ``status`` and ``message`` encoded in JSON.
+    """
+
     # Grabs the user information and see if they have the role of a user
     current_user = get_jwt_identity()
     if current_user["role"] != 'user':
@@ -370,6 +394,10 @@ def submission_file(__id, __filename) -> json:
 @app.route("/logout", methods=["GET"])
 @jwt_required()
 def logout() -> json:
+    """
+    Placeholder for a logout function
+    :return: ``status`` and ``message`` encoded in JSON.
+    """
     try:
         # This should be handled in the front-end !!!
         # This is just a placeholder
@@ -390,6 +418,11 @@ def logout() -> json:
 @app.route("/admin/view_all", methods=["POST"])
 @jwt_required()
 def admin_view_all() -> json:
+    """
+     Retrieves all the submissions from the database
+    :return: ``array`` contains all the submissions, with ``status`` and ``message`` encoded in JSON.
+    """
+
     # Grabs user info and checks if the user is an admin
     current_user = get_jwt_identity()
     if current_user["role"] != 'admin':
@@ -430,6 +463,10 @@ def admin_view_all() -> json:
 @app.route("/admin/delete", methods=["DELETE"])
 @jwt_required()
 def admin_delete_submission() -> json:
+    """
+     For admin to delete a submission.
+    :return: ``status`` and ``message`` encoded in JSON.
+    """
     if request.is_json and ("id" in request.json):
         # Checks if the user is an admin
         current_user = get_jwt_identity()
@@ -481,7 +518,7 @@ def admin_delete_submission() -> json:
 @jwt_required()
 def get_role() -> json:
     """
-    Gets the current user's role
+     Gets the current user's role
     :return: ``user.role``
     """
     # Grabs the logged-in user info
