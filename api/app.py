@@ -1,7 +1,6 @@
 # IMPORTS
 import json
 import re
-import filetype
 
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
@@ -485,6 +484,13 @@ def get_role() -> json:
 # Gets a single file
 @app.route('/file/<string:_id>/<string:_filename>', methods=["GET"])
 def get_single_file(_id, _filename):
+    """
+    Retrieves a single file.
+    Static file.
+     :param _id: user_id - The user personal folder.
+     :param _filename: Randomly generated name of the file.
+     :return: File - Sends from the directory a file.
+    """
     return send_from_directory(path=f'{_id}/{_filename}', directory="data"), 201
 
 
@@ -492,6 +498,10 @@ def get_single_file(_id, _filename):
 @app.route('/admin/edit', methods=['GET', 'POST'])
 @jwt_required()
 def admin_edit_submission() -> json:
+    """
+    Lets the admin user edit a submission.
+        :return: ``Status`` and
+    """
     current_user = get_jwt_identity()
     # Checks if user is admin
     if current_user["role"] != 'admin':

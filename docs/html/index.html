@@ -47,6 +47,57 @@
                     <h1>Welcome to Team 32’s project documentation!<a class="headerlink" href="#module-app"
                                                                       title="Permalink to this headline">¶</a></h1>
                     <dl class="py function">
+                        <dt class="sig sig-object py" id="app.admin_edit_submission">
+                            <span class="sig-prename descclassname"><span class="pre">app.</span></span><span
+                                class="sig-name descname"><span class="pre">admin_edit_submission</span></span><span
+                                class="sig-paren">(</span><span class="sig-paren">)</span> <span
+                                class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span
+                                class="sig-return-typehint"><span class="pre">&lt;module</span> <span
+                                class="pre">'json'</span> <span class="pre">from</span> <span class="pre">'/usr/lib/python3.10/json/__init__.py'&gt;</span></span></span><a
+                                class="headerlink" href="#app.admin_edit_submission"
+                                title="Permalink to this definition">¶</a></dt>
+                        <dd>
+                            <dl class="simple">
+                                <dt>Lets the admin user edit a submission.</dt>
+                                <dd>
+                                    <dl class="field-list simple">
+                                        <dt class="field-odd">return</dt>
+                                        <dd class="field-odd"><p><code class="docutils literal notranslate"><span
+                                                class="pre">Status</span></code> and</p>
+                                        </dd>
+                                    </dl>
+                                </dd>
+                            </dl>
+                        </dd>
+                    </dl>
+
+                    <dl class="py function">
+                        <dt class="sig sig-object py" id="app.get_single_file">
+                            <span class="sig-prename descclassname"><span class="pre">app.</span></span><span
+                                class="sig-name descname"><span class="pre">get_single_file</span></span><span
+                                class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                                class="pre">_id</span></span></em>, <em class="sig-param"><span class="n"><span
+                                class="pre">_filename</span></span></em><span class="sig-paren">)</span><a
+                                class="headerlink" href="#app.get_single_file"
+                                title="Permalink to this definition">¶</a></dt>
+                        <dd>
+                            <dl class="field-list simple">
+                                <dt class="field-odd">Parameters</dt>
+                                <dd class="field-odd">
+                                    <ul class="simple">
+                                        <li><p><strong>_id</strong> – user_id - The user personal folder.</p></li>
+                                        <li><p><strong>_filename</strong> – Randomly generated name of the file.</p>
+                                        </li>
+                                    </ul>
+                                </dd>
+                                <dt class="field-even">Returns</dt>
+                                <dd class="field-even"><p>File - Sends from the directory a file.</p>
+                                </dd>
+                            </dl>
+                        </dd>
+                    </dl>
+
+                    <dl class="py function">
                         <dt class="sig sig-object py" id="app.has_empty_value">
                             <span class="sig-prename descclassname"><span class="pre">app.</span></span><span
                                 class="sig-name descname"><span class="pre">has_empty_value</span></span><span
@@ -56,9 +107,68 @@
                                 class="sig-return-typehint"><span class="pre">bool</span></span></span><a
                                 class="headerlink" href="#app.has_empty_value"
                                 title="Permalink to this definition">¶</a></dt>
-                        <dd><p>THis does this
-                            :param obj:
-                            :return: bool</p>
+                        <dd>
+                            <blockquote>
+                                <div><p>Check for empty fields in a dictionary
+                                    Used for JSON Data validation</p>
+                                </div>
+                            </blockquote>
+                            <dl class="field-list simple">
+                                <dt class="field-odd">Parameters</dt>
+                                <dd class="field-odd"><p><strong>obj</strong> – Dictionary object</p>
+                                </dd>
+                                <dt class="field-even">Returns</dt>
+                                <dd class="field-even"><p>bool: Whether the</p>
+                                </dd>
+                            </dl>
+                        </dd>
+                    </dl>
+
+                    <dl class="py function">
+                        <dt class="sig sig-object py" id="app.hello_world">
+                            <span class="sig-prename descclassname"><span class="pre">app.</span></span><span
+                                class="sig-name descname"><span class="pre">hello_world</span></span><span
+                                class="sig-paren">(</span><span class="sig-paren">)</span> <span
+                                class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span
+                                class="sig-return-typehint"><span class="pre">&lt;module</span> <span
+                                class="pre">'json'</span> <span class="pre">from</span> <span class="pre">'/usr/lib/python3.10/json/__init__.py'&gt;</span></span></span><a
+                                class="headerlink" href="#app.hello_world" title="Permalink to this definition">¶</a>
+                        </dt>
+                        <dd>
+                            <blockquote>
+                                <div><p>Returns a Hello World! in JSON format.</p>
+                                </div>
+                            </blockquote>
+                            <dl class="field-list simple">
+                                <dt class="field-odd">Returns</dt>
+                                <dd class="field-odd"><p>{‘title’: “Hello!”,
+                                    ‘content’: “Hello World”}</p>
+                                </dd>
+                            </dl>
+                        </dd>
+                    </dl>
+
+                    <dl class="py function">
+                        <dt class="sig sig-object py" id="app.hello_world_jwt">
+                            <span class="sig-prename descclassname"><span class="pre">app.</span></span><span
+                                class="sig-name descname"><span class="pre">hello_world_jwt</span></span><span
+                                class="sig-paren">(</span><span class="sig-paren">)</span> <span
+                                class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span
+                                class="sig-return-typehint"><span class="pre">&lt;module</span> <span
+                                class="pre">'json'</span> <span class="pre">from</span> <span class="pre">'/usr/lib/python3.10/json/__init__.py'&gt;</span></span></span><a
+                                class="headerlink" href="#app.hello_world_jwt"
+                                title="Permalink to this definition">¶</a></dt>
+                        <dd>
+                            <blockquote>
+                                <div><p>Checks for a valid JWT, returns a Hello World! in JSON format</p>
+                                </div>
+                            </blockquote>
+                            <dl class="field-list simple">
+                                <dt class="field-odd">Returns</dt>
+                                <dd class="field-odd"><p>{‘title’: “Hello!”,
+                                    ‘content’: “Hello World”}</p>
+                                </dd>
+                            </dl>
                         </dd>
                     </dl>
 
@@ -77,7 +187,25 @@
                                 class="sig-param"><span class="n"><span class="pre">user_key</span></span></em><span
                                 class="sig-paren">)</span><a class="headerlink" href="#models.Complaint"
                                                              title="Permalink to this definition">¶</a></dt>
-                        <dd></dd>
+                        <dd><p>Complaints Table</p>
+                            <dl class="py method">
+                                <dt class="sig sig-object py" id="models.Complaint.view_complaint_card">
+                                    <span class="sig-name descname"><span
+                                            class="pre">view_complaint_card</span></span><span
+                                        class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                                        class="pre">user_key</span></span></em>, <em class="sig-param"><span
+                                        class="n"><span class="pre">url</span></span></em><span
+                                        class="sig-paren">)</span><a class="headerlink"
+                                                                     href="#models.Complaint.view_complaint_card"
+                                                                     title="Permalink to this definition">¶</a></dt>
+                                <dd><p>Used to view all of the details in complaint
+                                    :param user_key: The data to decrypt and encrypt data
+                                    :param url: The website link to access image
+                                    :return: All details of the complaint including image url</p>
+                                </dd>
+                            </dl>
+
+                        </dd>
                     </dl>
 
                     <dl class="py class">
@@ -92,7 +220,54 @@
                                 class="sig-param"><span class="n"><span class="pre">role</span></span></em><span
                                 class="sig-paren">)</span><a class="headerlink" href="#models.User"
                                                              title="Permalink to this definition">¶</a></dt>
-                        <dd></dd>
+                        <dd><p>User Table</p>
+                        </dd>
+                    </dl>
+
+                    <dl class="py function">
+                        <dt class="sig sig-object py" id="models.decrypt">
+                            <span class="sig-prename descclassname"><span class="pre">models.</span></span><span
+                                class="sig-name descname"><span class="pre">decrypt</span></span><span
+                                class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                                class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span
+                                class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#models.decrypt"
+                                                                                                     title="Permalink to this definition">¶</a>
+                        </dt>
+                        <dd><p>Used to decrypted encrypted data
+                            :param data: Encrypted information needing to be decrypted
+                            :param key: Used to decrypt
+                            :return: Decrypted Info</p>
+                        </dd>
+                    </dl>
+
+                    <dl class="py function">
+                        <dt class="sig sig-object py" id="models.encrypt">
+                            <span class="sig-prename descclassname"><span class="pre">models.</span></span><span
+                                class="sig-name descname"><span class="pre">encrypt</span></span><span
+                                class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                                class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span
+                                class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#models.encrypt"
+                                                                                                     title="Permalink to this definition">¶</a>
+                        </dt>
+                        <dd><p>Used to encrypt data
+                            :param data: Information needing to be encrypted
+                            :param key: Used to encrypt
+                            :return: Encrypted Info</p>
+                        </dd>
+                    </dl>
+
+                    <dl class="py function">
+                        <dt class="sig sig-object py" id="models.init_db">
+                            <span class="sig-prename descclassname"><span class="pre">models.</span></span><span
+                                class="sig-name descname"><span class="pre">init_db</span></span><span
+                                class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                             href="#models.init_db"
+                                                                                             title="Permalink to this definition">¶</a>
+                        </dt>
+                        <dd><p>To initialise the database</p>
+                        </dd>
                     </dl>
 
                     <span class="target" id="module-testing"></span>
@@ -106,7 +281,143 @@
                                 class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a
                                 class="headerlink" href="#testing.FlaskApp" title="Permalink to this definition">¶</a>
                         </dt>
-                        <dd></dd>
+                        <dd>
+                            <dl class="py method">
+                                <dt class="sig sig-object py" id="testing.FlaskApp.test_admin_delete_submission">
+                                    <span class="sig-name descname"><span
+                                            class="pre">test_admin_delete_submission</span></span><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#testing.FlaskApp.test_admin_delete_submission"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Tests if the admin can delete a users submission</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="py method">
+                                <dt class="sig sig-object py" id="testing.FlaskApp.test_admin_edit_submission">
+                                    <span class="sig-name descname"><span class="pre">test_admin_edit_submission</span></span><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#testing.FlaskApp.test_admin_edit_submission"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Tests if the admin can edit a submission in the complaints table</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="py method">
+                                <dt class="sig sig-object py" id="testing.FlaskApp.test_admin_view_all">
+                                    <span class="sig-name descname"><span
+                                            class="pre">test_admin_view_all</span></span><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#testing.FlaskApp.test_admin_view_all"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Tests if the admin can see 100 of the largest ids</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="py method">
+                                <dt class="sig sig-object py" id="testing.FlaskApp.test_get_role">
+                                    <span class="sig-name descname"><span class="pre">test_get_role</span></span><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#testing.FlaskApp.test_get_role"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Tests if front-end can get the role of the current user</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="py method">
+                                <dt class="sig sig-object py" id="testing.FlaskApp.test_get_single_file">
+                                    <span class="sig-name descname"><span class="pre">test_get_single_file</span></span><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#testing.FlaskApp.test_get_single_file"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Tests the getting a single file</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="py method">
+                                <dt class="sig sig-object py" id="testing.FlaskApp.test_has_empty_value">
+                                    <span class="sig-name descname"><span class="pre">test_has_empty_value</span></span><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#testing.FlaskApp.test_has_empty_value"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Tests if has_empty_value function works</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="py method">
+                                <dt class="sig sig-object py" id="testing.FlaskApp.test_hello_world">
+                                    <span class="sig-name descname"><span
+                                            class="pre">test_hello_world</span></span><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#testing.FlaskApp.test_hello_world"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Tests if hello_world function works</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="py method">
+                                <dt class="sig sig-object py" id="testing.FlaskApp.test_login">
+                                    <span class="sig-name descname"><span class="pre">test_login</span></span><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#testing.FlaskApp.test_login"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Tests the logging in of a user</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="py method">
+                                <dt class="sig sig-object py" id="testing.FlaskApp.test_logout">
+                                    <span class="sig-name descname"><span class="pre">test_logout</span></span><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#testing.FlaskApp.test_logout"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Tests the logging out of the user</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="py method">
+                                <dt class="sig sig-object py" id="testing.FlaskApp.test_register">
+                                    <span class="sig-name descname"><span class="pre">test_register</span></span><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#testing.FlaskApp.test_register"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Tests the registering of a user</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="py method">
+                                <dt class="sig sig-object py" id="testing.FlaskApp.test_submission">
+                                    <span class="sig-name descname"><span class="pre">test_submission</span></span><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#testing.FlaskApp.test_submission"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Tests the adding of submissions from a user</p>
+                                </dd>
+                            </dl>
+
+                            <dl class="py method">
+                                <dt class="sig sig-object py" id="testing.FlaskApp.test_submission_file">
+                                    <span class="sig-name descname"><span class="pre">test_submission_file</span></span><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#testing.FlaskApp.test_submission_file"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd><p>Tests the storing of an image from a user</p>
+                                </dd>
+                            </dl>
+
+                        </dd>
                     </dl>
 
                     <span class="target" id="module-mail"></span>
@@ -118,12 +429,54 @@
                                                                                                  href="#mail.Mail"
                                                                                                  title="Permalink to this definition">¶</a>
                         </dt>
-                        <dd><p>This document provides details on how we tested the back-end system
-                            handling inputs from front-end. We do this by testing each function
-                            on what it should receive and what it should send back as a response.
-                            We tested glue-code whenever the front-end page and back-end functionality
-                            was completed. We do not put glue code in this document as any glue-code
-                            errors that do occur will cause fatal errors.</p>
+                        <dd><p>Mail Class system responsible for the mailing system.
+                            Used to send emails to user from the back-end.
+                            Can be used for verification purposes as well as general communication</p>
+                            <dl class="py method">
+                                <dt class="sig sig-object py" id="mail.Mail.exit">
+                                    <span class="sig-name descname"><span class="pre">exit</span></span><span
+                                        class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink"
+                                                                                                     href="#mail.Mail.exit"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                </dt>
+                                <dd>
+                                    <blockquote>
+                                        <div><p>kills the mail session and clears attributes</p>
+                                        </div>
+                                    </blockquote>
+                                    <dl class="field-list simple">
+                                        <dt class="field-odd">Returns</dt>
+                                        <dd class="field-odd"><p></p>
+                                        </dd>
+                                    </dl>
+                                </dd>
+                            </dl>
+
+                            <dl class="py method">
+                                <dt class="sig sig-object py" id="mail.Mail.send_2fa_email">
+                                    <span class="sig-name descname"><span class="pre">send_2fa_email</span></span><span
+                                        class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                                        class="pre">user</span></span></em><span class="sig-paren">)</span><a
+                                        class="headerlink" href="#mail.Mail.send_2fa_email"
+                                        title="Permalink to this definition">¶</a></dt>
+                                <dd>
+                                    <blockquote>
+                                        <div><p>Sends a 2-Factor Authentication token for the newly-registered user to
+                                            set up their authenticator</p>
+                                        </div>
+                                    </blockquote>
+                                    <dl class="field-list simple">
+                                        <dt class="field-odd">Parameters</dt>
+                                        <dd class="field-odd"><p><strong>user</strong> – The User object with all the
+                                            user’s attribute</p>
+                                        </dd>
+                                        <dt class="field-even">Returns</dt>
+                                        <dd class="field-even"><p>Nothing</p>
+                                        </dd>
+                                    </dl>
+                                </dd>
+                            </dl>
+
                         </dd>
                     </dl>
 
