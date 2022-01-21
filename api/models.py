@@ -13,29 +13,44 @@ from werkzeug.security import generate_password_hash
 
 def encrypt(data, key):
     """
-    Used to encrypt data
-    :param data: Information needing to be encrypted
-    :param key: Used to encrypt
-    :return: Encrypted Info
+    Used to encrypt data.
+
+    :param data:
+        Information needing to be encrypted.
+
+    :param key:
+        Used to encrypt.
+
+    :return:
+        Encrypted Info.
+
     """
+
     return Fernet(key).encrypt(bytes(data, 'utf-8'))
 
 
 def decrypt(data, key):
     """
-    Used to decrypted encrypted data.
-    :param data: Encrypted information needing to be decrypted.
-    :param key: Used to decrypt.
-    :return: Decrypted Info.
+     Used to decrypted encrypted data.
+    :param data:
+        Encrypted information needing to be decrypted.
+
+    :param key:
+        Used to decrypt.
+
+    :return:
+        Decrypted Info.
     """
+
     return Fernet(key).decrypt(data).decode('utf-8')
 
 
 # User Table
 class User(db.Model, UserMixin):
     """
-    User Table
+     User Table.
     """
+
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -50,13 +65,25 @@ class User(db.Model, UserMixin):
     # Initialise User Object
     def __init__(self, username, email, password, postcode, role):
         """
-        Initialise User Object.
-        :param username: The name that the user chooses to access there account with.
-        :param email: Email of the user.
-        :param password: Password of the user.
-        :param postcode:The postcode of the user.
-        :param role: What the user can access.
+         Initialise User Object.
+
+        :param username:
+            The name that the user chooses to access there account with.
+
+        :param email:
+            Email of the user.
+
+        :param password:
+            Password of the user.
+
+        :param postcode:
+            The postcode of the user.
+
+        :param role:
+            What the user can access.
+
         """
+
         self.username = username
         self.email = email
         self.password = password
@@ -68,8 +95,9 @@ class User(db.Model, UserMixin):
 
 class Complaint(db.Model):
     """
-    Complaints Table.
+     Complaints Table.
     """
+
     __tablename__ = 'complaints'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -84,14 +112,30 @@ class Complaint(db.Model):
     def __init__(self, user_id, name, description, location, date, img_path, user_key):
         """
         Initialise Complaint Object.
-        :param user_id: The unique id of the user.
-        :param name: The name of the complaint.
-        :param description: The description of the complaint.
-        :param location: The location of where this complaint is.
-        :param date: The date of when submitted.
-        :param img_path: The path of where the image is stored.
-        :param user_key: The data to decrypt and encrypt data.
+
+        :param user_id:
+            The unique id of the user.
+
+        :param name:
+            The name of the complaint.
+
+        :param description:
+            The description of the complaint.
+
+        :param location:
+            The location of where this complaint is.
+
+        :param date:
+            The date of when submitted.
+
+        :param img_path:
+            The path of where the image is stored.
+
+        :param user_key:
+            The data to decrypt and encrypt data.
+
         """
+
         self.user_id = user_id
         self.name = encrypt(data=name, key=user_key)
         self.description = encrypt(data=description, key=user_key)
@@ -102,11 +146,17 @@ class Complaint(db.Model):
 
     def view_complaint_card(self, user_key, url):
         """
-        Used to view all of the details in complaint.
-        :param user_key: The data to decrypt and encrypt data.
-        :param url: The website link to access image.
-        :return: All details of the complaint including image url.
+         Used to view all of the details in complaint.
+        :param user_key:
+            The data to decrypt and encrypt data.
+
+        :param url:
+            The website link to access image.
+
+        :return: All details of the complaint including image url in `JSON` encoding.
+
         """
+
         # self.name = decrypt(data=self.name, key=user_key)
         # self.description = decrypt(data=self.description, key=user_key)
         # self.location = decrypt(data=self.location, key=user_key)
@@ -127,8 +177,9 @@ class Complaint(db.Model):
 # Initialising the database
 def init_db():
     """
-    To initialise the database.
+     To initialise the database.
     """
+
     import os
     import shutil
     print("running init_db...")

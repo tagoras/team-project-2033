@@ -27,11 +27,16 @@ jwt = JWTManager(app)
 
 def has_empty_value(obj) -> bool:
     """
-     Check for empty fields in a dictionary
-     Used for JSON Data validation
-    :param obj:  Dictionary object
-    :return: bool: Whether the
+     Check for empty fields in a dictionary.
+     Used for JSON Data validation.
+
+    :param obj:
+        Dictionary object
+
+    :return: bool: Whether the dictionary is empty or not.
+
     """
+
     if obj is None:
         return True
     for k in obj:
@@ -53,9 +58,10 @@ def has_empty_value(obj) -> bool:
 def hello_world() -> json:
     """
      Returns a Hello World! in JSON format.
-    :return: {'title': "Hello!",
-                    'content': "Hello World"}
+
+    :return: ``{'title': "Hello!", 'content': "Hello World"}``
     """
+
     return jsonify({'title': "Hello!",
                     'content': "Hello World"},
                    request.json), 200
@@ -67,9 +73,9 @@ def hello_world() -> json:
 def hello_world_jwt() -> json:
     """
      Checks for a valid JWT, returns a Hello World! in JSON format.
-    :return: {'title': "Hello!",
-                    'content': "Hello World"}
+    :return: ``{'title': "Hello!", 'content': "Hello World"}``
     """
+
     current_user = get_jwt_identity()
     return jsonify({'title': "Hello!",
                     'content': "Hello World, I am logged in, amazing!"},
@@ -80,9 +86,10 @@ def hello_world_jwt() -> json:
 @app.route('/register', methods=['GET', 'POST'])
 def register() -> json:
     """
-     Registers a user.
-    :return:
+     Registers a ``user`` in the `database`.
+    :return: ``status`` and ``message`` encoded in `JSON`.
     """
+
     # Grabs info from front-end and checks if it json
     if request.is_json and ("username" and "password" and "email" and "postcode" in request.json):
         # Converts json object into dictionary and checks if there are empty
@@ -194,9 +201,10 @@ def register() -> json:
 @app.route('/login', methods=['POST'])
 def login() -> json:
     """
-     Handles user login
+     Handles user logins and get a JWT for him.
     :return: ``status``, ``message`` and ``JWT`` encoded in JSON.
     """
+
     if request.is_json and ("username" and "password" and "otp" in request.json):
         login_form = request.json
 
@@ -277,6 +285,7 @@ def submission() -> json:
      Handles user submissions.
     :return: ``status``, ``message``, ``complaint.id`` for file submissions.
     """
+
     # Grabs the user information and see if they have the role of a user
     current_user = get_jwt_identity()
     if current_user["role"] != 'user':
@@ -398,6 +407,7 @@ def logout() -> json:
     Placeholder for a logout function
     :return: ``status`` and ``message`` encoded in JSON.
     """
+
     try:
         # This should be handled in the front-end !!!
         # This is just a placeholder
@@ -466,7 +476,9 @@ def admin_delete_submission() -> json:
     """
      For admin to delete a submission.
     :return: ``status`` and ``message`` encoded in JSON.
+
     """
+
     if request.is_json and ("id" in request.json):
         # Checks if the user is an admin
         current_user = get_jwt_identity()
@@ -520,7 +532,9 @@ def get_role() -> json:
     """
      Gets the current user's role
     :return: ``user.role``
+
     """
+
     # Grabs the logged-in user info
     current_user = get_jwt_identity()
     return jsonify(role=current_user["role"]), 201
@@ -535,7 +549,9 @@ def get_single_file(_id, _filename):
     :param _id: user_id - The user personal folder.
     :param _filename: Randomly generated name of the file.
     :return: File - Sends from the directory a file.
+
     """
+
     return send_from_directory(path=f'{_id}/{_filename}', directory="data"), 201
 
 
@@ -544,9 +560,11 @@ def get_single_file(_id, _filename):
 @jwt_required()
 def admin_edit_submission() -> json:
     """
-    Lets the admin user edit a submission.
-    :return: ``status`` and ``message`` in `JSON`
+     Lets the admin user edit a submission.
+    :return: ``status`` and ``message`` encoded in `JSON`
+
     """
+
     current_user = get_jwt_identity()
     # Checks if user is admin
     if current_user["role"] != 'admin':
